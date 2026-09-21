@@ -12,13 +12,19 @@ enum AppLanguage: String {
 
 enum L10n {
     private static let lock = NSLock()
-    private static var selected = AppLanguage.resolve(saved: UserDefaults.standard.string(forKey: "AppLanguage"),
+    #if CCW_PREVIEW || CCW_RELAY
+    private static var selected = AppLanguage.chinese
+    #else
+    private static var selected = AppLanguage.resolve(saved: CommandLine.arguments.contains("--self-test") ? nil : UserDefaults.standard.string(forKey: "AppLanguage"),
                                                       preferred: Locale.preferredLanguages)
+    #endif
     static var language: AppLanguage {
         get { lock.lock(); defer { lock.unlock() }; return selected }
         set {
             lock.lock(); selected = newValue; lock.unlock()
-            UserDefaults.standard.set(newValue.rawValue, forKey: "AppLanguage")
+            #if !CCW_PREVIEW && !CCW_RELAY
+            if !CommandLine.arguments.contains("--self-test") { UserDefaults.standard.set(newValue.rawValue, forKey: "AppLanguage") }
+            #endif
         }
     }
     static func text(_ chinese: String, _ english: String) -> String {

@@ -10,11 +10,13 @@ struct CommandResult {
 
 enum CommandRunner {
     /// Drain both pipes while the command runs. No blocking EOF reads or main-queue work.
-    static func run(_ executable: String, _ arguments: [String], timeout: TimeInterval = 3) -> CommandResult {
+    static func run(_ executable: String, _ arguments: [String], timeout: TimeInterval = 3,
+                    environment: [String: String]? = nil) -> CommandResult {
         let process = Process()
         let stdout = Pipe(), stderr = Pipe()
         process.executableURL = URL(fileURLWithPath: executable)
         process.arguments = arguments
+        if let environment { process.environment = environment }
         process.standardOutput = stdout
         process.standardError = stderr
         let outFD = stdout.fileHandleForReading.fileDescriptor

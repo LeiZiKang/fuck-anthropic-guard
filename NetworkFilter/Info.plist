@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.leizikang.claude-connection-watcher.filter</string>
+	<key>CFBundleName</key>
+	<string>Claude Connection Filter</string>
+	<key>CFBundleExecutable</key>
+	<string>ClaudeConnectionFilter</string>
+	<key>CFBundlePackageType</key>
+	<string>SYSX</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.4.0</string>
+	<key>CFBundleVersion</key>
+	<string>12.0</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>NSSystemExtensionUsageDescription</key>
+	<string>Apply network connection protection to recognized Claude clients and explicitly selected test applications.</string>
+	<key>NetworkExtension</key>
+	<dict>
+		<key>NEProviderClasses</key>
+		<dict>
+			<key>com.apple.networkextension.filter-data</key>
+			<string>CCWFilterDataProvider</string>
+		</dict>
+		<key>NEMachServiceName</key>
+		<string>Y355LMZA6C.com.leizikang.claude-connection-watcher.filter</string>
+	</dict>
+</dict>
+</plist>

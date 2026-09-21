@@ -1,107 +1,56 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-project_root="$(cd "$script_dir/.." && pwd)"
-final_app_path="$project_root/dist/Claude Connection Watcher.app"
-thin_root="$project_root/dist/.thin"
-architecture_list="${CCW_ARCHITECTURES:-$(uname -m)}"
-staging_root="$(/usr/bin/mktemp -d /private/tmp/ClaudeConnectionWatcher.XXXXXX)"
-app_path="$staging_root/Claude Connection Watcher.app"
-contents_path="$app_path/Contents"
-macos_path="$contents_path/MacOS"
-
-cleanup() {
-  if [[ "$staging_root" == /private/tmp/ClaudeConnectionWatcher.* ]]; then
-    rm -rf "$staging_root"
-  fi
-}
-trap cleanup EXIT
-
-if [ -n "${CCW_SDK_PATH:-}" ]; then
-  sdk_path="$CCW_SDK_PATH"
-elif [ -d "/Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk" ]; then
-  # This older SDK also avoids a known CLT compiler/SDK version skew.
-  sdk_path="/Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk"
+root="$(cd "$(dirname "$0")/.." && pwd)"
+source "$root/scripts/toolchain.sh"
+mode="${CCW_BUILD_MODE:-preview}"
+[[ "$mode" == preview || "$mode" == host ]] || { echo 'Use preview or host' >&2; exit 2; }
+out="${CCW_OUTPUT_ROOT:-$root/dist/guard}"
+"$CCW_PYTHON" - "$root" "$out" <<'PY'
+from pathlib import Path
+import sys
+assert Path(sys.argv[2]).resolve().is_relative_to(Path(sys.argv[1]).resolve()/'dist'), 'Output must stay in project dist'
+PY
+sdk="${CCW_SDK_PATH:-/Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk}"
+[[ -d "$sdk" ]] || sdk="$(xcrun --sdk macosx --show-sdk-path)"
+mkdir -p "$out/cache"
+common=( "$root/Sources/Localization.swift" "$root/Sources/FilterProtocol.swift" "$root/Sources/RouteRequirements.swift" "$root/Sources/PolicyEvidence.swift" "$root/Sources/ProcessAncestry.swift" "$root/Guard/Shared/ProcessIdentity.swift" "$root/Guard/Shared/ProbeModel.swift" "$root/Guard/Shared/GuardianTimer.swift" )
+if [[ "$mode" == preview ]]; then
+ app="$out/Claude Connection Watcher Preview.app"; binary=CCWPreview; definition=(-D CCW_PREVIEW); sources=()
 else
-  sdk_path="$(xcrun --sdk macosx --show-sdk-path)"
+ app="$out/Claude Connection Watcher.app"; binary=ClaudeConnectionWatcher; definition=(); sources=( "$root/Guard/Shared/RuntimeIdentity.swift" "$root/Sources/CommandRunner.swift" "$root/Sources/ProcessInventory.swift" "$root/Sources/LocalSurgeAuditor.swift" "$root/Sources/FilterController.swift" "$root/Sources/ProxyTransportConfiguration.swift" "$root/Guard/App/GuardProbe.swift" )
 fi
-
-read -r -a architectures <<< "$architecture_list"
-[ "${#architectures[@]}" -gt 0 ] || {
-  echo "CCW_ARCHITECTURES did not contain an architecture." >&2
-  exit 2
-}
-
-for architecture in "${architectures[@]}"; do
-  case "$architecture" in
-    arm64|x86_64) ;;
-    *) echo "Unsupported macOS architecture: $architecture" >&2; exit 2 ;;
-  esac
+mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
+cp "$root/Resources/Watcher.icns" "$app/Contents/Resources/Watcher.icns"
+[[ ! -f "$root/docs/UserGuide.html" ]] || cp "$root/docs/UserGuide.html" "$app/Contents/Resources/UserGuide.html"
+if [[ "$mode" == preview ]]; then cp "$root/Preview/Info.plist" "$app/Contents/Info.plist"
+else "$CCW_PYTHON" "$root/scripts/mach_service_metadata.py" --host "$root/Info.plist" --host-output "$app/Contents/Info.plist"; fi
+archs="${CCW_ARCHITECTURES:-$(uname -m)}"; bins=(); filterbins=()
+for arch in $archs; do
+ [[ "$arch" == arm64 || "$arch" == x86_64 ]] || exit 2
+ mkdir -p "$out/$arch"
+ xcrun clang -target "$arch-apple-macosx14.0" -isysroot "$sdk" -c "$root/NetworkFilter/Sources/AuditToken.c" -o "$out/$arch/AuditToken.o"
+ bridge=(); if [[ "$mode" == host ]]; then bridge=(-import-objc-header "$root/NetworkFilter/Sources/AuditToken.h" "$out/$arch/AuditToken.o" -lbsm); fi
+ nice -n 10 xcrun swiftc -swift-version 5 -file-prefix-map "$root"=WatcherSource -debug-prefix-map "$root"=WatcherSource -target "$arch-apple-macosx14.0" -sdk "$sdk" -module-cache-path "$out/cache" -framework AppKit ${definition[@]+"${definition[@]}"} ${bridge[@]+"${bridge[@]}"} "${common[@]}" ${sources[@]+"${sources[@]}"} "$root/Guard/Tests/GuardTests.swift" "$root/Guard/App/main.swift" -o "$out/$arch/$binary"
+ bins+=("$out/$arch/$binary")
+ if [[ "$mode" == host ]]; then
+  nice -n 10 xcrun swiftc -swift-version 5 -file-prefix-map "$root"=WatcherSource -debug-prefix-map "$root"=WatcherSource -target "$arch-apple-macosx14.0" -sdk "$sdk" -module-cache-path "$out/cache" -module-name ClaudeConnectionFilter -framework NetworkExtension -framework Security -import-objc-header "$root/NetworkFilter/Sources/AuditToken.h" "$out/$arch/AuditToken.o" -lbsm "${common[@]}" "$root/Guard/Shared/RuntimeIdentity.swift" "$root/NetworkFilter/Sources/main.swift" -o "$out/$arch/ClaudeConnectionFilter"
+  filterbins+=("$out/$arch/ClaudeConnectionFilter")
+ fi
 done
-
-rm -rf "$thin_root"
-mkdir -p "$macos_path" "$thin_root"
-
-declare -a thin_binaries=()
-for architecture in "${architectures[@]}"; do
-  architecture_root="$thin_root/$architecture"
-  binary_path="$architecture_root/ClaudeConnectionWatcher"
-  mkdir -p \
-    "$architecture_root/ModuleCache"
-
-  xcrun swiftc \
-    -swift-version 5 \
-    -target "$architecture-apple-macosx13.0" \
-    -sdk "$sdk_path" \
-    -module-cache-path "$architecture_root/ModuleCache" \
-    -framework AppKit \
-    "$project_root"/Sources/*.swift \
-    -o "$binary_path"
-
-  strip -x "$binary_path"
-  thin_binaries+=("$binary_path")
-done
-
-app_binary="$macos_path/ClaudeConnectionWatcher"
-if [ "${#thin_binaries[@]}" -eq 1 ]; then
-  cp "${thin_binaries[0]}" "$app_binary"
-else
-  xcrun lipo -create "${thin_binaries[@]}" -output "$app_binary"
-fi
-
-cp "$project_root/Info.plist" "$contents_path/Info.plist"
-chmod 755 "$app_binary"
-plutil -lint "$contents_path/Info.plist"
-
-# Clear Finder/resource-fork metadata in isolated staging before signing.
-xattr -cr "$app_path"
-
-if [ -n "${CCW_SIGN_IDENTITY:-}" ]; then
-  codesign \
-    --force \
-    --options runtime \
-    --timestamp \
-    --sign "$CCW_SIGN_IDENTITY" \
-    "$app_path"
-  signing_mode="Developer ID"
-else
-  codesign --force --sign - "$app_path"
-  signing_mode="ad-hoc"
-fi
-
-codesign --verify --all-architectures --deep --strict "$app_path"
-
-if [ -e "$final_app_path" ]; then
-  rm -rf "$final_app_path"
-fi
-/usr/bin/ditto --norsrc --noextattr "$app_path" "$final_app_path"
-codesign --verify --all-architectures --deep --strict "$final_app_path"
-
-final_binary="$final_app_path/Contents/MacOS/ClaudeConnectionWatcher"
-architectures_built="$(xcrun lipo -archs "$final_binary")"
-
-echo "Built: $final_app_path"
-echo "Architectures: $architectures_built"
-echo "Signing: $signing_mode"
-echo "The app was not launched and no process was stopped."
+xcrun lipo -create "${bins[@]}" -output "$app/Contents/MacOS/$binary"
+if [[ "$mode" == host ]]; then
+ ext="$app/Contents/Library/SystemExtensions/com.leizikang.claude-connection-watcher.filter.systemextension"
+ mkdir -p "$ext/Contents/MacOS"
+ xcrun lipo -create "${filterbins[@]}" -output "$ext/Contents/MacOS/ClaudeConnectionFilter"
+ "$CCW_PYTHON" "$root/scripts/mach_service_metadata.py" --host "$root/Info.plist" --host-output "$out/HostMetadata.plist" --provider-template "$root/NetworkFilter/Info.plist" --provider-output "$ext/Contents/Info.plist"
+ if [[ -n "${CCW_SIGN_IDENTITY:-}" ]]; then
+  : "${CCW_HOST_PROFILE:?}" "${CCW_FILTER_PROFILE:?}"
+  "$CCW_PYTHON" "$root/scripts/check_filter_profile.py" "$CCW_HOST_PROFILE" com.leizikang.claude-connection-watcher
+  "$CCW_PYTHON" "$root/scripts/check_filter_profile.py" "$CCW_FILTER_PROFILE" com.leizikang.claude-connection-watcher.filter
+  cp "$CCW_HOST_PROFILE" "$app/Contents/embedded.provisionprofile"; cp "$CCW_FILTER_PROFILE" "$ext/Contents/embedded.provisionprofile"
+  codesign --force --options runtime --timestamp --entitlements "$root/NetworkFilter/Filter.entitlements" --sign "$CCW_SIGN_IDENTITY" "$ext"
+  codesign --force --options runtime --timestamp --entitlements "$root/NetworkFilter/Host.entitlements" --sign "$CCW_SIGN_IDENTITY" "$app"
+ else codesign --force --sign - --timestamp=none "$ext"; codesign --force --sign - --timestamp=none "$app"; fi
+else codesign --force --sign - --timestamp=none "$app"; fi
+codesign --verify --all-architectures --deep --strict "$app"
+echo "Built $mode (not installed): $app"

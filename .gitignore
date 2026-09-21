@@ -4,6 +4,8 @@
 *.log
 .swiftpm/
 .build/
+__pycache__/
+*.py[cod]
 
 # Credentials and Apple signing exports must never enter the repository.
 .env
@@ -19,3 +21,13 @@
 *.provisionprofile
 *.mobileconfig
 *.xcarchive
+
+# Local credential archives must never be committed, even if copied here.
+Credential Archives/
+*.original
+*.moved
+
+# Local Xcode state; shared schemes stay in Git.
+**/xcuserdata/
+DerivedData/
+*.xcuserstate

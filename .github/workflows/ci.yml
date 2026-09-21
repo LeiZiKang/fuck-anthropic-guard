@@ -1,0 +1,15 @@
+name: Offline build and tests
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Offline preview tests
+        run: bash scripts/test.sh
+      - name: Compile host and filter without installation
+        env:
+          CCW_BUILD_MODE: host
+        run: bash scripts/build.sh
