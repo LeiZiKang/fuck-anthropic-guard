@@ -1,5 +1,7 @@
 # Claude Connection Watcher
 
+<table><tr><td><strong>English</strong></td><td><a href="README.zh-CN.md">简体中文</a></td></tr></table>
+
 A local macOS companion for **Surge**, with two responsibilities:
 
 1. List recognized Claude Desktop / native CLI processes, terminate selected recognized processes after confirmation, and show read-only IPv6 service settings.
@@ -9,15 +11,15 @@ A local macOS companion for **Surge**, with two responsibilities:
 
 > **0.4.0 pre-release / build 12.0 — experimental.** Offline tests and compilation are not live system-wide acceptance. Provider crashes, boot first packets, unidentified descendants and all network transitions are not guaranteed fail-closed. No account-safety or zero-IP-leak promise.
 
-## Interface and workflow / 界面与操作示例
+## Interface and workflow
 
-These screenshots were captured from the **running offline Preview**, using sample PIDs and settings. They show the real UI and interaction flow, **not evidence of live network blocking**. 此处为实际运行的离线 Preview 截图，使用示例数据，不代表真实过滤验收。
+These screenshots were captured from the **running offline Preview**, using sample PIDs and settings. They show the real UI and interaction flow, **not evidence of live network blocking**.
 
 | English | 简体中文 |
 |---|---|
 | ![English Preview: processes, IPv6 and Surge checks](docs/images/preview-en.png) | ![中文 Preview：进程、IPv6 与 Surge 检查](docs/images/preview-zh.png) |
 
-1. Choose **English / 简体中文** at the top. The interface switches immediately without restarting monitoring. 正式版记住选择，Preview 仅保存在内存。
+1. Choose **English / 简体中文** at the top. The interface switches immediately without restarting monitoring. The production app remembers your selection; Preview keeps it in memory only.
 2. **Quit listed Claude processes…** asks for confirmation before acting on the frozen process identities. The screenshot below shows that confirmation; sample processes are never real user processes.
 
 ![Confirmed process termination in Chinese Preview](docs/images/quit-confirmation-zh.png)
@@ -29,7 +31,7 @@ These screenshots were captured from the **running offline Preview**, using samp
 ## Read first
 
 - [English HTML guide](docs/UserGuide.en.html) / [中文 HTML 说明书](docs/UserGuide.html) — standalone, offline, printable.
-- [Markdown manual](docs/UserGuide.md)
+- [English Markdown manual](docs/UserGuide.en.md)
 - [PRD](docs/PRD.md)
 - [Validation status and limitations](docs/FEATURE-STATUS.md)
 - [Security model](SECURITY.md)
