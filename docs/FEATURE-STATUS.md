@@ -20,4 +20,4 @@ Production approval/activation, real client traffic and every wrapper/descendant
 
 ## Distribution status
 
-This is an experimental source candidate, not a signed installer release. No production filter was installed or activated during this workflow. Existing user proxies and clients were not changed. Read the [security model](../SECURITY.md) and [guide](UserGuide.en.md) before planning isolated live acceptance.
+A Developer ID signed and Apple-notarized experimental beta is packaged for distribution. Secure timestamps, stapled ticket, Gatekeeper assessment and signed-host offline checks passed. Homebrew installation is not live filtering acceptance. No production filter was installed or activated during this workflow. Existing user proxies and clients were not changed. Read the [security model](../SECURITY.md) and [guide](UserGuide.en.md) before planning isolated live acceptance.

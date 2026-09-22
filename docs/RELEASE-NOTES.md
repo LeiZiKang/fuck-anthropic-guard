@@ -14,4 +14,6 @@
 
 Protection is opt-in and requires the documented dedicated Surge listener, valid signing and macOS approval. The app does not provide a proxy/SSH service, read VPS keys, clean credentials or automatically edit Surge.
 
-This publishes experimental source only, not a signed installer or automatic update. Live proxy-loss, boot, provider-crash and client coverage acceptance remains pending. See [validation status](FEATURE-STATUS.md) and [security model](../SECURITY.md); no zero-IP-leak or account-safety guarantee is made.
+This beta includes a Developer ID signed, notarized Universal 2 app and a new Homebrew cask. Installation does not activate the filter or update the old 0.2.2 cask automatically. Live proxy-loss, boot, provider-crash and client coverage acceptance remains pending. See [validation status](FEATURE-STATUS.md) and [security model](../SECURITY.md); no zero-IP-leak or account-safety guarantee is made.
+
+Install with `brew install --cask leizikang/tap/fuck-anthropic-guard`, or download this release ZIP. Disable protection, confirm disablement and quit before migration, upgrade or uninstall. Old and new apps share bundle identifiers; do not run both.
