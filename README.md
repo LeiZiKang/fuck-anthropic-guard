@@ -1,80 +1,74 @@
-# fuck-anthropic guard
+<div align="center">
+  <img src="Resources/AppIcon.png" width="80" alt="fuck-anthropic guard icon">
+  <h1>fuck-anthropic guard</h1>
+  <p><strong>Know what Claude is running. Keep its network path in check.</strong></p>
+  <p>A local macOS companion for Surge — process controls, connection checks and safety alerts.</p>
+  <p><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a></p>
+  <p><a href="docs/UserGuide.en.md">User guide</a> · <a href="docs/FEATURE-STATUS.md">What's verified</a> · <a href="SECURITY.md">Security</a> · <a href="CONTRIBUTING.md">Contribute</a></p>
+  <p><code>macOS 14+</code> &nbsp; <code>Apple Silicon + Intel</code> &nbsp; <code>MIT</code></p>
+</div>
 
-<img src="Resources/AppIcon.png" alt="fuck-anthropic guard icon" width="128">
+> **Experimental · source release only.** There is no signed installer for this candidate. Live failure testing is still pending; protection is not a zero-IP-leak or account-safety guarantee.
 
-<table><tr><td><strong>English</strong></td><td><a href="README.zh-CN.md">简体中文</a></td></tr></table>
+<p align="center">
+  <a href="docs/images/preview-en.png"><img src="docs/images/preview-en.png" width="640" alt="English app interface: recognized processes, IPv6 status and Surge protection controls"></a>
+  <br><sub>Running offline Preview · sample data · not evidence of live filtering</sub>
+</p>
 
-**An extra layer of network protection for Claude on your Mac.**
+## Three things, one window
 
-Guard works alongside Surge to reduce the risk of Claude connecting directly and exposing your public IP address to Anthropic when a proxy disconnects or the network changes. With the system filter correctly configured and enabled, the design withdraws permission when checks fail, an allow lease expires, or the protection component receives a network-change event. Recognized Claude processes are then subject to blocking, with alerts when automatic monitoring detects a problem.
+| See what's running | Guard the connection | Quit before disconnecting |
+|---|---|---|
+| Recognized Claude Desktop, native CLI and traceable descendants, plus read-only IPv6 settings. | Opt-in filtering restricts recognized clients to a verified Surge endpoint. Failed checks or expired permission revoke access. | Confirm one action to quit the listed processes. Check they have exited before turning off your proxy. |
 
-Before turning off your VPN or Surge, use the confirmed **one-click quit** action to exit the listed Claude processes. **Verify they have exited before disabling the proxy.** This helps reduce accidental direct connections; it does not guarantee that a Claude account will avoid restrictions.
+Surge forwards the traffic. Guard does not provide a VPN or SSH tunnel, read VPS private keys, or change your network settings. Its goal is to reduce accidental direct connections when your proxy or network changes.
 
-This version requires a **dedicated Surge endpoint**; it is not a general-purpose guard for every VPN. These behaviors are implemented in code, but live proxy-loss, network-loss, and reboot acceptance remains pending. Instant blocking, complete process coverage, and zero IP leakage are not guaranteed.
+<details>
+<summary><strong>See the confirmation and blocked-state examples</strong></summary>
 
-A local macOS companion for **Surge**, with two responsibilities:
+The confirmation freezes the target list before acting. Preview uses sample processes only.
 
-1. List recognized Claude Desktop / native CLI processes, terminate selected recognized processes after confirmation, and show read-only IPv6 service settings.
-2. Restrict recognized clients to a verified **Surge-owned** proxy endpoint using a macOS Network Extension.
+<p align="center"><img src="docs/images/quit-confirmation-en.png" width="280" alt="English confirmation before quitting the listed sample processes"></p>
 
-**Guard is not a proxy, VPN, SSH tunnel, or credential cleaner.** It does not read VPS private keys or modify Surge, DNS, routes, or IPv6 settings.
+The blocked state below is a simulation. Switching languages preserves that state.
 
-> **0.4.0 pre-release / build 12.0 — experimental.** Offline tests and compilation are not live system-wide acceptance. Provider crashes, boot first packets, unidentified descendants and all network transitions are not guaranteed fail-closed. No account-safety or zero-IP-leak promise.
+<p align="center"><img src="docs/images/blocked-preview-en.png" width="640" alt="English Preview displaying a sample blocked state"></p>
 
-## Interface and workflow
+</details>
 
-These screenshots were captured from the **running offline Preview**, using sample PIDs and settings. They show the real UI and interaction flow, **not evidence of live network blocking**.
+## Try the offline Preview
 
-![English Preview: processes, IPv6 and Surge checks](docs/images/preview-en.png)
-
-1. Choose **English / 简体中文** at the top. The interface switches immediately without restarting monitoring. The production app remembers your selection; Preview keeps it in memory only.
-2. **Quit listed Claude processes…** asks for confirmation before acting on the frozen process identities. The screenshot below shows that confirmation; sample processes are never real user processes.
-
-![Confirmed process termination in English Preview](docs/images/quit-confirmation-en.png)
-
-3. **Keep blocking** demonstrates the blocked presentation. Changing languages preserves this state. This image is a simulation, not a production filter result.
-
-![English blocked-state example in the offline Preview](docs/images/blocked-preview-en.png)
-
-## Read first
-
-- [English HTML guide](docs/UserGuide.en.html) / [中文 HTML 说明书](docs/UserGuide.html) — standalone, offline, printable.
-- [English Markdown manual](docs/UserGuide.en.md)
-- [Design and scope](docs/PRD.en.md)
-- [Validation status and limitations](docs/FEATURE-STATUS.md)
-- [Security model](SECURITY.md)
-- [Release notes](docs/RELEASE-NOTES.md)
-
-## Build and review
-
-Requires macOS 14+, Xcode or compatible Command Line Tools, and Python 3. No package dependencies.
+Requires Xcode or compatible Command Line Tools and Python 3. Preview does not signal real processes, send probes or activate a filter.
 
 ```bash
-bash scripts/build.sh                  # isolated offline Preview
-bash scripts/test.sh                   # pure/offline tests, no live clients killed
-CCW_BUILD_MODE=host bash scripts/build.sh  # host + filter, not installed
+git clone --branch codex/feature-surge-guard-public https://github.com/LeiZiKang/fuck-anthropic-guard.git
+cd fuck-anthropic-guard
+bash scripts/build.sh
+open "dist/guard/fuck-anthropic guard Preview.app"
 ```
 
-Open `ClaudeConnectionWatcher.xcodeproj`; **01 Preview (Safe)** is the default Run scheme. Production targets are build-only. Production signing and Network Extension provisioning are required before installation; ad-hoc builds do not establish protection.
+Choose **English / 简体中文** in the window. Production remembers your selection; Preview keeps it in memory only.
 
-Default output: `dist/guard/`. For a Universal 2 build, set `CCW_ARCHITECTURES='arm64 x86_64'`.
+## Before enabling real protection
 
-## Connection model
+This version requires a **dedicated Surge listener**, a first `IN-PORT` rule pinned to one supported Hysteria2 node, valid signing, and macOS filter approval. Shared proxy ports and ordinary Dock launches may not use that path. Follow the [setup guide](docs/UserGuide.en.md) first.
 
-```text
-Claude → dedicated local port owned by Surge → one Hysteria2 policy → your VPS
-              ↑
-        Guard verifies and filters; it does not forward traffic
+Unknown processes, provider crashes, early boot packets and network transitions have coverage limits. There is a detection window; blocking is not guaranteed to be instantaneous. See [what is verified](docs/FEATURE-STATUS.md) and the [security model](SECURITY.md).
+
+<details>
+<summary><strong>Build the host and filter · contributor details</strong></summary>
+
+```bash
+bash scripts/test.sh
+CCW_BUILD_MODE=host bash scripts/build.sh
 ```
 
-Shared Surge ports can legitimately select DIRECT for other applications. Strict guard mode therefore requires a separate **Surge listener** (example: 6154) and a first `IN-PORT` rule pinned to one Hysteria2 node. Existing Xcode/other routing rules can remain on the shared listener. Setup is explicit and manual; the app does not change your profile.
+These commands build without installing. Ad-hoc signing does not establish protection. In `ClaudeConnectionWatcher.xcodeproj`, **01 Preview (Safe)** is the default Run scheme; production schemes are build-only. Set `CCW_ARCHITECTURES='arm64 x86_64'` for a Universal 2 build.
 
-The optional `scripts/launch-claude-via-surge.sh` configures only the launched client's proxy environment/arguments. Normal Dock launches may retain the shared system proxy and be blocked when strict protection is enabled. See the manual before enabling protection.
+Read [Contributing](CONTRIBUTING.md), [design and scope](docs/PRD.en.md), and [release notes](docs/RELEASE-NOTES.md). An [offline HTML guide](docs/UserGuide.en.html) is also included in the source; download it to read in a browser. GitHub displays HTML files as source code.
 
-## Privacy and release
+</details>
 
-Process metadata is local. Explicitly enabled checks query the signed Surge CLI and use a cookie-free proxy-bound request to `api.ipify.org` to compare the expected exit. No telemetry, model calls, credential export, or automatic fallback.
+---
 
-This branch contains the experimental source candidate described above. For known limits and pending real-world checks, see the [validation status](docs/FEATURE-STATUS.md). Contributions are welcome; read the [contributor guide](CONTRIBUTING.md).
-
-License: [MIT](LICENSE).
+Process metadata stays local. Consented exit checks use Surge to reach `api.ipify.org` without Claude credentials. No telemetry or automatic direct fallback. [MIT license](LICENSE).
