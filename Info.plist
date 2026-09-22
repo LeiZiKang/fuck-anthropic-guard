@@ -2,34 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleDevelopmentRegion</key>
-    <string>en</string>
-    <key>CFBundleDisplayName</key>
-    <string>Claude Connection Watcher</string>
-    <key>CFBundleExecutable</key>
-    <string>ClaudeConnectionWatcher</string>
-    <key>CFBundleIdentifier</key>
-    <string>com.leizikang.claude-connection-watcher</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
-    <key>CFBundleName</key>
-    <string>Claude Connection Watcher</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-    <key>CFBundleShortVersionString</key>
-    <string>0.2.2</string>
-    <key>CFBundleVersion</key>
-    <string>4</string>
-    <key>CFBundleLocalizations</key>
-    <array>
-        <string>en</string>
-        <string>zh-Hans</string>
-    </array>
-    <key>LSMinimumSystemVersion</key>
-    <string>13.0</string>
-    <key>LSUIElement</key>
-    <true/>
-    <key>NSHighResolutionCapable</key>
-    <true/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>fuck-anthropic guard</string>
+	<key>CFBundleExecutable</key>
+	<string>ClaudeConnectionWatcher</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.leizikang.claude-connection-watcher</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>fuck-anthropic guard</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.4.0</string>
+	<key>CFBundleVersion</key>
+	<string>12.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>zh-Hans</string>
+	</array>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>LSUIElement</key>
+	<false/>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSSystemExtensionUsageDescription</key>
+	<string>Restrict recognized Claude connections to a verified Surge endpoint with your approval. This does not guarantee zero IP exposure.</string>
+	<key>CFBundleIconFile</key>
+	<string>Watcher</string>
 </dict>
 </plist>

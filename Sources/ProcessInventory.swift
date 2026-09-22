@@ -99,6 +99,7 @@ final class ProcessInventory {
         // Network transports are infrastructure, never a user-app quit target.
         // Apply this guard again immediately before every signal.
         let protectedFragments = ["claude connection watcher.app/", "claude network guard.app/",
+                                  "fuck-anthropic guard.app/", "fuck-anthropic guard preview.app/",
                                   "clash", "mihomo", "sing-box", "singbox", "proxifier.app/",
                                   "surge.app/", "biuuu.app/", "flyingbird-lite.app/"]
         return protectedFragments.contains { path.contains($0) }
