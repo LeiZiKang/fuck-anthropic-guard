@@ -40,9 +40,10 @@ These screenshots were captured from the **running offline Preview**, using samp
 
 - [English HTML guide](docs/UserGuide.en.html) / [中文 HTML 说明书](docs/UserGuide.html) — standalone, offline, printable.
 - [English Markdown manual](docs/UserGuide.en.md)
-- [PRD](docs/PRD.md)
+- [Design and scope](docs/PRD.en.md)
 - [Validation status and limitations](docs/FEATURE-STATUS.md)
 - [Security model](SECURITY.md)
+- [Release notes](docs/RELEASE-NOTES.md)
 
 ## Build and review
 
@@ -74,6 +75,6 @@ The optional `scripts/launch-claude-via-surge.sh` configures only the launched c
 
 Process metadata is local. Explicitly enabled checks query the signed Surge CLI and use a cookie-free proxy-bound request to `api.ipify.org` to compare the expected exit. No telemetry, model calls, credential export, or automatic fallback.
 
-Public releases require an independent review of the frozen source/history/artifacts. Feature branches remain unmerged until the maintainer accepts them. Existing historical releases may contain different functionality; this branch documents the reduced scope.
+This branch contains the experimental source candidate described above. For known limits and pending real-world checks, see the [validation status](docs/FEATURE-STATUS.md). Contributions are welcome; read the [contributor guide](CONTRIBUTING.md).
 
 License: [MIT](LICENSE).

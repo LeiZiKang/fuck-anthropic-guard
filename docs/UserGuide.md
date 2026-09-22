@@ -1,5 +1,7 @@
 # fuck-anthropic guard 使用说明书
 
+[English](UserGuide.en.md) | **简体中文**
+
 适用：0.4.0 / build 12.0，Surge 配套版。状态：开源预发布候选，尚未完成系统级故障场景的实机验收。
 
 ## 1. 这个 App 做什么
@@ -126,7 +128,7 @@ bash scripts/launch-claude-via-surge.sh cli 6154
 
 源码、Git 历史、图片和精确产物在发布前分别审查；公开配置只能使用文档示例地址。不要提交 SSH 私钥、代理密码、Cookie、钥匙串或个人运行日志。
 
-本版本不提供账号凭据归档/清理、IPv6 设置修改、SSH 转发、VPS 登录或自动主备切换。功能与限制见 [PRD](PRD.md)；测试状态见 [FEATURE-STATUS](FEATURE-STATUS.md)。
+本版本不提供账号凭据归档/清理、IPv6 设置修改、SSH 转发、VPS 登录或自动主备切换。功能与限制见 [PRD](PRD.md)；测试状态见 [FEATURE-STATUS](FEATURE-STATUS.zh-CN.md)。
 
 
 ## 后台提醒

@@ -1,5 +1,7 @@
 # Security model
 
+**English** | [简体中文](SECURITY.zh-CN.md)
+
 This is an experimental macOS process manager and Surge connection guard, not a VPN.
 
 ## Scope

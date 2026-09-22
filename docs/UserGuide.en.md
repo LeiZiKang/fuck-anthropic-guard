@@ -1,5 +1,7 @@
 # fuck-anthropic guard — User Guide
 
+**English** | [简体中文](UserGuide.md)
+
 Applies to 0.4.0 / build 12.0, the experimental Surge companion. Source is available for review; production filter activation and live failure scenarios have not been accepted. This is not the older SSH-relay version.
 
 ## 1. What Guard does
@@ -133,4 +135,4 @@ Use isolated, account-free fixtures for fault tests. Do not disable Surge, switc
 
 Build offline Preview with `bash scripts/build.sh` or Xcode's `01 Preview (Safe)`. `CCW_BUILD_MODE=host` builds the host and filter without installing. Production signing requires your own valid developer configuration; never commit signing private keys.
 
-The repository includes no VPS credentials or private runtime profile. Do not submit proxy passwords, SSH keys, cookies, Keychain exports, or personal logs. Review [PRD](PRD.md), [validation status](FEATURE-STATUS.md), and [security model](../SECURITY.md).
+The repository includes no VPS credentials or private runtime profile. Do not submit proxy passwords, SSH keys, cookies, Keychain exports, or personal logs. Review [PRD](PRD.en.md), [validation status](FEATURE-STATUS.md), and [security model](../SECURITY.md).

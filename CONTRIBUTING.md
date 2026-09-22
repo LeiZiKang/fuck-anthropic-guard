@@ -1,5 +1,7 @@
 # Contributing
 
+**English** | [简体中文](CONTRIBUTING.zh-CN.md)
+
 Keep the product scoped to process management/read-only IPv6 and Surge filtering.
 Do not add proxy forwarding, SSH/VPS credentials, automatic configuration writes,
 or account cleanup. Use the default offline Preview to develop the UI.

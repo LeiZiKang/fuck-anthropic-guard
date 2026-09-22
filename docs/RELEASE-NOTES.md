@@ -1,14 +1,17 @@
-Surge companion beta with two responsibilities: recognized Claude process management/read-only IPv6 status, and experimental connection filtering through a separately configured Surge endpoint.
+# Release notes — 0.4.0 beta / build 12.0
 
-There is no proxy/SSH service, VPS private-key access, credential cleanup or automatic Surge configuration. Default development Run is an isolated offline Preview. Includes a standalone HTML manual and PRD.
+**English** | [简体中文](RELEASE-NOTES.zh-CN.md)
 
-Protection is opt-in and requires the documented dedicated Surge listener and macOS approval. Offline tests and builds do not establish boot-first-packet safety, every descendant's coverage, provider-crash behavior or zero IP leakage. Read UserGuide.html and SECURITY.md before enabling experimental filtering.
+## Features
 
-This is a prerelease feature candidate, not an automatic update or main-branch merge. Homebrew remains unchanged.
+- Recognized Claude process management and read-only IPv6 settings.
+- Experimental system filtering through a separately configured Surge endpoint, with deduplicated macOS safety notifications.
+- Instant Simplified Chinese/English UI switching, bilingual guides and README language navigation.
+- Native Xcode targets, Dock/menu-bar UI and an isolated offline Preview.
+- New name: **fuck-anthropic guard**, with a new icon. Internal bundle/signing identifiers remain stable.
 
-Includes deduplicated macOS safety notifications; delivery depends on user permission and Focus settings. Source publication only: no signed installer or live-filter acceptance is included.
+## Before use
 
+Protection is opt-in and requires the documented dedicated Surge listener, valid signing and macOS approval. The app does not provide a proxy/SSH service, read VPS keys, clean credentials or automatically edit Surge.
 
-Bilingual update: Simplified Chinese and English UI, confirmations, status text and future notifications; instant in-app switching preserves monitoring state. Production remembers the choice; Preview is memory-only. Both offline HTML guides are bundled. System permission dialogs follow macOS language. README screenshots use the running offline Preview with sample data, not live-filter evidence.
-
-Renamed to fuck-anthropic guard with a new protest-themed app icon. Repository: LeiZiKang/fuck-anthropic-guard. Existing bundle/signing identifiers are intentionally retained; this source update does not install or activate a replacement.
+This publishes experimental source only, not a signed installer or automatic update. Live proxy-loss, boot, provider-crash and client coverage acceptance remains pending. See [validation status](FEATURE-STATUS.md) and [security model](../SECURITY.md); no zero-IP-leak or account-safety guarantee is made.

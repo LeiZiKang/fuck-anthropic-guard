@@ -40,9 +40,10 @@ Guard 配合 Surge，旨在降低代理中断或网络变化时 Claude 意外直
 
 - [中文 HTML 说明书](docs/UserGuide.html) / [English HTML guide](docs/UserGuide.en.html)：可独立离线阅读、打印。
 - [中文 Markdown 说明书](docs/UserGuide.md)
-- [产品需求 PRD](docs/PRD.md)
-- [验证状态与限制](docs/FEATURE-STATUS.md)
-- [安全模型](SECURITY.md)
+- [设计与范围](docs/PRD.md)
+- [验证状态与限制](docs/FEATURE-STATUS.zh-CN.md)
+- [安全模型](SECURITY.zh-CN.md)
+- [发布说明](docs/RELEASE-NOTES.zh-CN.md)
 
 ## 构建与审阅
 
@@ -74,6 +75,6 @@ Surge 的共享入口可能为其他应用合法选择 DIRECT。因此严格保�
 
 进程信息留在本机。用户明确启用后，检查通过签名的 Surge CLI 读取配置，并经指定代理向 `api.ipify.org` 发送不带 Cookie 的请求，比较预期出口。没有遥测、模型调用、凭据导出或自动直连回退。
 
-公开发布前需要独立审查冻结源码、历史和精确产物。功能分支等待维护者验收后才合并。历史版本可能包含不同功能，请以本分支所说明的精简范围为准。
+本分支提供上述实验性源码候选。已知限制及尚未完成的实机检查见[验证状态](docs/FEATURE-STATUS.zh-CN.md)。欢迎贡献，参与前请阅读[贡献指南](CONTRIBUTING.zh-CN.md)。
 
 许可证：[MIT](LICENSE)。
