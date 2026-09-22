@@ -20,5 +20,12 @@
 	<true/>
 	<key>CFBundleIconFile</key>
 	<string>Watcher</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>zh-Hans</string>
+	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
 </dict>
 </plist>

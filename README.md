@@ -9,9 +9,26 @@ A local macOS companion for **Surge**, with two responsibilities:
 
 > **0.4.0 pre-release / build 12.0 — experimental.** Offline tests and compilation are not live system-wide acceptance. Provider crashes, boot first packets, unidentified descendants and all network transitions are not guaranteed fail-closed. No account-safety or zero-IP-leak promise.
 
+## Interface and workflow / 界面与操作示例
+
+These screenshots were captured from the **running offline Preview**, using sample PIDs and settings. They show the real UI and interaction flow, **not evidence of live network blocking**. 此处为实际运行的离线 Preview 截图，使用示例数据，不代表真实过滤验收。
+
+| English | 简体中文 |
+|---|---|
+| ![English Preview: processes, IPv6 and Surge checks](docs/images/preview-en.png) | ![中文 Preview：进程、IPv6 与 Surge 检查](docs/images/preview-zh.png) |
+
+1. Choose **English / 简体中文** at the top. The interface switches immediately without restarting monitoring. 正式版记住选择，Preview 仅保存在内存。
+2. **Quit listed Claude processes…** asks for confirmation before acting on the frozen process identities. The screenshot below shows that confirmation; sample processes are never real user processes.
+
+![Confirmed process termination in Chinese Preview](docs/images/quit-confirmation-zh.png)
+
+3. **Keep blocking** demonstrates the blocked presentation. Changing languages preserves this state. This image is a simulation, not a production filter result.
+
+![English blocked-state example in the offline Preview](docs/images/blocked-preview-en.png)
+
 ## Read first
 
-- [HTML product manual](docs/UserGuide.html) — standalone, offline, printable.
+- [English HTML guide](docs/UserGuide.en.html) / [中文 HTML 说明书](docs/UserGuide.html) — standalone, offline, printable.
 - [Markdown manual](docs/UserGuide.md)
 - [PRD](docs/PRD.md)
 - [Validation status and limitations](docs/FEATURE-STATUS.md)

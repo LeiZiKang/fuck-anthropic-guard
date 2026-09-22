@@ -31,6 +31,8 @@ if app.exists(): shutil.rmtree(app)
 CLEAN
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 cp "$root/Resources/Watcher.icns" "$app/Contents/Resources/Watcher.icns"
+for lang in en zh-Hans; do cp -R "$root/Resources/$lang.lproj" "$app/Contents/Resources/"; done
+cp "$root/docs/UserGuide.en.html" "$app/Contents/Resources/UserGuide.en.html"
 [[ ! -f "$root/docs/UserGuide.html" ]] || cp "$root/docs/UserGuide.html" "$app/Contents/Resources/UserGuide.html"
 if [[ "$mode" == preview ]]; then cp "$root/Preview/Info.plist" "$app/Contents/Info.plist"
 else "$CCW_PYTHON" "$root/scripts/mach_service_metadata.py" --host "$root/Info.plist" --host-output "$app/Contents/Info.plist"; fi
@@ -50,7 +52,8 @@ done
 xcrun lipo -create "${bins[@]}" -output "$app/Contents/MacOS/$binary"
 if [[ "$mode" == host ]]; then
  ext="$app/Contents/Library/SystemExtensions/com.leizikang.claude-connection-watcher.filter.systemextension"
- mkdir -p "$ext/Contents/MacOS"
+ mkdir -p "$ext/Contents/MacOS" "$ext/Contents/Resources"
+ for lang in en zh-Hans; do cp -R "$root/Resources/$lang.lproj" "$ext/Contents/Resources/"; done
  xcrun lipo -create "${filterbins[@]}" -output "$ext/Contents/MacOS/ClaudeConnectionFilter"
  "$CCW_PYTHON" "$root/scripts/mach_service_metadata.py" --host "$root/Info.plist" --host-output "$out/HostMetadata.plist" --provider-template "$root/NetworkFilter/Info.plist" --provider-output "$ext/Contents/Info.plist"
  if [[ -n "${CCW_SIGN_IDENTITY:-}" ]]; then

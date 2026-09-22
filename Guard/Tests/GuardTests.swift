@@ -80,5 +80,22 @@ func runGuardTests() {
  check(!alerts.update(monitoring:true,safe:false),"repeated unsafe polling does not flood")
  check(!alerts.update(monitoring:true,safe:true),"safe recovery rearms")
  check(alerts.update(monitoring:true,safe:false),"next unsafe episode alerts")
+ let originalLanguage=L10n.language
+ check(AppLanguage.resolve(saved:nil,preferred:["zh-Hant"]) == .chinese,"Chinese system preference")
+ check(AppLanguage.resolve(saved:nil,preferred:["fr"]) == .english,"unsupported language falls back to English")
+ check(AppLanguage.resolve(saved:"en",preferred:["zh-Hans"]) == .english,"saved choice wins")
+ for item in GuardString.allCases {
+  check(!item.message.chinese.isEmpty && !item.message.english.isEmpty,"both variants exist")
+  check(!item.message.english.unicodeScalars.contains { (0x3400...0x9FFF).contains($0.value) },"English copy contains no untranslated Chinese")
+ }
+ L10n.language = .chinese
+ let preview=PreviewModel();preview.lock();let terminate=preview.prepareTermination()
+ L10n.language = .english;preview.languageDidChange()
+ check(preview.state == GuardString.sampleBlocked.message.english,"language switch retains blocked preview state")
+ check(preview.rows.allSatisfy { $0.name.contains("sample") },"sample process labels switch")
+ terminate();L10n.language = .chinese;preview.languageDidChange()
+ check(preview.rows.isEmpty,"language switch does not restore exited sample processes")
+ check(preview.state == GuardString.sampleBlocked.message.chinese,"switch back translates retained state")
+ L10n.language = originalLanguage
  print("GUARD_TEST_OK: \(count) offline checks; no real processes signalled or network changed")
 }

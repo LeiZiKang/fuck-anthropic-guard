@@ -7,3 +7,6 @@ Protection is opt-in and requires the documented dedicated Surge listener and ma
 This is a prerelease feature candidate, not an automatic update or main-branch merge. Homebrew remains unchanged.
 
 Includes deduplicated macOS safety notifications; delivery depends on user permission and Focus settings. Source publication only: no signed installer or live-filter acceptance is included.
+
+
+Bilingual update: Simplified Chinese and English UI, confirmations, status text and future notifications; instant in-app switching preserves monitoring state. Production remembers the choice; Preview is memory-only. Both offline HTML guides are bundled. System permission dialogs follow macOS language. README screenshots use the running offline Preview with sample data, not live-filter evidence.

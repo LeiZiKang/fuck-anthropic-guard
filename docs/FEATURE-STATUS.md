@@ -31,3 +31,10 @@ this workflow. Review the manual and SECURITY.md before enabling experimental fi
 ## Local verification, 2026-09-22
 
 51 offline checks passed, including immediate unsafe presentation and notification episode deduplication. Native Xcode host/filter build succeeded before the final UI corrections; final frozen build results are recorded in the independent release review. No production app was installed or activated.
+
+
+Bilingual update: Simplified Chinese and English UI, confirmations, status text and future notifications; instant in-app switching preserves monitoring state. Production remembers the choice; Preview is memory-only. Both offline HTML guides are bundled. System permission dialogs follow macOS language. README screenshots use the running offline Preview with sample data, not live-filter evidence.
+
+Bilingual GUI acceptance: running Preview checked in English and Simplified Chinese, language switch preserves the sample blocking state, cancellation preserves sample processes, and all four README images were captured directly from the Preview app. Production network/filter behavior remains untested.
+
+Final localization checks: 220 offline assertions passed, including the original policy checks plus bilingual catalog completeness, language resolution and state retention. Native Xcode host/filter build passed with both localized resource folders. The English setup accessory layout was corrected and visually rechecked in the running Preview. No system notification or production filter was activated.

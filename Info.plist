@@ -32,7 +32,7 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSSystemExtensionUsageDescription</key>
-	<string>Filter recognized Claude connections when region checks require protection. Requires your approval and does not guarantee zero IP exposure.</string>
+	<string>Restrict recognized Claude connections to a verified Surge endpoint with your approval. This does not guarantee zero IP exposure.</string>
 	<key>CFBundleIconFile</key>
 	<string>Watcher</string>
 </dict>

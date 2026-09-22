@@ -35,6 +35,8 @@
 			<array>
 				<string>13BFCF4A77A0B2A2CB4D7689</string>
 				<string>D6CE6CE05E445B0AB086060F</string>
+				<string>771770482261BF7B3F8B43D1</string>
+				<string>57209DAA3D868B3B33AE9847</string>
 			</array>
 			<key>runOnlyForDeploymentPostprocessing</key>
 			<string>0</string>
@@ -403,6 +405,8 @@
 			<array>
 				<string>8BF346FE6C0CB7677AAF1CB6</string>
 				<string>FBDC4F23F93125BBEEAE800C</string>
+				<string>32A8B885E97E29217D100BEA</string>
+				<string>56D304A5CC7328DACEDC8DB5</string>
 			</array>
 		</dict>
 		<key>460F3CA3D9F3D56E6830BA63</key>
@@ -580,6 +584,8 @@
 			<array>
 				<string>6587D8BCA2641750C8729129</string>
 				<string>4F469B8C3E2A303101C25329</string>
+				<string>101F83E89899977A3D6CB9D6</string>
+				<string>FE99DD26244A17328E234FB0</string>
 			</array>
 			<key>runOnlyForDeploymentPostprocessing</key>
 			<string>0</string>
@@ -752,6 +758,7 @@
 				<string>D4F47848D08864B49BE56A85</string>
 				<string>44EF9C912F66E2760C4ACB0E</string>
 				<string>067C5AF0BA0978D7B47A8396</string>
+				<string>037B39F692E7BFDF0F109291</string>
 			</array>
 			<key>dependencies</key>
 			<array/>
@@ -1535,6 +1542,105 @@
 			<string>PBXBuildFile</string>
 			<key>fileRef</key>
 			<string>FD8B5EF49BDB58C7A21A309F</string>
+		</dict>
+		<key>32A8B885E97E29217D100BEA</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.html</string>
+			<key>path</key>
+			<string>docs/UserGuide.en.html</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>BD9975AE2FD37781A812E525</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.strings</string>
+			<key>name</key>
+			<string>en</string>
+			<key>path</key>
+			<string>Resources/en.lproj/InfoPlist.strings</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>E81E1FA4F6AAF55DFC99CEB7</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.strings</string>
+			<key>name</key>
+			<string>zh-Hans</string>
+			<key>path</key>
+			<string>Resources/zh-Hans.lproj/InfoPlist.strings</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>56D304A5CC7328DACEDC8DB5</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXVariantGroup</string>
+			<key>children</key>
+			<array>
+				<string>BD9975AE2FD37781A812E525</string>
+				<string>E81E1FA4F6AAF55DFC99CEB7</string>
+			</array>
+			<key>name</key>
+			<string>InfoPlist.strings</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>771770482261BF7B3F8B43D1</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>fileRef</key>
+			<string>56D304A5CC7328DACEDC8DB5</string>
+		</dict>
+		<key>57209DAA3D868B3B33AE9847</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>fileRef</key>
+			<string>32A8B885E97E29217D100BEA</string>
+		</dict>
+		<key>037B39F692E7BFDF0F109291</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXResourcesBuildPhase</string>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>86366282910C1F3D546DBA56</string>
+			</array>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>86366282910C1F3D546DBA56</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>fileRef</key>
+			<string>56D304A5CC7328DACEDC8DB5</string>
+		</dict>
+		<key>101F83E89899977A3D6CB9D6</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>fileRef</key>
+			<string>56D304A5CC7328DACEDC8DB5</string>
+		</dict>
+		<key>FE99DD26244A17328E234FB0</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>fileRef</key>
+			<string>32A8B885E97E29217D100BEA</string>
 		</dict>
 	</dict>
 	<key>rootObject</key>
