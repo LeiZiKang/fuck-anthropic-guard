@@ -249,6 +249,7 @@ final class FilterController: NSObject, OSSystemExtensionRequestDelegate {
     }
 
     func send(report: RegionReport?) {
+        defer { onUpdate?() }
         routeGate = requirements.evaluateProbe(report: report, now: Date(), uptime: LeaseClock.now)
         auditor.refresh(requirements: requirements, challenge: policyChallenge, scope: policyScopeDigest)
         policyEvidence = auditor.evidence

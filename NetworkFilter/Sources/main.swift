@@ -334,7 +334,7 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
     override func handleOutboundData(from flow: NEFilterFlow, readBytesStartOffset offset: Int, readBytes: Data) -> NEFilterDataVerdict {
         withState {
             enforceClientTransportExpiry()
-
+            guard flows.entries[flow.identifier] != nil else { return .drop() }
             if policy.blocking(at: LeaseClock.now) { logDataDrop(flow, reason: "client-data-policy"); denied += 1; flows.closed(flow.identifier); return .drop() }
             return NEFilterDataVerdict(passBytes: 4096, peekBytes: 1)
         }
@@ -384,6 +384,7 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
 
     func listener(_ listener: NSXPCListener, shouldAcceptNewConnection connection: NSXPCConnection) -> Bool {
         guard connection.effectiveUserIdentifier == withState({ ownerUID }) else { return false }
+        guard let caller = KernelIdentity.capture(connection.processIdentifier), caller.effectiveUID == connection.effectiveUserIdentifier, KernelIdentity.verified(caller, requirement: FilterConstants.hostRequirement) else { return false }
         connection.setCodeSigningRequirement(FilterConstants.hostRequirement)
         let id = UUID()
         let accepted = withState { () -> Bool in

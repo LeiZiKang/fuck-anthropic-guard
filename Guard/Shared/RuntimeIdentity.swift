@@ -11,14 +11,17 @@ enum KernelIdentity {
         guard proc_pidpath(pid,&path,UInt32(path.count)) > 0 else { return nil }
         return ProcessIdentity(pid:pid,effectiveUID:info.pbi_uid,startSeconds:info.pbi_start_tvsec,startMicroseconds:info.pbi_start_tvusec,executablePath:String(cString:path))
     }
-    static func verifiedSurge(_ identity: ProcessIdentity) -> Bool {
+    static func verified(_ identity: ProcessIdentity, requirement text: String) -> Bool {
         guard capture(identity.pid) == identity else { return false }
         var code: SecCode?; var requirement: SecRequirement?
-        let text = "anchor apple generic and identifier \"com.nssurge.surge-mac\" and certificate leaf[subject.OU] = \"YCKFLA6N72\""
         return SecCodeCopyGuestWithAttributes(nil,[kSecGuestAttributePid as String:NSNumber(value:identity.pid)] as CFDictionary,[],&code) == errSecSuccess
             && SecRequirementCreateWithString(text as CFString,[],&requirement) == errSecSuccess
             && code.map { SecCodeCheckValidity($0,[],requirement) == errSecSuccess } == true && capture(identity.pid) == identity
     }
+    static func verifiedSurge(_ identity: ProcessIdentity) -> Bool {
+        verified(identity, requirement: "anchor apple generic and identifier \"com.nssurge.surge-mac\" and certificate leaf[subject.OU] = \"YCKFLA6N72\"")
+    }
+
 }
 func captureProcessIdentity(pid: Int32) -> ProcessIdentity? {
     guard geteuid() != 0, let identity = KernelIdentity.capture(pid), identity.effectiveUID == geteuid() else { return nil }

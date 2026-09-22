@@ -5,3 +5,5 @@ There is no proxy/SSH service, VPS private-key access, credential cleanup or aut
 Protection is opt-in and requires the documented dedicated Surge listener and macOS approval. Offline tests and builds do not establish boot-first-packet safety, every descendant's coverage, provider-crash behavior or zero IP leakage. Read UserGuide.html and SECURITY.md before enabling experimental filtering.
 
 This is a prerelease feature candidate, not an automatic update or main-branch merge. Homebrew remains unchanged.
+
+Includes deduplicated macOS safety notifications; delivery depends on user permission and Focus settings. Source publication only: no signed installer or live-filter acceptance is included.

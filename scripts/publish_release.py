@@ -6,7 +6,14 @@ def run(*args,**kw):return subprocess.run(args,cwd=R,check=True,**kw)
 def git(*args):return subprocess.check_output(['git',*args],cwd=R,text=True).strip()
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 p=argparse.ArgumentParser();p.add_argument('--prepare',action='store_true');p.add_argument('--audit-report');p.add_argument('--source-only',action='store_true');p.add_argument('--tag',default='v0.4.0-beta.1');a=p.parse_args()
-release=R/'release';manifest=release/'candidate.json'
+EXPECTED_ORIGIN='https://github.com/LeiZiKang/claude-connection-watcher.git'
+def publication_target():
+ branch=git('branch','--show-current')
+ if not branch.startswith('codex/feature-') or branch in ['main','master']:raise SystemExit('Only a codex/feature- branch may be published.')
+ if git('remote','get-url','origin')!=EXPECTED_ORIGIN or git('remote','get-url','--push','origin')!=EXPECTED_ORIGIN:raise SystemExit('Unexpected publication remote.')
+ return branch
+branch=publication_target()
+release=R/'release';manifest=release/'candidate.json' 
 if a.prepare:
  if git('status','--porcelain'):raise SystemExit('Commit source before preparing the exact candidate.')
  release.mkdir(exist_ok=True)
@@ -26,13 +33,16 @@ if a.prepare:
   if report.get('status')!='Accepted':raise SystemExit('Notarization not accepted; nothing published.')
   run('xcrun','stapler','staple',str(app));run('xcrun','stapler','validate',str(app));run('/usr/sbin/spctl','-a','--type','execute',str(app));pack();notarized=True
  run('/usr/bin/codesign','--verify','--deep','--strict',str(app))
- m={'source_commit':git('rev-parse','HEAD'),'source_tree':git('rev-parse','HEAD^{tree}'),'branch':git('branch','--show-current'),'zip':archive.name,'zip_sha256':sha(archive),'notarized':notarized,'tap_changed':False}
+ m={'source_commit':git('rev-parse','HEAD'),'source_tree':git('rev-parse','HEAD^{tree}'),'branch':branch,'origin':EXPECTED_ORIGIN,'zip':archive.name,'zip_sha256':sha(archive),'notarized':notarized,'tap_changed':False}
  manifest.write_text(json.dumps(m,indent=2)+'\n');print(json.dumps(m));raise SystemExit(0)
 if not a.audit_report:raise SystemExit('Use --prepare, then --audit-report from an independent reviewer.')
 m=json.loads(manifest.read_text());review=json.loads(pathlib.Path(a.audit_report).read_text());archive=release/m['zip']
 if git('status','--porcelain'):raise SystemExit('Worktree changed after preparation.')
-for key in ['source_commit','source_tree','zip_sha256']:
+for key in ['source_commit','source_tree','zip_sha256','branch','origin']:
  if review.get(key)!=m[key]:raise SystemExit('Audit does not match '+key)
+if m['branch']!=branch:raise SystemExit('Publication branch changed.')
+kind='source-only' if a.source_only else 'binary-prerelease'
+if review.get('publication_kind')!=kind:raise SystemExit('Audit publication scope mismatch.')
 if review.get('decision')!='pass' or not review.get('independent_reviewer') or review.get('tap_changed') is not False:raise SystemExit('Independent review and unchanged tap confirmation required.')
 if git('rev-parse','HEAD')!=m['source_commit'] or sha(archive)!=m['zip_sha256']:raise SystemExit('Frozen inputs changed.')
 if not a.source_only and not m['notarized']:raise SystemExit('Binary distribution requires notarization; use --source-only for reviewed source.')

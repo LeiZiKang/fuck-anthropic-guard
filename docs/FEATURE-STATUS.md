@@ -20,3 +20,14 @@ Production system approval/activation, every live client wrapper or descendant,
 physical reboot first packets, provider crash recovery, physical network loss,
 and all IPv6 transitions. Existing user proxies and clients are not changed during
 this workflow. Review the manual and SECURITY.md before enabling experimental filtering.
+
+
+## 后台提醒
+
+启用保护时请求 macOS 通知权限。自动监测期间进入不安全或执行未确认状态会发出一次系统提醒，持续失败不会每次轮询重复提醒；恢复后再次失效会重新提醒。手动保持阻断不触发故障提醒。点击通知可打开 App。
+
+未授权、专注模式和 macOS 通知设置可能阻止横幅出现，App 内仍显示状态。通知表示放行许可被撤销，不把过滤执行未知说成已经阻断。离线验证覆盖提醒去重/恢复逻辑；系统通知投递与真实过滤仍需实机验收。
+
+## Local verification, 2026-09-22
+
+51 offline checks passed, including immediate unsafe presentation and notification episode deduplication. Native Xcode host/filter build succeeded before the final UI corrections; final frozen build results are recorded in the independent release review. No production app was installed or activated.

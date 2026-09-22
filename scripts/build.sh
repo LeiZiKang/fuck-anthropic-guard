@@ -19,6 +19,16 @@ if [[ "$mode" == preview ]]; then
 else
  app="$out/Claude Connection Watcher.app"; binary=ClaudeConnectionWatcher; definition=(); sources=( "$root/Guard/Shared/RuntimeIdentity.swift" "$root/Sources/CommandRunner.swift" "$root/Sources/ProcessInventory.swift" "$root/Sources/LocalSurgeAuditor.swift" "$root/Sources/FilterController.swift" "$root/Sources/ProxyTransportConfiguration.swift" "$root/Guard/App/GuardProbe.swift" )
 fi
+# A controlled build bundle is recreated to avoid carrying old profiles or helpers.
+"$CCW_PYTHON" - "$root" "$app" <<'CLEAN'
+from pathlib import Path
+import shutil, sys
+root, app = map(Path, sys.argv[1:])
+assert app.resolve().is_relative_to(root.resolve()/'dist')
+assert app.name in ['Claude Connection Watcher.app', 'Claude Connection Watcher Preview.app']
+if app.is_symlink(): raise SystemExit('Refusing symlink bundle')
+if app.exists(): shutil.rmtree(app)
+CLEAN
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 cp "$root/Resources/Watcher.icns" "$app/Contents/Resources/Watcher.icns"
 [[ ! -f "$root/docs/UserGuide.html" ]] || cp "$root/docs/UserGuide.html" "$app/Contents/Resources/UserGuide.html"

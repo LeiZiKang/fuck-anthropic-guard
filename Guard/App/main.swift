@@ -2,6 +2,7 @@ import AppKit
 import Foundation
 #if !CCW_PREVIEW
 import SystemConfiguration
+import UserNotifications
 import Darwin
 #endif
 
@@ -19,7 +20,7 @@ protocol WatcherModel: AnyObject {
     func enable()
     func disable(_ completion: @escaping (Bool) -> Void)
     func lock()
-    func terminateListed()
+    func prepareTermination() -> () -> Void
     func stop()
 }
 final class PreviewModel: WatcherModel {
@@ -35,10 +36,43 @@ final class PreviewModel: WatcherModel {
     func enable() { state="示例：已验证Surge专用入口"; onChange?() }
     func disable(_ completion: @escaping (Bool) -> Void) { state="示例：保护未启用"; completion(true); onChange?() }
     func lock() { state="示例：验证失效，保持阻断"; onChange?() }
-    func terminateListed() { rows=[]; onChange?() }
+    func prepareTermination() -> () -> Void { let selected=Set(rows.map(\.pid)); return { self.rows.removeAll { selected.contains($0.pid) }; self.onChange?() } }
     func stop() {}
 }
 #if !CCW_PREVIEW
+final class SafetyNotifier: NSObject, UNUserNotificationCenterDelegate {
+    private let center = UNUserNotificationCenter.current()
+    private(set) var status = "系统通知：尚未授权"
+    private var authorized = false
+    var onChange: (() -> Void)?
+    override init() { super.init(); center.delegate = self }
+    func requestPermission() {
+        center.requestAuthorization(options: [.alert, .sound]) { [weak self] allowed, error in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                self.authorized = allowed && error == nil
+                self.status = self.authorized ? "系统通知：已授权（受专注模式和系统设置影响）" : "系统通知：不可用，请在系统设置中允许通知；请查看App状态"
+                self.onChange?()
+            }
+        }
+    }
+    func warn() {
+        guard authorized else { return }
+        let content = UNMutableNotificationContent()
+        content.title = "Claude连接保护需要注意"
+        content.body = "无法确认安全路径，Watcher已撤销放行许可。请打开App查看过滤器状态与原因；执行未确认时不能视为已阻断。"
+        content.sound = .default
+        center.add(UNNotificationRequest(identifier: "surge-guard-unsafe", content: content, trigger: nil)) { [weak self] error in
+            guard error != nil else { return }
+            DispatchQueue.main.async { self?.status = "系统通知发送失败，请查看App状态" }
+        }
+    }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) { completionHandler([.banner, .sound]) }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        DispatchQueue.main.async { NSApp.activate(ignoringOtherApps: true); NSApp.windows.first?.makeKeyAndOrderFront(nil) }
+        completionHandler()
+    }
+}
 final class LiveModel: WatcherModel {
     var onChange: (() -> Void)?
     private(set) var rows: [ClientRow] = []
@@ -47,6 +81,8 @@ final class LiveModel: WatcherModel {
     private(set) var detail=""
     let isPreview=false
     private let controller=FilterController()
+    private let notifier=SafetyNotifier()
+    private var alertGate=SafetyAlertGate()
     private let queue=DispatchQueue(label:"Watcher.background",qos:.utility)
     private var timer:Timer?
     private var records:[ProcessRecord]=[]
@@ -57,8 +93,9 @@ final class LiveModel: WatcherModel {
     private var monitoring=false
     var config:RouteRequirements { controller.requirements }
     init() {
+        notifier.onChange = { [weak self] in self?.alertGate = SafetyAlertGate(); self?.renderState() }
         controller.onUpdate = { [weak self] in self?.renderState() }
-        controller.onPolicyInvalidated = { [weak self] in self?.report=nil }
+        controller.onPolicyInvalidated = { [weak self] in self?.report=nil; self?.renderState() }
         controller.onPolicyUpdated = { [weak self] in guard let self, self.monitoring else { return }; self.controller.send(report:self.report) }
         controller.readConfigurationOnly()
         timer=Timer.scheduledTimer(withTimeInterval:2,repeats:true) { [weak self] _ in self?.tick() }
@@ -66,18 +103,22 @@ final class LiveModel: WatcherModel {
         refresh()
     }
     private func renderState() {
+        let safe = GuardPresentation.isSafe(monitoring:monitoring,routeMatched:controller.routeGate == .matched,probeFresh:report?.canProvideFilterLease(at:Date(),uptime:LeaseClock.now) == true,active:controller.active,blocking:controller.blocking)
         if controller.configured == false { state="系统保护未启用" }
         else if !controller.active { state="系统过滤执行未确认" }
         else if controller.blocking { state="已识别的Claude连接：阻断中" }
-        else { state="已验证Surge专用路径 · 允许已识别连接" }
+        else if safe { state="已验证Surge专用路径 · 允许已识别连接" }
+        else { state="放行条件失效 · 等待阻断执行确认" }
         detail="\(controller.message?.value ?? controller.policyAuditReason)\n放行判定 \(controller.routeAllowed) · 拒绝判定 \(controller.routeDenied) · 未知归属 \(controller.unknownOwnerFlows)\n未知归属和系统过滤器故障不在已验证覆盖保证内。"
+        detail += "\n" + notifier.status
+        if alertGate.update(monitoring:monitoring,safe:safe) { notifier.warn() }
         onChange?()
     }
     private func tick() {
         refresh()
         if !monitoring, controller.configured == true, config.localAuditConfigured,
            UserDefaults.standard.bool(forKey:"SurgeGuardProbeConsentV1") {
-            monitoring=true; controller.connect()
+            monitoring=true; notifier.requestPermission(); controller.connect()
         }
         guard monitoring else { return }
         controller.send(report:report)
@@ -135,23 +176,28 @@ final class LiveModel: WatcherModel {
     func enable() {
         guard config.localAuditConfigured else { state="请先配置并验证Surge专用入口";onChange?();return }
         UserDefaults.standard.set(true,forKey:"SurgeGuardProbeConsentV1")
-        generation += 1;report=nil;monitoring=true;controller.activate(protectedBundleIDs:[])
+        generation += 1;report=nil;monitoring=true;notifier.requestPermission();controller.activate(protectedBundleIDs:[])
     }
     func lock() { generation += 1;monitoring=false;report=nil;UserDefaults.standard.set(false,forKey:"SurgeGuardProbeConsentV1");controller.send(report:nil);renderState() }
     func disable(_ completion:@escaping(Bool)->Void) { lock();controller.disable(completion:completion) }
-    func terminateListed() {
+    func prepareTermination() -> () -> Void {
         let selected=records
-        queue.async {
+        return { [weak self] in
+        guard let self else { return }
+        self.queue.async {
             for row in selected where !ProcessInventory.isProtected(row.identity) {
                 guard captureProcessIdentity(pid:row.identity.pid)==row.identity else { continue }
                 _ = kill(row.identity.pid,SIGTERM)
             }
             DispatchQueue.main.async { self.refresh() }
         }
+        }
     }
     func stop() { timer?.invalidate();timer=nil;lock() }
 }
 #endif
+
+final class TopAlignedStack:NSStackView { override var isFlipped:Bool { true } }
 
 final class AppDelegate:NSObject,NSApplicationDelegate {
     var window:NSWindow!
@@ -169,11 +215,11 @@ final class AppDelegate:NSObject,NSApplicationDelegate {
         window.title=model.isPreview ? "Watcher · 离线预览" : "Claude Connection Watcher"
         window.isReleasedWhenClosed=false;window.minSize=NSSize(width:600,height:560)
         let scroll=NSScrollView();scroll.hasVerticalScroller=true;scroll.drawsBackground=false
-        let body=NSStackView();body.orientation = .vertical;body.alignment = .leading;body.spacing=16;body.edgeInsets=NSEdgeInsets(top:28,left:28,bottom:28,right:28)
+        let body=TopAlignedStack();body.distribution = .fill;body.setHuggingPriority(.required,for:.vertical);body.orientation = .vertical;body.alignment = .leading;body.spacing=16;body.edgeInsets=NSEdgeInsets(top:28,left:28,bottom:28,right:28)
         body.translatesAutoresizingMaskIntoConstraints=false;scroll.documentView=body;window.contentView=scroll
         NSLayoutConstraint.activate([body.leadingAnchor.constraint(equalTo:scroll.contentView.leadingAnchor),body.trailingAnchor.constraint(equalTo:scroll.contentView.trailingAnchor),body.topAnchor.constraint(equalTo:scroll.contentView.topAnchor)])
         func title(_ text:String)->NSTextField { let x=NSTextField(labelWithString:text);x.font = .systemFont(ofSize:21,weight:.semibold);return x }
-        func add(_ view:NSView) { body.addArrangedSubview(view);view.widthAnchor.constraint(equalTo:body.widthAnchor,constant:-56).isActive=true }
+        func add(_ view:NSView) { body.addView(view,in:.top);view.widthAnchor.constraint(equalTo:body.widthAnchor,constant:-56).isActive=true }
         add(title("Claude 进程与连接保护"))
         add(NSTextField(wrappingLabelWithString:"联网由Surge负责。Watcher不提供代理/VPN，不建立SSH，不读取VPS私钥。"))
         state.font = .systemFont(ofSize:17,weight:.semibold);add(state);detail.textColor = .secondaryLabelColor;add(detail)
@@ -200,7 +246,7 @@ final class AppDelegate:NSObject,NSApplicationDelegate {
     private func message(_ text:String) { let a=NSAlert();a.messageText=text;a.runModal() }
     @objc func show() { window.makeKeyAndOrderFront(nil);NSApp.activate(ignoringOtherApps:true) }
     @objc func refresh() { model.refresh() }
-    @objc func quitClients() { if confirm("退出所列Claude进程？","会重新核对每个PID的用户、启动时间和路径，再发送SIGTERM；不操作Surge，不自动强杀。请先保存工作。") { model.terminateListed() } }
+    @objc func quitClients() { let terminate=model.prepareTermination(); if confirm("退出所列Claude进程？","仅退出打开本确认框前列出的进程。会重新核对每个PID的用户、启动时间和路径，再发送SIGTERM；不操作Surge，不自动强杀。请先保存工作。") { terminate() } }
     @objc func enable() { if confirm("启用系统级连接保护？","需要macOS授权。验证不通过时已识别Claude连接将被阻断。验证会通过Surge向api.ipify.org发送不含账号的出口探针；不会修改Surge配置。") { model.enable() } }
     @objc func lock() { model.lock() }
     @objc func disable() { if confirm("停用系统保护？","停用后Watcher不再阻止Claude直连。") { model.disable { [weak self] ok in if !ok { self?.message("未确认停用，请检查系统设置。") } } } }
@@ -233,6 +279,7 @@ let app=NSApplication.shared
 #if CCW_PREVIEW
 let delegate=AppDelegate(model:PreviewModel())
 #else
+guard geteuid() != 0 else { fputs("Run Watcher as the logged-in user, not root.\n",stderr);exit(2) }
 let delegate=AppDelegate(model:LiveModel())
 #endif
 app.delegate=delegate
