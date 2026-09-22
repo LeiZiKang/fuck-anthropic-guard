@@ -93,7 +93,7 @@
 				<key>CODE_SIGNING_REQUIRED</key>
 				<string>NO</string>
 				<key>PRODUCT_NAME</key>
-				<string>Claude Connection Watcher Preview</string>
+				<string>fuck-anthropic guard Preview</string>
 				<key>CODE_SIGN_IDENTITY</key>
 				<string></string>
 				<key>SKIP_INSTALL</key>
@@ -418,7 +418,7 @@
 			<key>productType</key>
 			<string>com.apple.product-type.application</string>
 			<key>productName</key>
-			<string>Claude Connection Watcher Preview</string>
+			<string>fuck-anthropic guard Preview</string>
 			<key>isa</key>
 			<string>PBXNativeTarget</string>
 			<key>buildPhases</key>
@@ -478,7 +478,7 @@
 				<key>CODE_SIGNING_REQUIRED</key>
 				<string>NO</string>
 				<key>PRODUCT_NAME</key>
-				<string>Claude Connection Watcher</string>
+				<string>fuck-anthropic guard</string>
 				<key>CODE_SIGN_IDENTITY</key>
 				<string></string>
 				<key>SKIP_INSTALL</key>
@@ -593,7 +593,7 @@
 		<key>245C2EF2DE896B9CC11DC865</key>
 		<dict>
 			<key>path</key>
-			<string>Claude Connection Watcher.app</string>
+			<string>fuck-anthropic guard.app</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>includeInIndex</key>
@@ -715,7 +715,7 @@
 				<key>CODE_SIGNING_REQUIRED</key>
 				<string>NO</string>
 				<key>PRODUCT_NAME</key>
-				<string>Claude Connection Watcher Preview</string>
+				<string>fuck-anthropic guard Preview</string>
 				<key>CODE_SIGN_IDENTITY</key>
 				<string></string>
 				<key>SKIP_INSTALL</key>
@@ -781,7 +781,7 @@
 		<key>E7FF91CAFB54532265F64EE3</key>
 		<dict>
 			<key>path</key>
-			<string>Claude Connection Watcher Preview.app</string>
+			<string>fuck-anthropic guard Preview.app</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>includeInIndex</key>
@@ -883,7 +883,7 @@
 				<key>CODE_SIGNING_REQUIRED</key>
 				<string>NO</string>
 				<key>PRODUCT_NAME</key>
-				<string>Claude Connection Watcher</string>
+				<string>fuck-anthropic guard</string>
 				<key>CODE_SIGN_IDENTITY</key>
 				<string></string>
 				<key>SKIP_INSTALL</key>
@@ -909,7 +909,7 @@
 			<key>productType</key>
 			<string>com.apple.product-type.application</string>
 			<key>productName</key>
-			<string>Claude Connection Watcher</string>
+			<string>fuck-anthropic guard</string>
 			<key>isa</key>
 			<string>PBXNativeTarget</string>
 			<key>buildPhases</key>

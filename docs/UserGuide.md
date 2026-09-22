@@ -1,4 +1,4 @@
-# Claude Connection Watcher 使用说明书
+# fuck-anthropic guard 使用说明书
 
 适用：0.4.0 / build 12.0，Surge 配套版。状态：开源预发布候选，尚未完成系统级故障场景的实机验收。
 
@@ -6,20 +6,20 @@
 
 只做两件事：显示已识别的 Claude 进程、提供退出操作并查看物理网络服务的 IPv6 设置；通过 macOS 系统过滤器限制已识别 Claude 客户端的连接。
 
-**联网由 Surge 负责。Watcher 不提供代理、VPN 或 SSH 通道，不读取 VPS 私钥，也不清理账号凭据。**
+**联网由 Surge 负责。Guard 不提供代理、VPN 或 SSH 通道，不读取 VPS 私钥，也不清理账号凭据。**
 
 ```text
 Claude → Surge 专用本机入口 → 单个 Hysteria2 节点 → 你的 VPS
            ↑
-Watcher 验证入口、有效规则与出口，并允许或阻断已识别的连接
+Guard 验证入口、有效规则与出口，并允许或阻断已识别的连接
 ```
 
 ## 2. 预览与正式程序有什么区别
 
 | 程序 | 用途 |
 |---|---|
-| Watcher Preview | 离线模拟界面。不会读取真实进程、发送探针、退出应用或启用过滤器 |
-| Claude Connection Watcher | 正式代码。进程/IPv6查看可单独使用；网络保护需配置、签名与系统批准 |
+| Guard Preview | 离线模拟界面。不会读取真实进程、发送探针、退出应用或启用过滤器 |
+| fuck-anthropic guard | 正式代码。进程/IPv6查看可单独使用；网络保护需配置、签名与系统批准 |
 | Xcode 的生产 scheme | 只构建，不自动安装或启动过滤器 |
 
 macOS 14 或更高版本。Apple Silicon 与 Intel 可从源码构建。正式系统过滤器需要有效且匹配的 Developer ID / Network Extension 配置；仅编译成功或 ad-hoc 签名不代表系统允许加载。
@@ -38,7 +38,7 @@ IPv6 按 Wi-Fi / 以太网服务显示：关闭、自动、手动或未知。这
 
 普通 Surge 6152 入口可能同时承载 Xcode 直连、国内直连和代理流量。仅证明 Claude 连接了 6152，不能证明其所有目标都经过 VPS。
 
-因此这个候选的严格模式使用 **Surge 自己监听的独立 HTTP 入口**，例如 127.0.0.1:6154。Watcher 不监听这个端口。Surge 用最优先的 IN-PORT 规则把这个入口固定到一个 Hysteria2 节点；其他入口仍保留原有分流。
+因此这个候选的严格模式使用 **Surge 自己监听的独立 HTTP 入口**，例如 127.0.0.1:6154。Guard 不监听这个端口。Surge 用最优先的 IN-PORT 规则把这个入口固定到一个 Hysteria2 节点；其他入口仍保留原有分流。
 
 **App 不会替你修改 Surge。** 下列只是合并示例：保留原配置、原监听项与其他规则，不要整份覆盖，不要重复添加同名策略组。
 
@@ -60,7 +60,7 @@ Hysteria2 节点由你在 Surge 内配置。示例不包含服务器凭据。专
 ## 5. 配置并启用保护
 
 1. 在没有进行重要 Claude 工作时准备以上 Surge 配置；先保留配置备份。
-2. 在 Watcher 点“配置Surge检查…”，填写专用 HTTP 端口、预期 VPS 出口 IP、策略组名称。
+2. 在 Guard 点“配置Surge检查…”，填写专用 HTTP 端口、预期 VPS 出口 IP、策略组名称。
 3. “验证并保存”只读查询 Surge 的签名 CLI、有效配置与专用规则，保存公开检查条件及配置摘要，不保存节点密码。
 4. 点“启用保护…”，阅读提示并完成 macOS 对网络过滤器的批准。
 5. 验证会通过 Surge 访问 api.ipify.org，不发送 Claude 账号、Cookie 或 API key。只有出口匹配、规则稳定、代理归属和过滤执行得到确认，才显示放行。

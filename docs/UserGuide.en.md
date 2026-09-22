@@ -1,25 +1,25 @@
-# Claude Connection Watcher — User Guide
+# fuck-anthropic guard — User Guide
 
 Applies to 0.4.0 / build 12.0, the experimental Surge companion. Source is available for review; production filter activation and live failure scenarios have not been accepted. This is not the older SSH-relay version.
 
-## 1. What Watcher does
+## 1. What Guard does
 
-Watcher lists reliably recognized Claude processes, offers confirmed termination, and displays read-only IPv6 settings. Its optional macOS system filter restricts recognized clients to a verified Surge endpoint.
+Guard lists reliably recognized Claude processes, offers confirmed termination, and displays read-only IPv6 settings. Its optional macOS system filter restricts recognized clients to a verified Surge endpoint.
 
-**Surge forwards the traffic. Watcher is not a proxy, VPN, or SSH tunnel and does not read VPS private keys.**
+**Surge forwards the traffic. Guard is not a proxy, VPN, or SSH tunnel and does not read VPS private keys.**
 
 ```text
 Claude → dedicated local HTTP endpoint owned by Surge → Hysteria2 → VPS
                 ↑
-Watcher checks the endpoint, rules, and exit, then permits or blocks recognized connections
+Guard checks the endpoint, rules, and exit, then permits or blocks recognized connections
 ```
 
 ## 2. Preview and production
 
 | Build | Purpose |
 |---|---|
-| Watcher Preview | Offline sample data. No real process termination, probes, or system-filter activation. |
-| Claude Connection Watcher | Production code. Process and IPv6 viewing can be used separately; protection needs configuration, signing, and macOS approval. |
+| Guard Preview | Offline sample data. No real process termination, probes, or system-filter activation. |
+| fuck-anthropic guard | Production code. Process and IPv6 viewing can be used separately; protection needs configuration, signing, and macOS approval. |
 | Production Xcode schemes | Build only; they do not automatically install or activate a filter. |
 
 Requires macOS 14 or later. Apple Silicon and Intel builds are supported. A production filter needs valid, matching Developer ID signing and Network Extension provisioning. A successful build or ad-hoc signature is not permission to load a system extension.
@@ -36,13 +36,13 @@ The process list covers official Desktop, native CLI, and descendants whose iden
 
 Choose **Quit listed Claude processes…** and confirm. The target identities are frozen before the dialog opens. Immediately before SIGTERM, the app rechecks each PID, user, start time, and executable path. Newly appearing processes are not added to the confirmed set. Save your work first; there is no automatic force quit. Processes that do not exit may remain listed.
 
-IPv6 is shown for physical Wi-Fi and Ethernet services. Settings do not establish internet reachability. Turning IPv6 off on Wi-Fi does not mean loopback, AWDL, or VPN interfaces have no IPv6. Watcher does not modify these settings.
+IPv6 is shown for physical Wi-Fi and Ethernet services. Settings do not establish internet reachability. Turning IPv6 off on Wi-Fi does not mean loopback, AWDL, or VPN interfaces have no IPv6. Guard does not modify these settings.
 
 ## 4. Why a dedicated Surge endpoint is required
 
 A shared Surge endpoint may legitimately route Xcode or other traffic DIRECT. Merely reaching that endpoint cannot establish VPS routing.
 
-Strict protection requires a separate HTTP listener owned by Surge, such as 127.0.0.1:6154. Watcher does not listen on this port. A first IN-PORT rule must pin that listener to one Hysteria2 node.
+Strict protection requires a separate HTTP listener owned by Surge, such as 127.0.0.1:6154. Guard does not listen on this port. A first IN-PORT rule must pin that listener to one Hysteria2 node.
 
 **The app does not edit Surge.** Merge the following example with your own configuration, retaining existing listeners and rules. Do not overwrite the whole profile or duplicate existing group names.
 
@@ -69,7 +69,7 @@ Configure your Hysteria2 node within Surge. The dedicated policy must have one n
 4. Choose **Enable protection…**, read the notice, and complete macOS network-filter approval.
 5. Consented checks reach api.ipify.org through Surge without Claude credentials, cookies, or API keys. A recent exit match, stable policy, verified listener ownership, and confirmed filter execution are needed before the UI reports permission to connect.
 
-Surge hides some node fields in CLI output. Watcher does not bypass redaction or independently verify every hidden field. Surge manages the node's TLS configuration.
+Surge hides some node fields in CLI output. Guard does not bypass redaction or independently verify every hidden field. Surge manages the node's TLS configuration.
 
 ## 6. Launch Claude through the correct endpoint
 

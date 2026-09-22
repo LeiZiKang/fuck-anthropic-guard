@@ -1,8 +1,8 @@
-# PRD — Claude Connection Watcher 0.4.0
+# PRD — fuck-anthropic guard 0.4.0
 
 ## 产品目标
 
-给使用 Surge 的 macOS 用户提供两个清晰能力：识别并管理 Claude 进程、查看 IPv6 设置；在可验证范围内阻止 Claude 绕过指定 Surge 路径。Surge 始终负责数据转发，Watcher 不做代理或VPN。
+给使用 Surge 的 macOS 用户提供两个清晰能力：识别并管理 Claude 进程、查看 IPv6 设置；在可验证范围内阻止 Claude 绕过指定 Surge 路径。Surge 始终负责数据转发，Guard 不做代理或VPN。
 
 ## 用户故事
 

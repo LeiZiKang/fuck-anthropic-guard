@@ -3,7 +3,7 @@
   <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
     <BuildActionEntries>
       <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="NO" buildForArchiving="YES" buildForAnalyzing="YES">
-        <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="EB1D256CD02EB80CBDA1D98F" BuildableName="Claude Connection Watcher.app" BlueprintName="Watcher" ReferencedContainer="container:ClaudeConnectionWatcher.xcodeproj" />
+        <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="EB1D256CD02EB80CBDA1D98F" BuildableName="fuck-anthropic guard.app" BlueprintName="Watcher" ReferencedContainer="container:ClaudeConnectionWatcher.xcodeproj" />
       </BuildActionEntry>
     </BuildActionEntries>
   </BuildAction>

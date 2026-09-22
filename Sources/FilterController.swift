@@ -142,7 +142,7 @@ final class FilterController: NSObject, OSSystemExtensionRequestDelegate {
                                                      "expectedProfileDigest": self.requirements.expectedProfileDigest, "expectedExits": self.requirements.expectedExitAddresses]
 
                 manager.providerConfiguration = configuration
-                manager.localizedDescription = "Claude Connection Protection"
+                manager.localizedDescription = "fuck-anthropic guard"
                 manager.isEnabled = true
                 manager.saveToPreferences { error in
                     DispatchQueue.main.async {

@@ -3,14 +3,14 @@
   <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
     <BuildActionEntries>
       <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="NO" buildForArchiving="YES" buildForAnalyzing="YES">
-        <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="460F3CA3D9F3D56E6830BA63" BuildableName="Claude Connection Watcher Preview.app" BlueprintName="Preview" ReferencedContainer="container:ClaudeConnectionWatcher.xcodeproj" />
+        <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="460F3CA3D9F3D56E6830BA63" BuildableName="fuck-anthropic guard Preview.app" BlueprintName="Preview" ReferencedContainer="container:ClaudeConnectionWatcher.xcodeproj" />
       </BuildActionEntry>
     </BuildActionEntries>
   </BuildAction>
   <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES" />
   <LaunchAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" launchStyle="0" useCustomWorkingDirectory="NO" ignoresPersistentStateOnLaunch="YES" debugDocumentVersioning="YES">
     <BuildableProductRunnable runnableDebuggingMode="0">
-      <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="460F3CA3D9F3D56E6830BA63" BuildableName="Claude Connection Watcher Preview.app" BlueprintName="Preview" ReferencedContainer="container:ClaudeConnectionWatcher.xcodeproj" />
+      <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="460F3CA3D9F3D56E6830BA63" BuildableName="fuck-anthropic guard Preview.app" BlueprintName="Preview" ReferencedContainer="container:ClaudeConnectionWatcher.xcodeproj" />
     </BuildableProductRunnable>
   </LaunchAction>
   <AnalyzeAction buildConfiguration="Debug" />

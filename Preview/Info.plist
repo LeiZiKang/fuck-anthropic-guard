@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>CCWPreview</string>
 	<key>CFBundleName</key>
-	<string>Claude Connection Watcher Preview</string>
+	<string>fuck-anthropic guard Preview</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -27,5 +27,7 @@
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>fuck-anthropic guard Preview</string>
 </dict>
 </plist>

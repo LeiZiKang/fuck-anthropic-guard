@@ -10,3 +10,5 @@ Includes deduplicated macOS safety notifications; delivery depends on user permi
 
 
 Bilingual update: Simplified Chinese and English UI, confirmations, status text and future notifications; instant in-app switching preserves monitoring state. Production remembers the choice; Preview is memory-only. Both offline HTML guides are bundled. System permission dialogs follow macOS language. README screenshots use the running offline Preview with sample data, not live-filter evidence.
+
+Renamed to fuck-anthropic guard with a new protest-themed app icon. Repository: LeiZiKang/fuck-anthropic-guard. Existing bundle/signing identifiers are intentionally retained; this source update does not install or activate a replacement.

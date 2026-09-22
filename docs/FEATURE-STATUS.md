@@ -6,7 +6,7 @@
 - Read-only physical-service IPv6 display.
 - Explicit Surge setup, bounded policy/exit checks, provider boot/session/challenge validation and ordered updates.
 - System-filter endpoint constraints, expiry and tracked-flow revocation; no SSH/relay target or listener.
-- Native Xcode Preview / Watcher / Filter targets, Dock window and offline HTML manual.
+- Native Xcode Preview / Guard / Filter targets, Dock window and offline HTML manual.
 
 ## Validation
 

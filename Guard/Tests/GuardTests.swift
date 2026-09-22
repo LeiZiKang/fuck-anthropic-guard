@@ -97,5 +97,11 @@ func runGuardTests() {
  check(preview.rows.isEmpty,"language switch does not restore exited sample processes")
  check(preview.state == GuardString.sampleBlocked.message.chinese,"switch back translates retained state")
  L10n.language = originalLanguage
+ #if !CCW_PREVIEW
+ for app in ["fuck-anthropic guard.app", "fuck-anthropic guard Preview.app"] {
+  let guardIdentity=ProcessIdentity(pid:999999,effectiveUID:501,startSeconds:1,startMicroseconds:0,executablePath:"/Applications/"+app+"/Contents/MacOS/example")
+  check(ProcessInventory.isProtected(guardIdentity),"renamed guard instances never become quit targets")
+ }
+ #endif
  print("GUARD_TEST_OK: \(count) offline checks; no real processes signalled or network changed")
 }

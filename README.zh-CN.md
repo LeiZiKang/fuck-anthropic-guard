@@ -1,10 +1,12 @@
-# Claude Connection Watcher
+# fuck-anthropic guard
+
+<img src="Resources/AppIcon.png" alt="fuck-anthropic guard icon" width="128">
 
 <table><tr><td><a href="README.md">English</a></td><td><strong>简体中文</strong></td></tr></table>
 
 **为本地运行的 Claude 增加一道网络防护。**
 
-Watcher 配合 Surge，旨在降低代理中断或网络变化时 Claude 意外直连、向 Anthropic 暴露本机公网 IP 的风险。正确配置并启用系统过滤后，当检查失败、放行许可过期或保护模块收到网络变化事件时，设计上会撤销许可，阻断可识别的 Claude 相关进程连接，并在自动监测发现异常时提醒您。
+Guard 配合 Surge，旨在降低代理中断或网络变化时 Claude 意外直连、向 Anthropic 暴露本机公网 IP 的风险。正确配置并启用系统过滤后，当检查失败、放行许可过期或保护模块收到网络变化事件时，设计上会撤销许可，阻断可识别的 Claude 相关进程连接，并在自动监测发现异常时提醒您。
 
 准备关闭 VPN／Surge 时，可先使用“一键退出”功能，经确认后退出所列 Claude 进程；**确认进程已经退出，再关闭代理**。这能帮助减少误操作导致的直连风险，但不能保证 Claude 账号不会受限。
 
@@ -15,7 +17,7 @@ Watcher 配合 Surge，旨在降低代理中断或网络变化时 Claude 意外�
 1. 显示可识别的 Claude Desktop、原生 CLI 及相关进程，确认后退出所列进程，并只读查看 IPv6 服务设置。
 2. 通过 macOS 网络扩展，将可识别客户端的连接限制到已验证、**由 Surge 监听**的代理入口。
 
-**Watcher 不提供代理、VPN、SSH 隧道或凭据清理。** 不读取 VPS 私钥，也不修改 Surge、DNS、路由或 IPv6 设置。
+**Guard 不提供代理、VPN、SSH 隧道或凭据清理。** 不读取 VPS 私钥，也不修改 Surge、DNS、路由或 IPv6 设置。
 
 > **0.4.0 预发布 / build 12.0 — 实验版本。** 离线测试和编译通过不等于真实系统验收。过滤器崩溃、开机首包、无法识别的后代和所有网络切换场景，均未证明能够始终阻断。不承诺账号安全或零 IP 泄漏。
 
@@ -61,7 +63,7 @@ CCW_BUILD_MODE=host bash scripts/build.sh  # 构建主程序与过滤器，不�
 ```text
 Claude → Surge 自己监听的专用本机端口 → 单个 Hysteria2 策略 → VPS
                   ↑
-         Watcher 验证并过滤，不转发流量
+         Guard 验证并过滤，不转发流量
 ```
 
 Surge 的共享入口可能为其他应用合法选择 DIRECT。因此严格保护模式要求独立的 **Surge 监听端口**（示例：6154），并将固定到单个 Hysteria2 节点的 `IN-PORT` 规则放在首位。原有 Xcode 及其他分流规则可继续用于共享入口。配置由用户明确、手动完成，App 不会修改配置文件。

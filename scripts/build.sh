@@ -15,9 +15,9 @@ sdk="${CCW_SDK_PATH:-/Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk}"
 mkdir -p "$out/cache"
 common=( "$root/Sources/Localization.swift" "$root/Sources/FilterProtocol.swift" "$root/Sources/RouteRequirements.swift" "$root/Sources/PolicyEvidence.swift" "$root/Sources/ProcessAncestry.swift" "$root/Guard/Shared/ProcessIdentity.swift" "$root/Guard/Shared/ProbeModel.swift" "$root/Guard/Shared/GuardianTimer.swift" )
 if [[ "$mode" == preview ]]; then
- app="$out/Claude Connection Watcher Preview.app"; binary=CCWPreview; definition=(-D CCW_PREVIEW); sources=()
+ app="$out/fuck-anthropic guard Preview.app"; binary=CCWPreview; definition=(-D CCW_PREVIEW); sources=()
 else
- app="$out/Claude Connection Watcher.app"; binary=ClaudeConnectionWatcher; definition=(); sources=( "$root/Guard/Shared/RuntimeIdentity.swift" "$root/Sources/CommandRunner.swift" "$root/Sources/ProcessInventory.swift" "$root/Sources/LocalSurgeAuditor.swift" "$root/Sources/FilterController.swift" "$root/Sources/ProxyTransportConfiguration.swift" "$root/Guard/App/GuardProbe.swift" )
+ app="$out/fuck-anthropic guard.app"; binary=ClaudeConnectionWatcher; definition=(); sources=( "$root/Guard/Shared/RuntimeIdentity.swift" "$root/Sources/CommandRunner.swift" "$root/Sources/ProcessInventory.swift" "$root/Sources/LocalSurgeAuditor.swift" "$root/Sources/FilterController.swift" "$root/Sources/ProxyTransportConfiguration.swift" "$root/Guard/App/GuardProbe.swift" )
 fi
 # A controlled build bundle is recreated to avoid carrying old profiles or helpers.
 "$CCW_PYTHON" - "$root" "$app" <<'CLEAN'
@@ -25,7 +25,7 @@ from pathlib import Path
 import shutil, sys
 root, app = map(Path, sys.argv[1:])
 assert app.resolve().is_relative_to(root.resolve()/'dist')
-assert app.name in ['Claude Connection Watcher.app', 'Claude Connection Watcher Preview.app']
+assert app.name in ['fuck-anthropic guard.app', 'fuck-anthropic guard Preview.app']
 if app.is_symlink(): raise SystemExit('Refusing symlink bundle')
 if app.exists(): shutil.rmtree(app)
 CLEAN

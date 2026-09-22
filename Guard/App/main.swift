@@ -225,13 +225,14 @@ final class AppDelegate:NSObject,NSApplicationDelegate {
     init(model:WatcherModel) { self.model=model;super.init() }
     func applicationDidFinishLaunching(_ notification:Notification) {
         NSApp.setActivationPolicy(.regular)
+        if let url=Bundle.main.url(forResource:"Watcher",withExtension:"icns"),let icon=NSImage(contentsOf:url) { NSApp.applicationIconImage=icon }
         window=NSWindow(contentRect:NSRect(x:0,y:0,width:760,height:720),styleMask:[.titled,.closable,.miniaturizable,.resizable],backing:.buffered,defer:false)
-        window.title=model.isPreview ? GuardString.previewTitle.text : "Claude Connection Watcher"
+        window.title=model.isPreview ? GuardString.previewTitle.text : "fuck-anthropic guard"
         window.isReleasedWhenClosed=false;window.minSize=NSSize(width:660,height:600)
         buildInterface();window.center();if !renderOnly { show() }
     }
     private func buildInterface() {
-        window.title=model.isPreview ? GuardString.previewTitle.text : "Claude Connection Watcher"
+        window.title=model.isPreview ? GuardString.previewTitle.text : "fuck-anthropic guard"
         if let statusItem { NSStatusBar.system.removeStatusItem(statusItem) }
         let scroll=NSScrollView();scroll.hasVerticalScroller=true;scroll.drawsBackground=false
         let body=TopAlignedStack();body.distribution = .fill;body.setHuggingPriority(.required,for:.vertical);body.orientation = .vertical;body.alignment = .leading;body.spacing=16;body.edgeInsets=NSEdgeInsets(top:28,left:28,bottom:28,right:28)

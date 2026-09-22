@@ -1,10 +1,12 @@
-# Claude Connection Watcher
+# fuck-anthropic guard
+
+<img src="Resources/AppIcon.png" alt="fuck-anthropic guard icon" width="128">
 
 <table><tr><td><strong>English</strong></td><td><a href="README.zh-CN.md">简体中文</a></td></tr></table>
 
 **An extra layer of network protection for Claude on your Mac.**
 
-Watcher works alongside Surge to reduce the risk of Claude connecting directly and exposing your public IP address to Anthropic when a proxy disconnects or the network changes. With the system filter correctly configured and enabled, the design withdraws permission when checks fail, an allow lease expires, or the protection component receives a network-change event. Recognized Claude processes are then subject to blocking, with alerts when automatic monitoring detects a problem.
+Guard works alongside Surge to reduce the risk of Claude connecting directly and exposing your public IP address to Anthropic when a proxy disconnects or the network changes. With the system filter correctly configured and enabled, the design withdraws permission when checks fail, an allow lease expires, or the protection component receives a network-change event. Recognized Claude processes are then subject to blocking, with alerts when automatic monitoring detects a problem.
 
 Before turning off your VPN or Surge, use the confirmed **one-click quit** action to exit the listed Claude processes. **Verify they have exited before disabling the proxy.** This helps reduce accidental direct connections; it does not guarantee that a Claude account will avoid restrictions.
 
@@ -15,7 +17,7 @@ A local macOS companion for **Surge**, with two responsibilities:
 1. List recognized Claude Desktop / native CLI processes, terminate selected recognized processes after confirmation, and show read-only IPv6 service settings.
 2. Restrict recognized clients to a verified **Surge-owned** proxy endpoint using a macOS Network Extension.
 
-**Watcher is not a proxy, VPN, SSH tunnel, or credential cleaner.** It does not read VPS private keys or modify Surge, DNS, routes, or IPv6 settings.
+**Guard is not a proxy, VPN, SSH tunnel, or credential cleaner.** It does not read VPS private keys or modify Surge, DNS, routes, or IPv6 settings.
 
 > **0.4.0 pre-release / build 12.0 — experimental.** Offline tests and compilation are not live system-wide acceptance. Provider crashes, boot first packets, unidentified descendants and all network transitions are not guaranteed fail-closed. No account-safety or zero-IP-leak promise.
 
@@ -61,7 +63,7 @@ Default output: `dist/guard/`. For a Universal 2 build, set `CCW_ARCHITECTURES='
 ```text
 Claude → dedicated local port owned by Surge → one Hysteria2 policy → your VPS
               ↑
-        Watcher verifies and filters; it does not forward traffic
+        Guard verifies and filters; it does not forward traffic
 ```
 
 Shared Surge ports can legitimately select DIRECT for other applications. Strict guard mode therefore requires a separate **Surge listener** (example: 6154) and a first `IN-PORT` rule pinned to one Hysteria2 node. Existing Xcode/other routing rules can remain on the shared listener. Setup is explicit and manual; the app does not change your profile.

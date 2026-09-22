@@ -5,7 +5,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.leizikang.claude-connection-watcher.filter</string>
 	<key>CFBundleName</key>
-	<string>Claude Connection Filter</string>
+	<string>fuck-anthropic guard Filter</string>
 	<key>CFBundleExecutable</key>
 	<string>ClaudeConnectionFilter</string>
 	<key>CFBundlePackageType</key>
@@ -35,5 +35,7 @@
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>fuck-anthropic guard Filter</string>
 </dict>
 </plist>
