@@ -2,6 +2,14 @@
 
 <table><tr><td><strong>English</strong></td><td><a href="README.zh-CN.md">简体中文</a></td></tr></table>
 
+**An extra layer of network protection for Claude on your Mac.**
+
+Watcher works alongside Surge to reduce the risk of Claude connecting directly and exposing your public IP address to Anthropic when a proxy disconnects or the network changes. With the system filter correctly configured and enabled, the design withdraws permission when checks fail, an allow lease expires, or the protection component receives a network-change event. Recognized Claude processes are then subject to blocking, with alerts when automatic monitoring detects a problem.
+
+Before turning off your VPN or Surge, use the confirmed **one-click quit** action to exit the listed Claude processes. **Verify they have exited before disabling the proxy.** This helps reduce accidental direct connections; it does not guarantee that a Claude account will avoid restrictions.
+
+This version requires a **dedicated Surge endpoint**; it is not a general-purpose guard for every VPN. These behaviors are implemented in code, but live proxy-loss, network-loss, and reboot acceptance remains pending. Instant blocking, complete process coverage, and zero IP leakage are not guaranteed.
+
 A local macOS companion for **Surge**, with two responsibilities:
 
 1. List recognized Claude Desktop / native CLI processes, terminate selected recognized processes after confirmation, and show read-only IPv6 service settings.
