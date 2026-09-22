@@ -8,7 +8,7 @@
   <p><code>macOS 14+</code> &nbsp; <code>Apple Silicon + Intel</code> &nbsp; <code>MIT</code></p>
 </div>
 
-> **实验版本 · 仅发布源码。** 本候选暂无正式签名安装包，真实故障场景仍待验收；不保证零 IP 泄漏或账号安全。
+> **已公证测试版 · 保护须主动启用。** 真实故障场景仍待验收；签名与公证不保证零 IP 泄漏或账号安全。
 
 <p align="center">
   <a href="docs/images/preview-zh.png"><img src="docs/images/preview-zh.png" width="640" alt="中文主界面：可识别进程、IPv6 状态与 Surge 保护操作"></a>
@@ -35,6 +35,16 @@
 <p align="center"><img src="docs/images/blocked-preview-zh.png" width="640" alt="中文 Preview 中的模拟阻断状态"></p>
 
 </details>
+
+## 安装测试版
+
+```bash
+brew install --cask leizikang/tap/fuck-anthropic-guard
+```
+
+也可下载[正式签名并通过公证的测试版 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.0-beta.1)。安装不会自动启用或验证过滤器；保护需要单独配置和授权，真实故障场景仍待验收。
+
+**从旧 Claude Connection Watcher 迁移：**先停用保护、确认已停用，并退出旧 App。新旧版共享 bundle 标识；旧 cask 需单独卸载，手动安装的旧版也不能与新版同时运行。卸载或升级本测试版前，同样须先停用并退出。
 
 ## 先体验离线 Preview
 

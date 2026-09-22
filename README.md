@@ -8,7 +8,7 @@
   <p><code>macOS 14+</code> &nbsp; <code>Apple Silicon + Intel</code> &nbsp; <code>MIT</code></p>
 </div>
 
-> **Experimental · source release only.** There is no signed installer for this candidate. Live failure testing is still pending; protection is not a zero-IP-leak or account-safety guarantee.
+> **Notarized beta · protection is opt-in.** Live failure testing is still pending; signing and notarization are not a zero-IP-leak or account-safety guarantee.
 
 <p align="center">
   <a href="docs/images/preview-en.png"><img src="docs/images/preview-en.png" width="640" alt="English app interface: recognized processes, IPv6 status and Surge protection controls"></a>
@@ -35,6 +35,16 @@ The blocked state below is a simulation. Switching languages preserves that stat
 <p align="center"><img src="docs/images/blocked-preview-en.png" width="640" alt="English Preview displaying a sample blocked state"></p>
 
 </details>
+
+## Install the beta
+
+```bash
+brew install --cask leizikang/tap/fuck-anthropic-guard
+```
+
+Or download the [signed, notarized beta ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.0-beta.1). Installing does not activate or validate the filter. Configure and approve protection explicitly; live failure acceptance remains pending.
+
+**Upgrading from Claude Connection Watcher:** disable protection, confirm it is disabled, and quit the old app first. The old and new apps share bundle identifiers. Remove the old cask separately; do not run a manually installed old copy alongside the new app. Follow the same disable-and-quit steps before uninstalling or upgrading this beta.
 
 ## Try the offline Preview
 
