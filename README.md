@@ -15,14 +15,12 @@ A local macOS companion for **Surge**, with two responsibilities:
 
 These screenshots were captured from the **running offline Preview**, using sample PIDs and settings. They show the real UI and interaction flow, **not evidence of live network blocking**.
 
-| English | 简体中文 |
-|---|---|
-| ![English Preview: processes, IPv6 and Surge checks](docs/images/preview-en.png) | ![中文 Preview：进程、IPv6 与 Surge 检查](docs/images/preview-zh.png) |
+![English Preview: processes, IPv6 and Surge checks](docs/images/preview-en.png)
 
 1. Choose **English / 简体中文** at the top. The interface switches immediately without restarting monitoring. The production app remembers your selection; Preview keeps it in memory only.
 2. **Quit listed Claude processes…** asks for confirmation before acting on the frozen process identities. The screenshot below shows that confirmation; sample processes are never real user processes.
 
-![Confirmed process termination in Chinese Preview](docs/images/quit-confirmation-zh.png)
+![Confirmed process termination in English Preview](docs/images/quit-confirmation-en.png)
 
 3. **Keep blocking** demonstrates the blocked presentation. Changing languages preserves this state. This image is a simulation, not a production filter result.
 

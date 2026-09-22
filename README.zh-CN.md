@@ -15,9 +15,7 @@
 
 以下截图来自**实际运行的离线 Preview**，使用示例 PID 与设置，展示真实界面和操作流程，**不是实际网络拦截成功的证据**。
 
-| 简体中文 | English |
-|---|---|
-| ![中文 Preview：进程、IPv6 与 Surge 检查](docs/images/preview-zh.png) | ![英文 Preview：进程、IPv6 与 Surge 检查](docs/images/preview-en.png) |
+![中文 Preview：进程、IPv6 与 Surge 检查](docs/images/preview-zh.png)
 
 1. 在窗口顶部选择 **简体中文 / English**，界面立即切换，不重启监测。正式版记住选择，Preview 仅在内存保存。
 2. 点击**退出所列 Claude 进程…**后确认；程序只处理打开确认框前冻结的进程身份集合。下图为确认界面，示例进程不是用户的真实进程。
@@ -26,7 +24,7 @@
 
 3. 点击**保持阻断**可查看阻断状态示例；切换语言后保留该状态。下图是模拟展示，不是生产过滤器的验证结果。
 
-![英文 Preview 中的阻断状态示例](docs/images/blocked-preview-en.png)
+![中文 Preview 中的阻断状态示例](docs/images/blocked-preview-zh.png)
 
 ## 开始前阅读
 
