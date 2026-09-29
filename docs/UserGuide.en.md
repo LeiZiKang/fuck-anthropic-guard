@@ -1,52 +1,32 @@
-# fuck-anthropic guard — User Guide
+# fuck-anthropic guard — User guide
 
 **English** | [简体中文](UserGuide.md)
 
-Applies to 0.4.0 / build 12.0, the experimental Surge companion. Source is available for review; production filter activation and live failure scenarios have not been accepted. This is not the older SSH-relay version.
+Applies to 0.4.4 beta / build 13.0. Requires macOS 14+. This is an experimental Surge companion, not the older SSH-relay app.
 
-## 1. What Guard does
+## 1. Scope
 
-Guard lists reliably recognized Claude processes, offers confirmed termination, and displays read-only IPv6 settings. Its optional macOS system filter restricts recognized clients to a verified Surge endpoint.
+Guard recognizes signed Claude Desktop, native Claude Code and reliably traceable same-user descendants. Its optional system filter restricts these clients to a verified local Surge TCP endpoint. Other users, infrastructure proxies and unknown attribution are outside this proven scope.
 
-**Surge forwards the traffic. Guard is not a proxy, VPN, or SSH tunnel and does not read VPS private keys.**
+**Surge forwards the traffic. Guard is not a VPN/proxy/SSH tunnel and does not modify system networking or read VPS keys.**
 
 ```text
-Claude → dedicated local HTTP endpoint owned by Surge → Hysteria2 → VPS
-                ↑
-Guard checks the endpoint, rules, and exit, then permits or blocks recognized connections
+Claude -> Guard system filter -> dedicated local Surge endpoint -> proxy node -> website
 ```
 
-## 2. Preview and production
+## 2. Install and upgrade
 
-| Build | Purpose |
-|---|---|
-| Guard Preview | Offline sample data. No real process termination, probes, or system-filter activation. |
-| fuck-anthropic guard | Production code. Process and IPv6 viewing can be used separately; protection needs configuration, signing, and macOS approval. |
-| Production Xcode schemes | Build only; they do not automatically install or activate a filter. |
+Download the versioned notarized Universal 2 ZIP, extract it and put one copy of the app in Applications. Apple Silicon and Intel are compiled; Intel hardware is not live-tested. Installing is separate from enabling protection.
 
-Requires macOS 14 or later. Apple Silicon and Intel builds are supported. A production filter needs valid, matching Developer ID signing and Network Extension provisioning. A successful build or ad-hoc signature is not permission to load a system extension.
+For an upgrade, save work and quit Claude clients first; leave Surge running. Quit Guard with the filter retained, replace the app, open it and explicitly resume/enable checks. Approve the system extension if macOS asks. Do not reopen clients until the UI is ready. If macOS requires reboot, verify protection after reboot before use. Do not run multiple old/new copies with the same bundle identifier.
 
-Do not run old and new production versions together. The new app does not inherit or restart the old SSH relay. Disable any active legacy protection explicitly before arranging migration.
+Legacy SSH-relay migrations need separate planning with clients closed. Do not restart an archived relay or disable protections merely to make a status indicator green. To uninstall, first close protected clients, explicitly disable protection, confirm disablement and quit.
 
-## 3. Language, processes, and IPv6
+## 3. Prepare the Surge endpoint
 
-On first launch, the app follows the system's preferred language: Chinese uses Simplified Chinese; other languages use English. The Language selector switches the interface immediately. Production saves your choice for future launches; Preview keeps it only in memory. Switching language does not restart monitoring, change Surge, alter filtering, or restore processes you have removed from the sample list.
+A shared proxy may legitimately route unrelated traffic DIRECT. Protection therefore uses a dedicated HTTP listener such as127.0.0.1:6154 and a first `IN-PORT` rule pinned to one supported Hysteria2 node.
 
-Buttons, menus, confirmations, app-generated statuses, and future safety notifications follow the selected language. Network service names and process names retain their original names. macOS permission dialogs and system-provided error messages follow macOS language settings. Previously delivered notifications keep their original text.
-
-The process list covers official Desktop, native CLI, and descendants whose identity can be reliably traced. A matching name alone is insufficient.
-
-Choose **Quit listed Claude processes…** and confirm. The target identities are frozen before the dialog opens. Immediately before SIGTERM, the app rechecks each PID, user, start time, and executable path. Newly appearing processes are not added to the confirmed set. Save your work first; there is no automatic force quit. Processes that do not exit may remain listed.
-
-IPv6 is shown for physical Wi-Fi and Ethernet services. Settings do not establish internet reachability. Turning IPv6 off on Wi-Fi does not mean loopback, AWDL, or VPN interfaces have no IPv6. Guard does not modify these settings.
-
-## 4. Why a dedicated Surge endpoint is required
-
-A shared Surge endpoint may legitimately route Xcode or other traffic DIRECT. Merely reaching that endpoint cannot establish VPS routing.
-
-Strict protection requires a separate HTTP listener owned by Surge, such as 127.0.0.1:6154. Guard does not listen on this port. A first IN-PORT rule must pin that listener to one Hysteria2 node.
-
-**The app does not edit Surge.** Merge the following example with your own configuration, retaining existing listeners and rules. Do not overwrite the whole profile or duplicate existing group names.
+Merge this example with your own configuration; do not overwrite it or duplicate groups. Guard does not perform these edits.
 
 ```ini
 [General]
@@ -57,82 +37,59 @@ CLAUDE-LOCKED = select, Hysteria2
 
 [Rule]
 IN-PORT,6154,CLAUDE-LOCKED
-# Must be the first effective rule.
-# Keep existing Xcode DIRECT and other rules after it.
+# Must be the first effective rule. Keep other rules below it.
 ```
 
-Configure your Hysteria2 node within Surge. The dedicated policy must have one node, no DIRECT fallback, no nested groups, and no script routing. MITM, scripting, rewrites, and temporary rules must be disabled or empty. Unsupported configurations do not receive an allow lease.
+Configure the Hysteria2 node in Surge. The dedicated policy must select one node, without DIRECT fallback or nested/script groups. MITM, scripting, rewrites and temporary rules must be disabled/empty. Unsupported or changed configurations do not receive permission. Surge manages TLS configuration; Guard does not bypass redaction of hidden node fields.
 
-## 5. Configure protection
+## 4. Configure and enable
 
-1. Arrange setup outside important Claude sessions and back up your Surge configuration.
-2. Choose **Configure Surge checks…** and enter the dedicated HTTP port, expected VPS exit IP, and policy group.
-3. **Verify and save** reads the signed Surge CLI and effective policy, then stores non-secret conditions and a digest. It does not save node passwords.
-4. Choose **Enable protection…**, read the notice, and complete macOS network-filter approval.
-5. Consented checks reach api.ipify.org through Surge without Claude credentials, cookies, or API keys. A recent exit match, stable policy, verified listener ownership, and confirmed filter execution are needed before the UI reports permission to connect.
+1. With protection disabled, open **Configure endpoint…** in Settings & diagnostics.
+2. Enter a dedicated port, expected egress IPv4/IPv6 addresses and the single-node policy name. Invalid fields show inline errors and remain editable; cancel does not save.
+3. Verify and save reads the signed Surge CLI and effective profile, then stores non-secret endpoint/exit/policy conditions and a profile digest. It does not store node passwords.
+4. Enable protection and complete macOS approval. Consented account-free probes reach `api.ipify.org` through Surge.
+5. Readiness requires recent matching exit evidence, stable rules, verified listener ownership and current filter acknowledgment. While configured or unconfirmed, the endpoint is read-only. Recheck retries the control connection; it does not silently enable protection or rewrite Surge.
 
-Surge hides some node fields in CLI output. Guard does not bypass redaction or independently verify every hidden field. Surge manages the node's TLS configuration.
+## 5. Launch clients
 
-## 6. Launch Claude through the correct endpoint
+Recognized clients must use the dedicated loopback TCP endpoint. Direct remote connections, other ports and direct UDP/QUIC are denied. Surge's own upstream protocol is excluded from client filtering. A normal Dock launch may use a shared proxy and be blocked.
 
-When protection is enabled, recognized clients are limited to the configured loopback TCP endpoint. Direct remote connections, UDP, and other proxy ports are rejected by the policy. A normal Dock launch may still use the shared system proxy and therefore be blocked.
-
-The optional source script configures only the new client process. It does not start a proxy, change the system proxy, or enable the filter:
+The optional launcher verifies the native client's signature and sets proxy configuration only for the new process. It does not quit an existing Desktop, start a proxy or change system settings.
 
 ```bash
 bash scripts/launch-claude-via-surge.sh desktop 6154
 bash scripts/launch-claude-via-surge.sh cli 6154
 ```
 
-The script requires a verified official client. It refuses to reuse an already running Desktop. Quit the existing client normally before launching with new parameters. Process viewing alone does not require this script.
+If the client is not the recognized signed native executable, do not treat a matching process name or successful launch as proof of coverage. Independently started wrappers and orphaned children may not be attributable.
 
-## 7. Status and quitting
+## 6. Read states and records
 
-| Status or action | Meaning |
+| State/action | Meaning |
 |---|---|
-| System protection is not enabled | Viewing only; do not rely on blocking. |
-| Filter enforcement is unconfirmed | Execution is unknown; do not interpret it as protected. |
-| Recognized connections: Blocking | No effective allow lease for recognized clients. |
-| Dedicated route verified | A recent, bounded check passed; not a guarantee for every future request. |
-| Waiting for blocking confirmation | Local allow conditions failed, but blocking execution is not yet confirmed. |
-| Keep blocking | Withdraw allow permission while retaining the filter. |
-| Disable protection… | Turn off system filtering; blocking no longer applies. |
-| Close window | Keep the app running; reopen from the Dock or menu bar. |
-| Keep blocking and quit | Quit the controller and retain the filter; its lease expires. |
-| Disable protection and quit | Disable the filter, then quit. Components may remain installed. |
+| Protection ready | Recognized clients may use the recently verified route; not website success or universal coverage. |
+| Connections blocked | Permission is withheld. Resume checks explicitly to revalidate. |
+| Checking protection | Enforcement or evidence is unconfirmed; do not assume protected. |
+| Protection off | System filtering is not enabled. |
+| Block Claude connections… | Confirms before withdrawing permission and interrupting tracked connections. |
+| Disable protection… | Explicitly removes blocking protection after confirmation. |
+| Close window | Keeps the host running; use Dock or menu bar to reopen. |
+| Keep blocking and quit | Quits the host while retaining the system filter; permission is withdrawn. |
 
-Reconfirm configuration after changes. Do not interpret a failed check as a safe connection merely because you changed ports or disabled filtering.
+The journal keeps the latest 80 protected-client metadata events in filter memory, reset when the extension restarts. Search by identity/PID/endpoint, sort columns, select details or copy a record. Allowed means admission checks passed; denied counts also include later revocation, not necessarily unique connections. `127.0.0.1:6154` is the local proxy, not the final website. Available trigger codes explain the observed failure category; absent historical details are not inferred.
 
-## 8. Safety notifications
+Unknown owner is neither a leak count nor a blocked count. It discloses attribution gaps without retaining unrelated apps' connection histories. No payloads, chats, URL paths or credentials are recorded.
 
-Enabling protection requests macOS notification permission. During automatic monitoring, an unsafe or unconfirmed state triggers one notification per episode. Repeated polling does not flood notifications; recovery rearms the next alert. A manual hold does not trigger a failure alarm. Click a notification to open the app.
+## 7. UI, menu bar and notifications
 
-Denied permission, Focus, and system settings may suppress banners. The app still displays status. A notification means permission was withdrawn; it does not claim blocking is confirmed when filter execution is unknown. Real notification delivery still needs live acceptance.
+Language changes preserve protection state. Production saves language and appearance; network/process names and macOS dialogs retain their own language. The menu panel shows status, recognized process count, endpoint and last filter acknowledgment; its symbol changes by state. Recheck uses the actual check path; Open window opens the main UI.
 
-## 9. Coverage limits
+The Clients tab lists recognized processes and provides confirmed termination, rechecking identity before SIGTERM. Save work first; there is no automatic force quit. IPv6 settings are read-only and do not prove internet reachability.
 
-This is experimental protection, not a mature production security product.
+Notification permission, Focus and macOS settings can suppress banners. Alerts report loss of safe permission rather than claiming unknown enforcement is confirmed blocked. The app remains the status source.
 
-- Only reliably identified clients and descendants are covered. Unknown identities, orphan processes, and third-party wrappers may be outside scope.
-- Provider crashes, disabled extensions, early boot packets, physical network changes, and every IPv6 transition have not been fully accepted.
-- Checks and leases have bounded lifetimes. There is a detection window after Surge rules change; an exit probe is not proof of every application's route.
-- Socket-data filtering is not a guarantee that a remote peer has never seen any IP packet. Do not assume all DNS, TCP first packets, UDP, or system-owned connections are covered.
-- Process termination can interrupt work. It is not a substitute for filtering.
-- Signing, notarization, source availability, and offline tests do not guarantee account safety or zero IP leakage.
+## 8. Validation limits and development
 
-Use isolated, account-free fixtures for fault tests. Do not disable Surge, switch networks, or install an experimental filter during important work.
+A periodic profile/exit check is not per-request cryptographic route proof; configuration changes have an observation window. Provider crashes, physical network changes, early boot, full reboot/wake and unknown ownership need dedicated live acceptance. Signing and notarization do not establish zero IP exposure or account eligibility. See [security](../SECURITY.md) and [validation status](FEATURE-STATUS.md).
 
-## 10. Troubleshooting and updates
-
-| Problem | Check |
-|---|---|
-| Endpoint unverified | Is the port owned by the signed Surge process? Shared 6152/6153 are unsupported. |
-| Policy failed | Is the dedicated IN-PORT rule first, with exactly one supported node and no temporary/script rules? |
-| Exit mismatch or timeout | Inspect Surge and the node. Do not add DIRECT as a fallback. |
-| Execution unknown | Check system approval and matching signatures. An open app window is not proof. |
-| Claude cannot connect | Check whether it still uses a shared endpoint or old launch parameters. |
-| Missing processes | Verify client identity and ancestry. Unknown processes are not terminated by name alone. |
-
-Build offline Preview with `bash scripts/build.sh` or Xcode's `01 Preview (Safe)`. `CCW_BUILD_MODE=host` builds the host and filter without installing. Production signing requires your own valid developer configuration; never commit signing private keys.
-
-The repository includes no VPS credentials or private runtime profile. Do not submit proxy passwords, SSH keys, cookies, Keychain exports, or personal logs. Review [PRD](PRD.en.md), [validation status](FEATURE-STATUS.md), and [security model](../SECURITY.md).
+Use **01 Preview (Safe)** to develop with offline data. Four `#Preview` macros in `App/main.swift` render the same menu AppKit view through Xcode Canvas, enabled only with `CCW_CANVAS`. Canvas checks content layout, not physical menu placement or full real-system click behavior. Production schemes are build-only. See [contributing](../CONTRIBUTING.md).

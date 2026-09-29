@@ -1,23 +1,21 @@
-# Validation status — 0.4.0 / build 12.0
+# Validation status — 0.4.4 beta / build 13.0
 
 **English** | [简体中文](FEATURE-STATUS.zh-CN.md)
 
-## Implemented
+| Area | Evidence | Boundary |
+|---|---|---|
+| Source and builds | 271 Preview / 273 host offline checks; Xcode schemes and standalone builds; Universal 2 compilation | Counts overlap; Intel hardware not tested |
+| Local filtering | Earlier development build 12.2 allowed the dedicated 6154 TCP endpoint and denied wrong loopback ports and sampled child UDP paths | Local fixtures, not every external protocol or OS failure |
+| UI | Search/clear/sort/details/copy, block cancellation, language and appearance; invalid form input/corrected save | Not a full accessibility audit |
+| Menu content | Actual Xcode Canvas#Preview for four states, English/Chinese; shared production AppKit view | System menu targeting, arrow placement and full click flow not automated |
+| Distribution | Versioned signed/notarized ZIP, frozen source/artifact/release-text review required | Public build 13.0 has not been installed as a new live acceptance test |
 
-Recognized-process discovery and confirmed termination, read-only IPv6, opt-in Surge path checks and system filtering, safety notifications, bilingual UI/guides, native Xcode targets, Dock/menu-bar entry and isolated Preview.
+## Still pending
 
-## Verified locally
+Physical network loss/recovery, full machine reboot/wake, provider crashes, early boot and complete unknown-attribution coverage. A running app or a notarization receipt does not prove these cases.
 
-- 222 host offline assertions and 220 Preview assertions passed. They share coverage and must not be added together.
-- Intel/Apple Silicon host and filter builds, strict ad-hoc signature checks, and a native Xcode build passed.
-- The running offline Preview was checked in both languages: language switching retained the sample blocking state, cancellation retained sample processes, configuration fields were visible, and the new icon appeared in confirmation dialogs.
-- README screenshots use sample data from that Preview. They are not live-filter evidence.
-- Independent source-publication review covered frozen source/history, images and the exact local archive. It does not certify production safety.
+## Data and controls
 
-## Still unverified
+The journal retains only the latest 80 protected-client metadata events in provider memory. It resets when the extension restarts. It contains no packet payloads, chat, URL paths or account credentials. Unknown owners are counted without recording unrelated application histories. Egress checks use the consented Surge path; no direct fallback is provided.
 
-Production approval/activation, real client traffic and every wrapper/descendant, notification delivery, reboot first packets, provider-crash recovery, physical network loss and all IPv6 transitions.
-
-## Distribution status
-
-A Developer ID signed and Apple-notarized experimental beta is packaged for distribution. Secure timestamps, stapled ticket, Gatekeeper assessment and signed-host offline checks passed. Homebrew installation is not live filtering acceptance. No production filter was installed or activated during this workflow. Existing user proxies and clients were not changed. Read the [security model](../SECURITY.md) and [guide](UserGuide.en.md) before planning isolated live acceptance.
+Production activation is explicit. Default Xcode Run is 01 Preview (Safe); host/filter schemes build without activating system filtering. See [security](../SECURITY.md), [guide](UserGuide.en.md) and [release notes](RELEASE-NOTES.md).

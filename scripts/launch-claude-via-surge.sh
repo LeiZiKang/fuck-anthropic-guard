@@ -14,10 +14,10 @@ case "$kind" in
  *) echo 'Usage: launch-claude-via-surge.sh desktop|cli [dedicated-port]' >&2; exit 2;;
 esac
 [[ "$binary" == /* ]] || { echo "Native executable must resolve to an absolute path" >&2; exit 2; }
-/usr/bin/codesign --verify --strict -R "$requirement" "$binary"
+/usr/bin/codesign --verify --strict "-R=$requirement" "$binary"
 proxy="http://127.0.0.1:$port"
 export HTTP_PROXY="$proxy" HTTPS_PROXY="$proxy" ALL_PROXY="$proxy" http_proxy="$proxy" https_proxy="$proxy" all_proxy="$proxy"
 export NO_PROXY='' no_proxy='' NODE_USE_ENV_PROXY=1
 if [[ "$kind" == desktop ]]; then
- /usr/bin/nohup "$binary" --proxy-server="$proxy" '--proxy-bypass-list=<-loopback>' --disable-quic >/dev/null 2>&1 &
-else exec "$binary"; fi
+ /usr/bin/open -a /Applications/Claude.app --env "HTTP_PROXY=$proxy" --env "HTTPS_PROXY=$proxy" --env "ALL_PROXY=$proxy" --env "NO_PROXY=" --args --proxy-server="$proxy" '--proxy-bypass-list=<-loopback>' --disable-quic
+else exec "$binary" "${@:3}"; fi

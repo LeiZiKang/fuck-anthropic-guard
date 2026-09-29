@@ -1,84 +1,47 @@
 <div align="center">
-  <img src="Resources/AppIcon.png" width="80" alt="fuck-anthropic guard 图标">
+  <img src="Resources/AppIcon.png" width="80" alt="Guard图标">
   <h1>fuck-anthropic guard</h1>
-  <p><strong>看清 Claude 在运行什么，也看住它的网络连接。</strong></p>
-  <p>配合 Surge 使用的本地 macOS 工具：进程管理、连接检查与异常提醒。</p>
+  <p><strong>看清Claude连接，让已识别客户端使用指定Surge路径。</strong></p>
+  <p>独立macOS工具：Surge负责代理，Guard检查连接许可。</p>
   <p><a href="README.md">English</a> · <strong>简体中文</strong></p>
-  <p><a href="docs/UserGuide.md">使用说明</a> · <a href="docs/FEATURE-STATUS.zh-CN.md">验证状态</a> · <a href="SECURITY.zh-CN.md">安全边界</a> · <a href="CONTRIBUTING.zh-CN.md">参与贡献</a></p>
-  <p><code>macOS 14+</code> &nbsp; <code>Apple Silicon + Intel</code> &nbsp; <code>MIT</code></p>
+  <p><code>macOS 14+</code> · <code>Apple Silicon + Intel</code> · <code>MIT</code></p>
 </div>
 
-> **已公证测试版 · 保护须主动启用。** 真实故障场景仍待验收；签名与公证不保证零 IP 泄漏或账号安全。
+> **0.4.4测试版 · 保护需主动启用。** 未知进程归属和系统故障／生命周期仍存在覆盖边界。Guard不是VPN，也不保证账号安全。
 
-<p align="center">
-  <a href="docs/images/preview-zh.png"><img src="docs/images/preview-zh.png" width="640" alt="中文主界面：可识别进程、IPv6 状态与 Surge 保护操作"></a>
-  <br><sub>实际运行的离线 Preview · 示例数据 · 不是真实过滤证据</sub>
-</p>
+<p align="center"><img src="docs/images/preview-zh.png" width="720" alt="离线Guard预览中的连接判定"><br><sub>离线示例数据，不代表真实过滤已生效。</sub></p>
 
-## 一个窗口，三件事
+## 功能
 
-| 看清进程 | 检查连接 | 关代理前先退出 |
-|---|---|---|
-| 查看可识别的 Claude Desktop、原生 CLI、可追溯后代，以及只读 IPv6 状态。 | 主动启用过滤后，将可识别客户端限制到已验证的 Surge 入口；检查失败或许可过期时撤销放行。 | 一次确认退出所列进程。确认它们真正退出后，再关闭代理。 |
+- 识别签名验证通过的Claude Desktop、原生Claude Code及可追溯的同用户子进程。
+- 在路径证据有效时，把已识别连接限制到Surge专用TCP入口。
+- 内存保留最近80条连接判定：进程、PID、目标、协议及可用的触发原因；支持搜索、排序、详情和复制。
+- 手动阻断及退出进程前明确确认；提供只读IPv6信息与安全通知。
+- 中英文、深浅色界面与菜单栏面板；四个真正的Xcode Canvas预览复用正式AppKit视图。
 
-流量由 Surge 转发。Guard 不提供 VPN 或 SSH 隧道，不读取 VPS 私钥，也不修改网络设置；目标是在代理或网络变化时降低意外直连风险。
+**Surge负责转发流量。** Guard不提供代理/VPN/SSH，不编辑Surge或系统网络，不读取VPS私钥。日志中的`127.0.0.1:6154`是本机代理入口，不是最终网站；允许连接不等于网站请求成功。
 
-<details>
-<summary><strong>查看退出确认与阻断状态示例</strong></summary>
+## 下载与设置
 
-退出操作会先冻结待处理的进程集合，再请求确认。Preview 只操作示例进程。
+下载[Developer ID签名并通过Apple公证的Universal 2 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.4-beta.1)。启用前先读[设置与升级说明](docs/UserGuide.md)。
 
-<p align="center"><img src="docs/images/quit-confirmation-zh.png" width="280" alt="退出所列示例进程前的中文确认框"></p>
+本次发布**不更新已有Homebrew tap**，它可能仍安装旧测试版。需要0.4.4请使用明确版本的ZIP。
 
-下方阻断状态是模拟展示；切换语言会保留该状态。
+保护需要另行配置Surge专用监听入口、固定到单个受支持Hysteria2节点的首条`IN-PORT`规则、有效签名和macOS授权。安装本身不证明覆盖生效。设置或升级时先关闭Claude客户端，保持Surge运行，确认就绪后再打开客户端。
 
-<p align="center"><img src="docs/images/blocked-preview-zh.png" width="640" alt="中文 Preview 中的模拟阻断状态"></p>
+详见[发布说明](docs/RELEASE-NOTES.zh-CN.md)、[验证状态](docs/FEATURE-STATUS.zh-CN.md)和[安全模型](SECURITY.zh-CN.md)。物理断网、开机、唤醒及过滤器崩溃尚未完成全部实机验收。
 
-</details>
-
-## 安装测试版
+## 安全开发
 
 ```bash
-brew install --cask leizikang/tap/fuck-anthropic-guard
-```
-
-也可下载[正式签名并通过公证的测试版 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.0-beta.1)。安装不会自动启用或验证过滤器；保护需要单独配置和授权，真实故障场景仍待验收。
-
-**从旧 Claude Connection Watcher 迁移：**先停用保护、确认已停用，并退出旧 App。新旧版共享 bundle 标识；旧 cask 需单独卸载，手动安装的旧版也不能与新版同时运行。卸载或升级本测试版前，同样须先停用并退出。
-
-## 先体验离线 Preview
-
-需要 Xcode 或兼容的 Command Line Tools，以及 Python 3。Preview 不操作真实进程、不发送探针，也不启用过滤器。
-
-```bash
-git clone --branch codex/feature-surge-guard-public https://github.com/LeiZiKang/fuck-anthropic-guard.git
+git clone https://github.com/LeiZiKang/fuck-anthropic-guard.git
 cd fuck-anthropic-guard
-bash scripts/build.sh
+bash scripts/test.sh
 open "dist/guard/fuck-anthropic guard Preview.app"
 ```
 
-窗口内可选择 **简体中文 / English**。正式版记住选择，Preview 仅在内存保存。
+默认Preview使用示例数据，不启用生产过滤器。在Xcode打开`ClaudeConnectionWatcher.xcodeproj`，使用 **01 Preview (Safe)**。`App/main.swift`中的Canvas涵盖菜单栏就绪、阻断、验证中和未开启状态；`CCW_CANVAS`只在Xcode Preview目标启用，命令行构建不依赖Canvas宏插件。
 
-## 启用真实保护前
+生产scheme仅用于构建。`CCW_BUILD_MODE=host bash scripts/build.sh`不会安装；设置`CCW_ARCHITECTURES='arm64 x86_64'`可编译双架构。增量构建和诊断优先使用Xcode MCP。详见[贡献指南](CONTRIBUTING.zh-CN.md)和[分支／发布流程](docs/BRANCHES.md)。
 
-当前版本需要 **Surge 专用监听入口**、固定到单个受支持 Hysteria2 节点的首条 `IN-PORT` 规则、有效签名和 macOS 过滤授权。共享代理端口或普通 Dock 启动不一定采用该路径，请先阅读[配置说明](docs/UserGuide.md)。
-
-未知进程、过滤器崩溃、开机首包和网络切换存在覆盖边界；变化被发现前有时间窗口，不能保证即时阻断。详见[验证状态](docs/FEATURE-STATUS.zh-CN.md)与[安全模型](SECURITY.zh-CN.md)。
-
-<details>
-<summary><strong>构建主程序与过滤器 · 贡献者说明</strong></summary>
-
-```bash
-bash scripts/test.sh
-CCW_BUILD_MODE=host bash scripts/build.sh
-```
-
-这些命令只构建，不安装。ad-hoc 签名不代表保护生效。`ClaudeConnectionWatcher.xcodeproj` 默认运行 **01 Preview (Safe)**，生产方案仅用于构建；设置 `CCW_ARCHITECTURES='arm64 x86_64'` 可构建双架构版本。
-
-进一步阅读[贡献指南](CONTRIBUTING.zh-CN.md)、[设计与范围](docs/PRD.md)和[发布说明](docs/RELEASE-NOTES.zh-CN.md)。源码也包含[离线 HTML 手册](docs/UserGuide.html)，下载后可用浏览器阅读；GitHub 会将 HTML 文件显示为源代码。
-
-</details>
-
----
-
-进程信息留在本机。经同意的出口检查通过 Surge 访问 `api.ipify.org`，不携带 Claude 凭据；无遥测，不自动回退直连。[MIT 许可证](LICENSE)。
+进程与连接元数据保留在本机。经同意的出口探针通过Surge访问`api.ipify.org`，不携带Claude凭据。无遥测，不自动回退直连。[MIT许可证](LICENSE)。

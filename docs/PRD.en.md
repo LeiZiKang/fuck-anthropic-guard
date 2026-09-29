@@ -41,3 +41,31 @@ A snapshot is not per-packet proof. Unknown processes, provider failures, early 
 Offline acceptance covers wrong endpoints/direct traffic/UDP, infrastructure exclusions, user and unknown-identity boundaries, expiry, replay and identity change. Preview, host and filter must build independently, and Preview must not link production backends. Use isolated live tests outside important sessions; see [validation status](FEATURE-STATUS.md).
 
 Notification permission, Focus and macOS settings can suppress banners. An alert says permission was withdrawn, not that unknown enforcement is confirmed blocking. Previously delivered notifications keep their original language; system dialogs follow macOS settings.
+
+## Local UI revision (2026-09-29)
+
+The overview separates protection state, the dedicated route and decision counters. Clients, network and diagnostics use separate tabs. Destructive actions retain confirmation. Unconfirmed enforcement or stale routes must never render as ready. Language and appearance changes must not change protection state.
+
+## Connection journal and appearance (0.4.1)
+
+Warm paper, clay accents, editorial headings and an original G shield. Anthropic-inspired dark appearance by default: charcoal, warm gray, ivory and clay. Theme switches to light.
+
+Connections shows time, PID, destination, protocol, verdict and reason for recognized clients. All/Allowed/Denied filters and summary counters navigate the journal. Allowed means the endpoint and lease checks passed, not website success; later revocation remains possible. Denials include rejected new flows and revoked existing flows, not necessarily unique connections. Endpoint-match counts are no longer shown as total allowed decisions.
+
+Only the latest 80 events are retained in filter memory and reset on extension restart. No chat, payload, URL paths or credentials. Unknown owners are counted without unrelated app histories. Stale status is labeled; retained events are not current permission. Pre-upgrade history cannot be recovered.
+
+How it works: Claude -> Guard system filter -> dedicated Surge endpoint -> proxy node -> website. Guard does not provide a VPN, subscription or SSH tunnel. Surge provides transport. 127.0.0.1:6154 is the proxy endpoint, not the final website. This version upgrades filter metadata reporting while retaining route predicates and lease enforcement.
+
+## 0.4.2 usability
+
+Block Claude connections now confirms its impact; cancel preserves permission. Resume checks verifies before allowing connections. Settings reflects the actual state and offers a read-only endpoint view while enabled or unconfirmed. Recheck retries the filter control connection; the client refresh only updates process inventory.
+
+Search connections by identity, PID or endpoint; clearing search restores the category. Click column headers to sort, then select an event for details or copying. Details include full time, signing identity, destination and recorded trigger. Missing historical causes are disclosed rather than inferred. Unknown ownership has an explanation and is not a leak count.
+
+Summary actions are native buttons, denied text has stronger contrast, appearance persists in the live app, and smaller windows scroll.
+
+## 0.4.3 form fix
+Validate configuration before dismissing the dialog; preserve fields and focus the invalid input. Filter and route authorization logic are unchanged.
+
+## Menu content acceptance
+Four#Preview definitions in App/main.swift exercise ready/blocked/checking/disabled through Xcode RenderPreview. GuardMenuPanel is shared with the real popover; Canvas uses offline fixtures. Content rendering is not live acceptance of system menu placement or the popover arrow.

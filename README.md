@@ -1,84 +1,47 @@
 <div align="center">
-  <img src="Resources/AppIcon.png" width="80" alt="fuck-anthropic guard icon">
+  <img src="Resources/AppIcon.png" width="80" alt="Guard icon">
   <h1>fuck-anthropic guard</h1>
-  <p><strong>Know what Claude is running. Keep its network path in check.</strong></p>
-  <p>A local macOS companion for Surge — process controls, connection checks and safety alerts.</p>
+  <p><strong>See Claude connections. Keep recognized clients on your Surge route.</strong></p>
+  <p>An independent macOS utility. Surge provides the proxy; Guard checks connection permission.</p>
   <p><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a></p>
-  <p><a href="docs/UserGuide.en.md">User guide</a> · <a href="docs/FEATURE-STATUS.md">What's verified</a> · <a href="SECURITY.md">Security</a> · <a href="CONTRIBUTING.md">Contribute</a></p>
-  <p><code>macOS 14+</code> &nbsp; <code>Apple Silicon + Intel</code> &nbsp; <code>MIT</code></p>
+  <p><code>macOS 14+</code> · <code>Apple Silicon + Intel</code> · <code>MIT</code></p>
 </div>
 
-> **Notarized beta · protection is opt-in.** Live failure testing is still pending; signing and notarization are not a zero-IP-leak or account-safety guarantee.
+> **0.4.4 beta · protection is opt-in.** Unknown process attribution and OS failure/lifecycle cases remain coverage limits. This is not a VPN or an account-safety guarantee.
 
-<p align="center">
-  <a href="docs/images/preview-en.png"><img src="docs/images/preview-en.png" width="640" alt="English app interface: recognized processes, IPv6 status and Surge protection controls"></a>
-  <br><sub>Running offline Preview · sample data · not evidence of live filtering</sub>
-</p>
+<p align="center"><img src="docs/images/preview-en.png" width="720" alt="Offline Guard preview showing connection decisions"><br><sub>Offline sample data, not evidence of live filtering.</sub></p>
 
-## Three things, one window
+## What it does
 
-| See what's running | Guard the connection | Quit before disconnecting |
-|---|---|---|
-| Recognized Claude Desktop, native CLI and traceable descendants, plus read-only IPv6 settings. | Opt-in filtering restricts recognized clients to a verified Surge endpoint. Failed checks or expired permission revoke access. | Confirm one action to quit the listed processes. Check they have exited before turning off your proxy. |
+- Recognizes signed Claude Desktop, native Claude Code and traceable same-user descendants.
+- Restricts recognized connections to a dedicated Surge TCP endpoint while route evidence remains valid.
+- Shows the latest 80 connection decisions in memory: process, PID, destination, protocol and available trigger. Search, sort, inspect or copy a record.
+- Confirms manual blocking and process termination. Shows read-only IPv6 settings and safety notifications.
+- Provides a bilingual dark/light interface and compact menu panel, with four real Xcode Canvas previews sharing the production AppKit view.
 
-Surge forwards the traffic. Guard does not provide a VPN or SSH tunnel, read VPS private keys, or change your network settings. Its goal is to reduce accidental direct connections when your proxy or network changes.
+**Surge forwards traffic.** Guard does not supply a proxy/VPN/SSH tunnel, edit Surge or system networking, or read VPS private keys. A journal target such as `127.0.0.1:6154` is the local proxy endpoint, not the final website. Allowed does not mean the website request succeeded.
 
-<details>
-<summary><strong>See the confirmation and blocked-state examples</strong></summary>
+## Download and setup
 
-The confirmation freezes the target list before acting. Preview uses sample processes only.
+Download the [Developer ID signed, notarized Universal 2 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.4-beta.1). Read the [setup and upgrade guide](docs/UserGuide.en.md) before enabling protection.
 
-<p align="center"><img src="docs/images/quit-confirmation-en.png" width="280" alt="English confirmation before quitting the listed sample processes"></p>
+The existing Homebrew tap is **not updated by this release** and may install the older beta. Use the versioned ZIP for 0.4.4.
 
-The blocked state below is a simulation. Switching languages preserves that state.
+Protection requires a separately configured Surge listener, a first `IN-PORT` rule pinned to one supported Hysteria2 node, valid signing and macOS approval. Installing the app does not establish coverage. Keep Claude clients closed during setup or upgrade, keep Surge running, and verify readiness before reopening them.
 
-<p align="center"><img src="docs/images/blocked-preview-en.png" width="640" alt="English Preview displaying a sample blocked state"></p>
+See [release notes](docs/RELEASE-NOTES.md), [validation status](docs/FEATURE-STATUS.md), and the [security model](SECURITY.md). Physical network loss, boot, wake and provider crashes are not fully live-validated.
 
-</details>
-
-## Install the beta
+## Develop safely
 
 ```bash
-brew install --cask leizikang/tap/fuck-anthropic-guard
-```
-
-Or download the [signed, notarized beta ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.0-beta.1). Installing does not activate or validate the filter. Configure and approve protection explicitly; live failure acceptance remains pending.
-
-**Upgrading from Claude Connection Watcher:** disable protection, confirm it is disabled, and quit the old app first. The old and new apps share bundle identifiers. Remove the old cask separately; do not run a manually installed old copy alongside the new app. Follow the same disable-and-quit steps before uninstalling or upgrading this beta.
-
-## Try the offline Preview
-
-Requires Xcode or compatible Command Line Tools and Python 3. Preview does not signal real processes, send probes or activate a filter.
-
-```bash
-git clone --branch codex/feature-surge-guard-public https://github.com/LeiZiKang/fuck-anthropic-guard.git
+git clone https://github.com/LeiZiKang/fuck-anthropic-guard.git
 cd fuck-anthropic-guard
-bash scripts/build.sh
+bash scripts/test.sh
 open "dist/guard/fuck-anthropic guard Preview.app"
 ```
 
-Choose **English / 简体中文** in the window. Production remembers your selection; Preview keeps it in memory only.
+The default Preview uses sample data and never activates the production filter. Open `ClaudeConnectionWatcher.xcodeproj` with **01 Preview (Safe)** for development. Canvas previews in `App/main.swift` cover ready, blocked, checking and disabled menu states. `CCW_CANVAS` is enabled only in the Xcode Preview target; the standalone CLI build does not require the Canvas macro plugin.
 
-## Before enabling real protection
+Production schemes are build-only. `CCW_BUILD_MODE=host bash scripts/build.sh` compiles without installing; `CCW_ARCHITECTURES='arm64 x86_64'` builds both architectures. Prefer Xcode MCP for incremental builds and diagnostics. See [contributing](CONTRIBUTING.md) and [branch/release workflow](docs/BRANCHES.md).
 
-This version requires a **dedicated Surge listener**, a first `IN-PORT` rule pinned to one supported Hysteria2 node, valid signing, and macOS filter approval. Shared proxy ports and ordinary Dock launches may not use that path. Follow the [setup guide](docs/UserGuide.en.md) first.
-
-Unknown processes, provider crashes, early boot packets and network transitions have coverage limits. There is a detection window; blocking is not guaranteed to be instantaneous. See [what is verified](docs/FEATURE-STATUS.md) and the [security model](SECURITY.md).
-
-<details>
-<summary><strong>Build the host and filter · contributor details</strong></summary>
-
-```bash
-bash scripts/test.sh
-CCW_BUILD_MODE=host bash scripts/build.sh
-```
-
-These commands build without installing. Ad-hoc signing does not establish protection. In `ClaudeConnectionWatcher.xcodeproj`, **01 Preview (Safe)** is the default Run scheme; production schemes are build-only. Set `CCW_ARCHITECTURES='arm64 x86_64'` for a Universal 2 build.
-
-Read [Contributing](CONTRIBUTING.md), [design and scope](docs/PRD.en.md), and [release notes](docs/RELEASE-NOTES.md). An [offline HTML guide](docs/UserGuide.en.html) is also included in the source; download it to read in a browser. GitHub displays HTML files as source code.
-
-</details>
-
----
-
-Process metadata stays local. Consented exit checks use Surge to reach `api.ipify.org` without Claude credentials. No telemetry or automatic direct fallback. [MIT license](LICENSE).
+Process and connection metadata remain local. Consented exit probes reach `api.ipify.org` through Surge without Claude credentials. No telemetry or automatic direct fallback. [MIT license](LICENSE).

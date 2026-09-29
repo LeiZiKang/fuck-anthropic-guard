@@ -1,1649 +1,832 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>56</string>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>objects</key>
-	<dict>
-		<key>FBDC4F23F93125BBEEAE800C</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>children</key>
-			<array>
-				<string>E7FF91CAFB54532265F64EE3</string>
-				<string>09C2A2982D80675CCEAB18FD</string>
-				<string>245C2EF2DE896B9CC11DC865</string>
-			</array>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>EDB72443B651978302BA1F11</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>13BFCF4A77A0B2A2CB4D7689</string>
-				<string>D6CE6CE05E445B0AB086060F</string>
-				<string>771770482261BF7B3F8B43D1</string>
-				<string>57209DAA3D868B3B33AE9847</string>
-			</array>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>BECBFE4E57DD2654178ABE88</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>containerPortal</key>
-			<string>98F54143AB4E86B28C3AFEE0</string>
-			<key>remoteGlobalIDString</key>
-			<string>D418FC35302CB7E0E639187A</string>
-			<key>remoteInfo</key>
-			<string>Filter</string>
-			<key>proxyType</key>
-			<string>1</string>
-		</dict>
-		<key>624EABDCF7E994AA6C5FAE5F</key>
-		<dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>EXECUTABLE_NAME</key>
-				<string>CCWPreview</string>
-				<key>SUPPORTED_PLATFORMS</key>
-				<string>macosx</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>PRODUCT_MODULE_NAME</key>
-				<string>CCWPreview</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.leizikang.claude-connection-watcher.preview</string>
-				<key>ENABLE_USER_SCRIPT_SANDBOXING</key>
-				<string>NO</string>
-				<key>SWIFT_INSTALL_OBJC_HEADER</key>
-				<string>NO</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>14.0</string>
-				<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
-				<string>$(inherited) CCW_PREVIEW</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf</string>
-				<key>CODE_SIGNING_ALLOWED</key>
-				<string>NO</string>
-				<key>SWIFT_OPTIMIZATION_LEVEL</key>
-				<string>-O</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-				<key>SWIFT_VERSION</key>
-				<string>5.0</string>
-				<key>CODE_SIGNING_REQUIRED</key>
-				<string>NO</string>
-				<key>PRODUCT_NAME</key>
-				<string>fuck-anthropic guard Preview</string>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string></string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>SWIFT_EMIT_LOC_STRINGS</key>
-				<string>NO</string>
-				<key>ENABLE_HARDENED_RUNTIME</key>
-				<string>YES</string>
-				<key>INFOPLIST_FILE</key>
-				<string>Preview/Info.plist</string>
-				<key>GENERATE_INFOPLIST_FILE</key>
-				<string>NO</string>
-			</dict>
-		</dict>
-		<key>D2B0EC2BD28626DA704FF9EA</key>
-		<dict>
-			<key>inputPaths</key>
-			<array>
-				<string>$(SRCROOT)/Info.plist</string>
-				<string>$(SRCROOT)/NetworkFilter/Info.plist</string>
-				<string>$(SRCROOT)/scripts/xcode-prepare-metadata.sh</string>
-				<string>$(SRCROOT)/scripts/mach_service_metadata.py</string>
-				<string>$(SRCROOT)/scripts/check_system_extension_metadata.py</string>
-			</array>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>outputPaths</key>
-			<array>
-				<string>$(DERIVED_FILE_DIR)/WatcherHost-Info.plist</string>
-			</array>
-			<key>shellScript</key>
-			<string>/bin/sh "$SRCROOT/scripts/xcode-prepare-metadata.sh" host "$DERIVED_FILE_DIR/WatcherHost-Info.plist"
-</string>
-			<key>files</key>
-			<array/>
-			<key>name</key>
-			<string>Prepare versioned Mach metadata</string>
-		</dict>
-		<key>D284BCED848A89CBC02CA8CA</key>
-		<dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>WRAPPER_EXTENSION</key>
-				<string>systemextension</string>
-				<key>EXECUTABLE_NAME</key>
-				<string>ClaudeConnectionFilter</string>
-				<key>SUPPORTED_PLATFORMS</key>
-				<string>macosx</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>PRODUCT_MODULE_NAME</key>
-				<string>ClaudeConnectionFilter</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.leizikang.claude-connection-watcher.filter</string>
-				<key>MACH_O_TYPE</key>
-				<string>mh_execute</string>
-				<key>ENABLE_USER_SCRIPT_SANDBOXING</key>
-				<string>NO</string>
-				<key>SWIFT_INSTALL_OBJC_HEADER</key>
-				<string>NO</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>14.0</string>
-				<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
-				<string>$(inherited)</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf</string>
-				<key>OTHER_LDFLAGS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>-lbsm</string>
-				</array>
-				<key>CODE_SIGNING_ALLOWED</key>
-				<string>NO</string>
-				<key>SWIFT_OPTIMIZATION_LEVEL</key>
-				<string>-O</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-				<key>SWIFT_VERSION</key>
-				<string>5.0</string>
-				<key>CODE_SIGNING_REQUIRED</key>
-				<string>NO</string>
-				<key>PRODUCT_NAME</key>
-				<string>com.leizikang.claude-connection-watcher.filter</string>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string></string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>SWIFT_OBJC_BRIDGING_HEADER</key>
-				<string>$(SRCROOT)/NetworkFilter/Sources/AuditToken.h</string>
-				<key>SWIFT_EMIT_LOC_STRINGS</key>
-				<string>NO</string>
-				<key>ENABLE_HARDENED_RUNTIME</key>
-				<string>YES</string>
-				<key>INFOPLIST_FILE</key>
-				<string>$(DERIVED_FILE_DIR)/WatcherProvider-Info.plist</string>
-				<key>GENERATE_INFOPLIST_FILE</key>
-				<string>NO</string>
-			</dict>
-		</dict>
-		<key>38F03FCBDACA10AAD4143C88</key>
-		<dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>CODE_SIGNING_ALLOWED</key>
-				<string>NO</string>
-				<key>SWIFT_OPTIMIZATION_LEVEL</key>
-				<string>-O</string>
-				<key>SWIFT_VERSION</key>
-				<string>5.0</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>13.0</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-			</dict>
-		</dict>
-		<key>02B037766766C6DED1BA1735</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>09C2A2982D80675CCEAB18FD</string>
-		</dict>
-		<key>3228CBBD1470DA4D96BB6031</key>
-		<dict>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Debug</string>
-			<key>buildConfigurations</key>
-			<array>
-				<string>5E943A6B292450981352A3CA</string>
-				<string>D284BCED848A89CBC02CA8CA</string>
-			</array>
-		</dict>
-		<key>5E943A6B292450981352A3CA</key>
-		<dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>WRAPPER_EXTENSION</key>
-				<string>systemextension</string>
-				<key>EXECUTABLE_NAME</key>
-				<string>ClaudeConnectionFilter</string>
-				<key>SUPPORTED_PLATFORMS</key>
-				<string>macosx</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>PRODUCT_MODULE_NAME</key>
-				<string>ClaudeConnectionFilter</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.leizikang.claude-connection-watcher.filter</string>
-				<key>MACH_O_TYPE</key>
-				<string>mh_execute</string>
-				<key>ENABLE_USER_SCRIPT_SANDBOXING</key>
-				<string>NO</string>
-				<key>SWIFT_INSTALL_OBJC_HEADER</key>
-				<string>NO</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>14.0</string>
-				<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
-				<string>$(inherited)</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf</string>
-				<key>OTHER_LDFLAGS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>-lbsm</string>
-				</array>
-				<key>CODE_SIGNING_ALLOWED</key>
-				<string>NO</string>
-				<key>SWIFT_OPTIMIZATION_LEVEL</key>
-				<string>-Onone</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-				<key>SWIFT_VERSION</key>
-				<string>5.0</string>
-				<key>CODE_SIGNING_REQUIRED</key>
-				<string>NO</string>
-				<key>PRODUCT_NAME</key>
-				<string>com.leizikang.claude-connection-watcher.filter</string>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string></string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>SWIFT_OBJC_BRIDGING_HEADER</key>
-				<string>$(SRCROOT)/NetworkFilter/Sources/AuditToken.h</string>
-				<key>SWIFT_EMIT_LOC_STRINGS</key>
-				<string>NO</string>
-				<key>ENABLE_HARDENED_RUNTIME</key>
-				<string>YES</string>
-				<key>INFOPLIST_FILE</key>
-				<string>$(DERIVED_FILE_DIR)/WatcherProvider-Info.plist</string>
-				<key>GENERATE_INFOPLIST_FILE</key>
-				<string>NO</string>
-			</dict>
-		</dict>
-		<key>941798AECA264FECE6B7C45D</key>
-		<dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>CODE_SIGNING_ALLOWED</key>
-				<string>NO</string>
-				<key>SWIFT_VERSION</key>
-				<string>5.0</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>13.0</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-			</dict>
-		</dict>
-		<key>86029424A8614A5A67F9988C</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>D418FC35302CB7E0E639187A</string>
-			<key>targetProxy</key>
-			<string>BECBFE4E57DD2654178ABE88</string>
-		</dict>
-		<key>D4F47848D08864B49BE56A85</key>
-		<dict>
-			<key>inputPaths</key>
-			<array>
-				<string>$(SRCROOT)/Info.plist</string>
-				<string>$(SRCROOT)/NetworkFilter/Info.plist</string>
-				<string>$(SRCROOT)/scripts/xcode-prepare-metadata.sh</string>
-				<string>$(SRCROOT)/scripts/mach_service_metadata.py</string>
-				<string>$(SRCROOT)/scripts/check_system_extension_metadata.py</string>
-			</array>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>outputPaths</key>
-			<array>
-				<string>$(DERIVED_FILE_DIR)/WatcherProvider-Info.plist</string>
-				<string>$(DERIVED_FILE_DIR)/HostMetadata.plist</string>
-			</array>
-			<key>shellScript</key>
-			<string>/bin/sh "$SRCROOT/scripts/xcode-prepare-metadata.sh" provider "$DERIVED_FILE_DIR/WatcherProvider-Info.plist"
-</string>
-			<key>files</key>
-			<array/>
-			<key>name</key>
-			<string>Prepare versioned Mach metadata</string>
-		</dict>
-		<key>6EDB694E9593A684B6C9DED4</key>
-		<dict>
-			<key>alwaysOutOfDate</key>
-			<string>1</string>
-			<key>inputPaths</key>
-			<array>
-				<string>$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)</string>
-				<string>$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Library/SystemExtensions/com.leizikang.claude-connection-watcher.filter.systemextension/Contents/Info.plist</string>
-			</array>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellScript</key>
-			<string>if [ -x /opt/homebrew/bin/python3 ]; then p=/opt/homebrew/bin/python3; else p=/usr/bin/python3; fi
-"$p" "$SRCROOT/scripts/check_system_extension_metadata.py" "$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Library/SystemExtensions/com.leizikang.claude-connection-watcher.filter.systemextension/Contents/Info.plist" --host "$TARGET_BUILD_DIR/$INFOPLIST_PATH"
-</string>
-			<key>name</key>
-			<string>Validate embedded versioned metadata</string>
-			<key>files</key>
-			<array/>
-		</dict>
-		<key>E50290A24C49A459B43487C5</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-			<key>children</key>
-			<array>
-				<string>8BF346FE6C0CB7677AAF1CB6</string>
-				<string>FBDC4F23F93125BBEEAE800C</string>
-				<string>32A8B885E97E29217D100BEA</string>
-				<string>56D304A5CC7328DACEDC8DB5</string>
-			</array>
-		</dict>
-		<key>460F3CA3D9F3D56E6830BA63</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>F37A572A30B46B6263B9B656</string>
-			<key>productReference</key>
-			<string>E7FF91CAFB54532265F64EE3</string>
-			<key>productType</key>
-			<string>com.apple.product-type.application</string>
-			<key>productName</key>
-			<string>fuck-anthropic guard Preview</string>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>buildPhases</key>
-			<array>
-				<string>B8C4571A2CD606BD925EF2ED</string>
-				<string>4683C38DD1721CE74C3FAAE3</string>
-				<string>EDB72443B651978302BA1F11</string>
-			</array>
-			<key>dependencies</key>
-			<array/>
-			<key>name</key>
-			<string>Preview</string>
-			<key>buildRules</key>
-			<array/>
-		</dict>
-		<key>04767854FB4CC9AF495F7643</key>
-		<dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>EXECUTABLE_NAME</key>
-				<string>ClaudeConnectionWatcher</string>
-				<key>SUPPORTED_PLATFORMS</key>
-				<string>macosx</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>PRODUCT_MODULE_NAME</key>
-				<string>ClaudeConnectionWatcher</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.leizikang.claude-connection-watcher</string>
-				<key>ENABLE_USER_SCRIPT_SANDBOXING</key>
-				<string>NO</string>
-				<key>SWIFT_INSTALL_OBJC_HEADER</key>
-				<string>NO</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>14.0</string>
-				<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
-				<string>$(inherited)</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf</string>
-				<key>OTHER_LDFLAGS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>-lbsm</string>
-				</array>
-				<key>CODE_SIGNING_ALLOWED</key>
-				<string>NO</string>
-				<key>SWIFT_OPTIMIZATION_LEVEL</key>
-				<string>-O</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-				<key>SWIFT_VERSION</key>
-				<string>5.0</string>
-				<key>CODE_SIGNING_REQUIRED</key>
-				<string>NO</string>
-				<key>PRODUCT_NAME</key>
-				<string>fuck-anthropic guard</string>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string></string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>SWIFT_OBJC_BRIDGING_HEADER</key>
-				<string>$(SRCROOT)/NetworkFilter/Sources/AuditToken.h</string>
-				<key>SWIFT_EMIT_LOC_STRINGS</key>
-				<string>NO</string>
-				<key>ENABLE_HARDENED_RUNTIME</key>
-				<string>YES</string>
-				<key>INFOPLIST_FILE</key>
-				<string>$(DERIVED_FILE_DIR)/WatcherHost-Info.plist</string>
-				<key>GENERATE_INFOPLIST_FILE</key>
-				<string>NO</string>
-			</dict>
-		</dict>
-		<key>CAA56CD26120BDE7637B0177</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>9105F1E029E6B37E36CDEF3C</string>
-				<string>CB11DB9E62859C81682DC71C</string>
-				<string>87692D0BFDB104880158065F</string>
-				<string>C3EFFA647345F0231FD9A6AD</string>
-				<string>5E733438DE97889D4B0ABFE8</string>
-				<string>5F3DBBB360FE042D0B663D18</string>
-				<string>E47885DDCBF8D6EBAA9F4526</string>
-				<string>89719D36998C63469266C918</string>
-				<string>45618B01E2545228A81BB656</string>
-				<string>B9BE7EC4A9367BA3C7CF55E3</string>
-				<string>E077A2AA86462F0608389476</string>
-				<string>A5E998FF08B7D4B34E18A935</string>
-				<string>59F813DF2C7CD89EF84D1E43</string>
-				<string>0C8CC7BD53FE0DC985FA0206</string>
-				<string>B3EA8740B6D5DE6EBCC91FBD</string>
-				<string>D00F7A3F709E681BC43258C2</string>
-				<string>431BF3E91E6AE59828D6F1F9</string>
-				<string>E3B182774192E09F165D226D</string>
-			</array>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>B8C4571A2CD606BD925EF2ED</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>127B53D3360F872DD9E4AED0</string>
-				<string>4BA337E4B280B498B2111F02</string>
-				<string>F58B0674901F5745E111F3D4</string>
-				<string>3C53B592B46CEA67EE28E111</string>
-				<string>6E9D889640D71577309F44C0</string>
-				<string>6CAF7C8E317733F787C93316</string>
-				<string>17D86A8EE8439A9E5E02C7E4</string>
-				<string>70376A218C52C6EC7B7C6B8F</string>
-				<string>5DA48EC240C18E723172F9CA</string>
-				<string>31348B994F0C2D066BA48F96</string>
-			</array>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>09C2A2982D80675CCEAB18FD</key>
-		<dict>
-			<key>path</key>
-			<string>com.leizikang.claude-connection-watcher.filter.systemextension</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>explicitFileType</key>
-			<string>wrapper.system-extension</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>B3B9D39EF28D2A24A20856FC</key>
-		<dict>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Debug</string>
-			<key>buildConfigurations</key>
-			<array>
-				<string>23C4CBE53C0C4D5217DC7DC0</string>
-				<string>04767854FB4CC9AF495F7643</string>
-			</array>
-		</dict>
-		<key>4DDCD85876C3B131CE70E31C</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>6587D8BCA2641750C8729129</string>
-				<string>4F469B8C3E2A303101C25329</string>
-				<string>101F83E89899977A3D6CB9D6</string>
-				<string>FE99DD26244A17328E234FB0</string>
-			</array>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>245C2EF2DE896B9CC11DC865</key>
-		<dict>
-			<key>path</key>
-			<string>fuck-anthropic guard.app</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>explicitFileType</key>
-			<string>wrapper.application</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>852CB34CB44D396A13747821</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>dstSubfolderSpec</key>
-			<string>16</string>
-			<key>isa</key>
-			<string>PBXCopyFilesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>dstPath</key>
-			<string>$(CONTENTS_FOLDER_PATH)/Library/SystemExtensions</string>
-			<key>files</key>
-			<array>
-				<string>02B037766766C6DED1BA1735</string>
-			</array>
-			<key>name</key>
-			<string>Embed Filter</string>
-		</dict>
-		<key>98F54143AB4E86B28C3AFEE0</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>9A306D578D83D1E0821F2E35</string>
-			<key>targets</key>
-			<array>
-				<string>460F3CA3D9F3D56E6830BA63</string>
-				<string>EB1D256CD02EB80CBDA1D98F</string>
-				<string>D418FC35302CB7E0E639187A</string>
-			</array>
-			<key>developmentRegion</key>
-			<string>en</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-				<string>Base</string>
-				<string>zh-Hans</string>
-			</array>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 14.0</string>
-			<key>productRefGroup</key>
-			<string>FBDC4F23F93125BBEEAE800C</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>attributes</key>
-			<dict>
-				<key>LastUpgradeCheck</key>
-				<string>2700</string>
-				<key>BuildIndependentTargetsInParallel</key>
-				<string>YES</string>
-			</dict>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>projectRoot</key>
-			<string></string>
-			<key>mainGroup</key>
-			<string>E50290A24C49A459B43487C5</string>
-		</dict>
-		<key>9A306D578D83D1E0821F2E35</key>
-		<dict>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Debug</string>
-			<key>buildConfigurations</key>
-			<array>
-				<string>941798AECA264FECE6B7C45D</string>
-				<string>38F03FCBDACA10AAD4143C88</string>
-			</array>
-		</dict>
-		<key>50CDAB6A2460378696FAA036</key>
-		<dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>EXECUTABLE_NAME</key>
-				<string>CCWPreview</string>
-				<key>SUPPORTED_PLATFORMS</key>
-				<string>macosx</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>PRODUCT_MODULE_NAME</key>
-				<string>CCWPreview</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.leizikang.claude-connection-watcher.preview</string>
-				<key>ENABLE_USER_SCRIPT_SANDBOXING</key>
-				<string>NO</string>
-				<key>SWIFT_INSTALL_OBJC_HEADER</key>
-				<string>NO</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>14.0</string>
-				<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
-				<string>$(inherited) CCW_PREVIEW</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf</string>
-				<key>CODE_SIGNING_ALLOWED</key>
-				<string>NO</string>
-				<key>SWIFT_OPTIMIZATION_LEVEL</key>
-				<string>-Onone</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-				<key>SWIFT_VERSION</key>
-				<string>5.0</string>
-				<key>CODE_SIGNING_REQUIRED</key>
-				<string>NO</string>
-				<key>PRODUCT_NAME</key>
-				<string>fuck-anthropic guard Preview</string>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string></string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>SWIFT_EMIT_LOC_STRINGS</key>
-				<string>NO</string>
-				<key>ENABLE_HARDENED_RUNTIME</key>
-				<string>YES</string>
-				<key>INFOPLIST_FILE</key>
-				<string>Preview/Info.plist</string>
-				<key>GENERATE_INFOPLIST_FILE</key>
-				<string>NO</string>
-			</dict>
-		</dict>
-		<key>8B244F9CA8C2B15B18F6E0C1</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>D418FC35302CB7E0E639187A</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>3228CBBD1470DA4D96BB6031</string>
-			<key>productReference</key>
-			<string>09C2A2982D80675CCEAB18FD</string>
-			<key>productType</key>
-			<string>com.apple.product-type.system-extension</string>
-			<key>productName</key>
-			<string>com.leizikang.claude-connection-watcher.filter</string>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>buildPhases</key>
-			<array>
-				<string>D4F47848D08864B49BE56A85</string>
-				<string>44EF9C912F66E2760C4ACB0E</string>
-				<string>067C5AF0BA0978D7B47A8396</string>
-				<string>037B39F692E7BFDF0F109291</string>
-			</array>
-			<key>dependencies</key>
-			<array/>
-			<key>name</key>
-			<string>Filter</string>
-			<key>buildRules</key>
-			<array/>
-		</dict>
-		<key>067C5AF0BA0978D7B47A8396</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>E7FF91CAFB54532265F64EE3</key>
-		<dict>
-			<key>path</key>
-			<string>fuck-anthropic guard Preview.app</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>explicitFileType</key>
-			<string>wrapper.application</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>4683C38DD1721CE74C3FAAE3</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>F37A572A30B46B6263B9B656</key>
-		<dict>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Debug</string>
-			<key>buildConfigurations</key>
-			<array>
-				<string>50CDAB6A2460378696FAA036</string>
-				<string>624EABDCF7E994AA6C5FAE5F</string>
-			</array>
-		</dict>
-		<key>44EF9C912F66E2760C4ACB0E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>D76C904057E6B283136FD63E</string>
-				<string>661E5258B7FC3A0417BEF9F9</string>
-				<string>8AC27DD156F887553F69F5B8</string>
-				<string>1F5D77DA2DDBEBBB32234B48</string>
-				<string>9D1B915B354C950247231D14</string>
-				<string>64634DF7094E4A2EE335E5C3</string>
-				<string>31C3E99EEBB144B7CBA78350</string>
-				<string>D46EA32C3750445E050CAD39</string>
-				<string>67D923B459D7F6099078C1AC</string>
-				<string>3C5590504670AC69BED80A8A</string>
-				<string>8C6BB0E6ED936B744CF20978</string>
-			</array>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>23C4CBE53C0C4D5217DC7DC0</key>
-		<dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>EXECUTABLE_NAME</key>
-				<string>ClaudeConnectionWatcher</string>
-				<key>SUPPORTED_PLATFORMS</key>
-				<string>macosx</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>PRODUCT_MODULE_NAME</key>
-				<string>ClaudeConnectionWatcher</string>
-				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.leizikang.claude-connection-watcher</string>
-				<key>ENABLE_USER_SCRIPT_SANDBOXING</key>
-				<string>NO</string>
-				<key>SWIFT_INSTALL_OBJC_HEADER</key>
-				<string>NO</string>
-				<key>MACOSX_DEPLOYMENT_TARGET</key>
-				<string>14.0</string>
-				<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
-				<string>$(inherited)</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf</string>
-				<key>OTHER_LDFLAGS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>-lbsm</string>
-				</array>
-				<key>CODE_SIGNING_ALLOWED</key>
-				<string>NO</string>
-				<key>SWIFT_OPTIMIZATION_LEVEL</key>
-				<string>-Onone</string>
-				<key>SDKROOT</key>
-				<string>macosx</string>
-				<key>SWIFT_VERSION</key>
-				<string>5.0</string>
-				<key>CODE_SIGNING_REQUIRED</key>
-				<string>NO</string>
-				<key>PRODUCT_NAME</key>
-				<string>fuck-anthropic guard</string>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string></string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>SWIFT_OBJC_BRIDGING_HEADER</key>
-				<string>$(SRCROOT)/NetworkFilter/Sources/AuditToken.h</string>
-				<key>SWIFT_EMIT_LOC_STRINGS</key>
-				<string>NO</string>
-				<key>ENABLE_HARDENED_RUNTIME</key>
-				<string>YES</string>
-				<key>INFOPLIST_FILE</key>
-				<string>$(DERIVED_FILE_DIR)/WatcherHost-Info.plist</string>
-				<key>GENERATE_INFOPLIST_FILE</key>
-				<string>NO</string>
-			</dict>
-		</dict>
-		<key>EB1D256CD02EB80CBDA1D98F</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>B3B9D39EF28D2A24A20856FC</string>
-			<key>productReference</key>
-			<string>245C2EF2DE896B9CC11DC865</string>
-			<key>productType</key>
-			<string>com.apple.product-type.application</string>
-			<key>productName</key>
-			<string>fuck-anthropic guard</string>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>buildPhases</key>
-			<array>
-				<string>D2B0EC2BD28626DA704FF9EA</string>
-				<string>CAA56CD26120BDE7637B0177</string>
-				<string>8B244F9CA8C2B15B18F6E0C1</string>
-				<string>4DDCD85876C3B131CE70E31C</string>
-				<string>852CB34CB44D396A13747821</string>
-				<string>6EDB694E9593A684B6C9DED4</string>
-			</array>
-			<key>dependencies</key>
-			<array>
-				<string>86029424A8614A5A67F9988C</string>
-			</array>
-			<key>name</key>
-			<string>Watcher</string>
-			<key>buildRules</key>
-			<array/>
-		</dict>
-		<key>48DEBC5E8FDDDF5AFBDAE726</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Guard/App/GuardProbe.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>2E56B57FC1DBA7272CAC9E78</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Guard/App/main.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>731E26C87839D6F52BEA34F0</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Guard/Shared/GuardianTimer.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>9A1C1CA92262C10D0F05D97E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Guard/Shared/ProbeModel.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>2757B4990068BF4A1E52D35F</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Guard/Shared/ProcessIdentity.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>8731C79D305C8FC05705A446</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Guard/Shared/RuntimeIdentity.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>16DDDC6F8B190FE7DE9F5450</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Guard/Tests/GuardTests.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>57E1B87FD73D584468216B9B</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Info.plist</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-		</dict>
-		<key>601A2F7619FDAA353BFE4045</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>NetworkFilter/Info.plist</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-		</dict>
-		<key>FD8B5EF49BDB58C7A21A309F</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>NetworkFilter/Sources/AuditToken.c</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.c</string>
-		</dict>
-		<key>5969CC7A5F7331AF5D0BF433</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>NetworkFilter/Sources/AuditToken.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-		</dict>
-		<key>174FBB6D931783E323A6D75B</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>NetworkFilter/Sources/main.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>64D8C1956E23F30196DC2D7A</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Preview/Info.plist</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-		</dict>
-		<key>1FA9FF446A2B3F0FB8F4C132</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Resources/Watcher.icns</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>image.icns</string>
-		</dict>
-		<key>34710052A7BD20E13603ACBD</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sources/CommandRunner.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>8F090A171AE1C35F475B7C2C</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sources/FilterController.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>91DD48A342B9002D1BD39436</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sources/FilterProtocol.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>72C358936A0DFB1D90308632</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sources/LocalSurgeAuditor.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>11AF7625E4B578F461C9A772</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sources/Localization.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>3735A7F817E7484BAE92A9C9</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sources/PolicyEvidence.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>90B1D51116CC3AF14C861F8D</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sources/ProcessAncestry.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>BD41FCAFEE396EFE6CF63C3C</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sources/ProcessInventory.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>91F14D96DFAA1959AB91E3FD</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sources/ProxyTransportConfiguration.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>7A20208A7A5656DF082C6749</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sources/RouteRequirements.swift</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-		</dict>
-		<key>C16AEB28B181A5969B6A473B</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>docs/UserGuide.html</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>lastKnownFileType</key>
-			<string>text.html</string>
-		</dict>
-		<key>8BF346FE6C0CB7677AAF1CB6</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Surge Guard</string>
-			<key>children</key>
-			<array>
-				<string>48DEBC5E8FDDDF5AFBDAE726</string>
-				<string>2E56B57FC1DBA7272CAC9E78</string>
-				<string>731E26C87839D6F52BEA34F0</string>
-				<string>9A1C1CA92262C10D0F05D97E</string>
-				<string>2757B4990068BF4A1E52D35F</string>
-				<string>8731C79D305C8FC05705A446</string>
-				<string>16DDDC6F8B190FE7DE9F5450</string>
-				<string>57E1B87FD73D584468216B9B</string>
-				<string>601A2F7619FDAA353BFE4045</string>
-				<string>FD8B5EF49BDB58C7A21A309F</string>
-				<string>5969CC7A5F7331AF5D0BF433</string>
-				<string>174FBB6D931783E323A6D75B</string>
-				<string>64D8C1956E23F30196DC2D7A</string>
-				<string>1FA9FF446A2B3F0FB8F4C132</string>
-				<string>34710052A7BD20E13603ACBD</string>
-				<string>8F090A171AE1C35F475B7C2C</string>
-				<string>91DD48A342B9002D1BD39436</string>
-				<string>72C358936A0DFB1D90308632</string>
-				<string>11AF7625E4B578F461C9A772</string>
-				<string>3735A7F817E7484BAE92A9C9</string>
-				<string>90B1D51116CC3AF14C861F8D</string>
-				<string>BD41FCAFEE396EFE6CF63C3C</string>
-				<string>91F14D96DFAA1959AB91E3FD</string>
-				<string>7A20208A7A5656DF082C6749</string>
-				<string>C16AEB28B181A5969B6A473B</string>
-			</array>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>127B53D3360F872DD9E4AED0</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>11AF7625E4B578F461C9A772</string>
-		</dict>
-		<key>4BA337E4B280B498B2111F02</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>91DD48A342B9002D1BD39436</string>
-		</dict>
-		<key>F58B0674901F5745E111F3D4</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>7A20208A7A5656DF082C6749</string>
-		</dict>
-		<key>3C53B592B46CEA67EE28E111</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>3735A7F817E7484BAE92A9C9</string>
-		</dict>
-		<key>6E9D889640D71577309F44C0</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>90B1D51116CC3AF14C861F8D</string>
-		</dict>
-		<key>6CAF7C8E317733F787C93316</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>2757B4990068BF4A1E52D35F</string>
-		</dict>
-		<key>17D86A8EE8439A9E5E02C7E4</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>9A1C1CA92262C10D0F05D97E</string>
-		</dict>
-		<key>70376A218C52C6EC7B7C6B8F</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>731E26C87839D6F52BEA34F0</string>
-		</dict>
-		<key>5DA48EC240C18E723172F9CA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>2E56B57FC1DBA7272CAC9E78</string>
-		</dict>
-		<key>31348B994F0C2D066BA48F96</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>16DDDC6F8B190FE7DE9F5450</string>
-		</dict>
-		<key>13BFCF4A77A0B2A2CB4D7689</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>1FA9FF446A2B3F0FB8F4C132</string>
-		</dict>
-		<key>D6CE6CE05E445B0AB086060F</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>C16AEB28B181A5969B6A473B</string>
-		</dict>
-		<key>9105F1E029E6B37E36CDEF3C</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>11AF7625E4B578F461C9A772</string>
-		</dict>
-		<key>CB11DB9E62859C81682DC71C</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>91DD48A342B9002D1BD39436</string>
-		</dict>
-		<key>87692D0BFDB104880158065F</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>7A20208A7A5656DF082C6749</string>
-		</dict>
-		<key>C3EFFA647345F0231FD9A6AD</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>3735A7F817E7484BAE92A9C9</string>
-		</dict>
-		<key>5E733438DE97889D4B0ABFE8</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>90B1D51116CC3AF14C861F8D</string>
-		</dict>
-		<key>5F3DBBB360FE042D0B663D18</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>2757B4990068BF4A1E52D35F</string>
-		</dict>
-		<key>E47885DDCBF8D6EBAA9F4526</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>9A1C1CA92262C10D0F05D97E</string>
-		</dict>
-		<key>89719D36998C63469266C918</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>731E26C87839D6F52BEA34F0</string>
-		</dict>
-		<key>45618B01E2545228A81BB656</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>2E56B57FC1DBA7272CAC9E78</string>
-		</dict>
-		<key>B9BE7EC4A9367BA3C7CF55E3</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>16DDDC6F8B190FE7DE9F5450</string>
-		</dict>
-		<key>E077A2AA86462F0608389476</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>8731C79D305C8FC05705A446</string>
-		</dict>
-		<key>A5E998FF08B7D4B34E18A935</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>34710052A7BD20E13603ACBD</string>
-		</dict>
-		<key>59F813DF2C7CD89EF84D1E43</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>BD41FCAFEE396EFE6CF63C3C</string>
-		</dict>
-		<key>0C8CC7BD53FE0DC985FA0206</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>72C358936A0DFB1D90308632</string>
-		</dict>
-		<key>B3EA8740B6D5DE6EBCC91FBD</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>8F090A171AE1C35F475B7C2C</string>
-		</dict>
-		<key>D00F7A3F709E681BC43258C2</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>91F14D96DFAA1959AB91E3FD</string>
-		</dict>
-		<key>431BF3E91E6AE59828D6F1F9</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>48DEBC5E8FDDDF5AFBDAE726</string>
-		</dict>
-		<key>E3B182774192E09F165D226D</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>FD8B5EF49BDB58C7A21A309F</string>
-		</dict>
-		<key>6587D8BCA2641750C8729129</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>1FA9FF446A2B3F0FB8F4C132</string>
-		</dict>
-		<key>4F469B8C3E2A303101C25329</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>C16AEB28B181A5969B6A473B</string>
-		</dict>
-		<key>D76C904057E6B283136FD63E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>11AF7625E4B578F461C9A772</string>
-		</dict>
-		<key>661E5258B7FC3A0417BEF9F9</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>91DD48A342B9002D1BD39436</string>
-		</dict>
-		<key>8AC27DD156F887553F69F5B8</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>7A20208A7A5656DF082C6749</string>
-		</dict>
-		<key>1F5D77DA2DDBEBBB32234B48</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>3735A7F817E7484BAE92A9C9</string>
-		</dict>
-		<key>9D1B915B354C950247231D14</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>90B1D51116CC3AF14C861F8D</string>
-		</dict>
-		<key>64634DF7094E4A2EE335E5C3</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>2757B4990068BF4A1E52D35F</string>
-		</dict>
-		<key>31C3E99EEBB144B7CBA78350</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>9A1C1CA92262C10D0F05D97E</string>
-		</dict>
-		<key>D46EA32C3750445E050CAD39</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>731E26C87839D6F52BEA34F0</string>
-		</dict>
-		<key>67D923B459D7F6099078C1AC</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>8731C79D305C8FC05705A446</string>
-		</dict>
-		<key>3C5590504670AC69BED80A8A</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>174FBB6D931783E323A6D75B</string>
-		</dict>
-		<key>8C6BB0E6ED936B744CF20978</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>FD8B5EF49BDB58C7A21A309F</string>
-		</dict>
-		<key>32A8B885E97E29217D100BEA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.html</string>
-			<key>path</key>
-			<string>docs/UserGuide.en.html</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>BD9975AE2FD37781A812E525</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>en</string>
-			<key>path</key>
-			<string>Resources/en.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>E81E1FA4F6AAF55DFC99CEB7</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.strings</string>
-			<key>name</key>
-			<string>zh-Hans</string>
-			<key>path</key>
-			<string>Resources/zh-Hans.lproj/InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>56D304A5CC7328DACEDC8DB5</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>children</key>
-			<array>
-				<string>BD9975AE2FD37781A812E525</string>
-				<string>E81E1FA4F6AAF55DFC99CEB7</string>
-			</array>
-			<key>name</key>
-			<string>InfoPlist.strings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>771770482261BF7B3F8B43D1</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>56D304A5CC7328DACEDC8DB5</string>
-		</dict>
-		<key>57209DAA3D868B3B33AE9847</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>32A8B885E97E29217D100BEA</string>
-		</dict>
-		<key>037B39F692E7BFDF0F109291</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>86366282910C1F3D546DBA56</string>
-			</array>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>86366282910C1F3D546DBA56</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>56D304A5CC7328DACEDC8DB5</string>
-		</dict>
-		<key>101F83E89899977A3D6CB9D6</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>56D304A5CC7328DACEDC8DB5</string>
-		</dict>
-		<key>FE99DD26244A17328E234FB0</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>fileRef</key>
-			<string>32A8B885E97E29217D100BEA</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>98F54143AB4E86B28C3AFEE0</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02B037766766C6DED1BA1735 /* com.leizikang.claude-connection-watcher.filter.systemextension in Embed Filter */ = {isa = PBXBuildFile; fileRef = 09C2A2982D80675CCEAB18FD /* com.leizikang.claude-connection-watcher.filter.systemextension */; };
+		0C8CC7BD53FE0DC985FA0206 /* LocalSurgeAuditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C358936A0DFB1D90308632 /* LocalSurgeAuditor.swift */; };
+		101F83E89899977A3D6CB9D6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D304A5CC7328DACEDC8DB5 /* InfoPlist.strings */; };
+		127B53D3360F872DD9E4AED0 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11AF7625E4B578F461C9A772 /* Localization.swift */; };
+		13BFCF4A77A0B2A2CB4D7689 /* Watcher.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1FA9FF446A2B3F0FB8F4C132 /* Watcher.icns */; };
+		17D86A8EE8439A9E5E02C7E4 /* ProbeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C1CA92262C10D0F05D97E /* ProbeModel.swift */; };
+		1F5D77DA2DDBEBBB32234B48 /* PolicyEvidence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3735A7F817E7484BAE92A9C9 /* PolicyEvidence.swift */; };
+		31348B994F0C2D066BA48F96 /* GuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DDDC6F8B190FE7DE9F5450 /* GuardTests.swift */; };
+		31C3E99EEBB144B7CBA78350 /* ProbeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C1CA92262C10D0F05D97E /* ProbeModel.swift */; };
+		3C53B592B46CEA67EE28E111 /* PolicyEvidence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3735A7F817E7484BAE92A9C9 /* PolicyEvidence.swift */; };
+		3C5590504670AC69BED80A8A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174FBB6D931783E323A6D75B /* main.swift */; };
+		431BF3E91E6AE59828D6F1F9 /* GuardProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DEBC5E8FDDDF5AFBDAE726 /* GuardProbe.swift */; };
+		45618B01E2545228A81BB656 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E56B57FC1DBA7272CAC9E78 /* main.swift */; };
+		4BA337E4B280B498B2111F02 /* FilterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DD48A342B9002D1BD39436 /* FilterProtocol.swift */; };
+		4F469B8C3E2A303101C25329 /* UserGuide.html in Resources */ = {isa = PBXBuildFile; fileRef = C16AEB28B181A5969B6A473B /* UserGuide.html */; };
+		57209DAA3D868B3B33AE9847 /* UserGuide.en.html in Resources */ = {isa = PBXBuildFile; fileRef = 32A8B885E97E29217D100BEA /* UserGuide.en.html */; };
+		59F813DF2C7CD89EF84D1E43 /* ProcessInventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD41FCAFEE396EFE6CF63C3C /* ProcessInventory.swift */; };
+		5DA48EC240C18E723172F9CA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E56B57FC1DBA7272CAC9E78 /* main.swift */; };
+		5E733438DE97889D4B0ABFE8 /* ProcessAncestry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B1D51116CC3AF14C861F8D /* ProcessAncestry.swift */; };
+		5F3DBBB360FE042D0B663D18 /* ProcessIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2757B4990068BF4A1E52D35F /* ProcessIdentity.swift */; };
+		64634DF7094E4A2EE335E5C3 /* ProcessIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2757B4990068BF4A1E52D35F /* ProcessIdentity.swift */; };
+		6587D8BCA2641750C8729129 /* Watcher.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1FA9FF446A2B3F0FB8F4C132 /* Watcher.icns */; };
+		661E5258B7FC3A0417BEF9F9 /* FilterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DD48A342B9002D1BD39436 /* FilterProtocol.swift */; };
+		67D923B459D7F6099078C1AC /* RuntimeIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731C79D305C8FC05705A446 /* RuntimeIdentity.swift */; };
+		6CAF7C8E317733F787C93316 /* ProcessIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2757B4990068BF4A1E52D35F /* ProcessIdentity.swift */; };
+		6E9D889640D71577309F44C0 /* ProcessAncestry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B1D51116CC3AF14C861F8D /* ProcessAncestry.swift */; };
+		70376A218C52C6EC7B7C6B8F /* GuardianTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E26C87839D6F52BEA34F0 /* GuardianTimer.swift */; };
+		771770482261BF7B3F8B43D1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D304A5CC7328DACEDC8DB5 /* InfoPlist.strings */; };
+		86366282910C1F3D546DBA56 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56D304A5CC7328DACEDC8DB5 /* InfoPlist.strings */; };
+		87692D0BFDB104880158065F /* RouteRequirements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20208A7A5656DF082C6749 /* RouteRequirements.swift */; };
+		89719D36998C63469266C918 /* GuardianTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E26C87839D6F52BEA34F0 /* GuardianTimer.swift */; };
+		8AC27DD156F887553F69F5B8 /* RouteRequirements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20208A7A5656DF082C6749 /* RouteRequirements.swift */; };
+		8C6BB0E6ED936B744CF20978 /* AuditToken.c in Sources */ = {isa = PBXBuildFile; fileRef = FD8B5EF49BDB58C7A21A309F /* AuditToken.c */; };
+		9105F1E029E6B37E36CDEF3C /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11AF7625E4B578F461C9A772 /* Localization.swift */; };
+		9D1B915B354C950247231D14 /* ProcessAncestry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B1D51116CC3AF14C861F8D /* ProcessAncestry.swift */; };
+		A5E998FF08B7D4B34E18A935 /* CommandRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34710052A7BD20E13603ACBD /* CommandRunner.swift */; };
+		B3EA8740B6D5DE6EBCC91FBD /* FilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F090A171AE1C35F475B7C2C /* FilterController.swift */; };
+		B9BE7EC4A9367BA3C7CF55E3 /* GuardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DDDC6F8B190FE7DE9F5450 /* GuardTests.swift */; };
+		C3EFFA647345F0231FD9A6AD /* PolicyEvidence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3735A7F817E7484BAE92A9C9 /* PolicyEvidence.swift */; };
+		CB11DB9E62859C81682DC71C /* FilterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DD48A342B9002D1BD39436 /* FilterProtocol.swift */; };
+		D00F7A3F709E681BC43258C2 /* ProxyTransportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F14D96DFAA1959AB91E3FD /* ProxyTransportConfiguration.swift */; };
+		D46EA32C3750445E050CAD39 /* GuardianTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E26C87839D6F52BEA34F0 /* GuardianTimer.swift */; };
+		D6CE6CE05E445B0AB086060F /* UserGuide.html in Resources */ = {isa = PBXBuildFile; fileRef = C16AEB28B181A5969B6A473B /* UserGuide.html */; };
+		D76C904057E6B283136FD63E /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11AF7625E4B578F461C9A772 /* Localization.swift */; };
+		E077A2AA86462F0608389476 /* RuntimeIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8731C79D305C8FC05705A446 /* RuntimeIdentity.swift */; };
+		E3B182774192E09F165D226D /* AuditToken.c in Sources */ = {isa = PBXBuildFile; fileRef = FD8B5EF49BDB58C7A21A309F /* AuditToken.c */; };
+		E47885DDCBF8D6EBAA9F4526 /* ProbeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1C1CA92262C10D0F05D97E /* ProbeModel.swift */; };
+		F58B0674901F5745E111F3D4 /* RouteRequirements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A20208A7A5656DF082C6749 /* RouteRequirements.swift */; };
+		FE99DD26244A17328E234FB0 /* UserGuide.en.html in Resources */ = {isa = PBXBuildFile; fileRef = 32A8B885E97E29217D100BEA /* UserGuide.en.html */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BECBFE4E57DD2654178ABE88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D418FC35302CB7E0E639187A;
+			remoteInfo = Filter;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		852CB34CB44D396A13747821 /* Embed Filter */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Library/SystemExtensions";
+			dstSubfolderSpec = 16;
+			files = (
+				02B037766766C6DED1BA1735 /* com.leizikang.claude-connection-watcher.filter.systemextension in Embed Filter */,
+			);
+			name = "Embed Filter";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		04E207677EA98814C495ACF4 /* check_scope.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = check_scope.py; path = scripts/check_scope.py; sourceTree = SOURCE_ROOT; };
+		09C2A2982D80675CCEAB18FD /* com.leizikang.claude-connection-watcher.filter.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = "com.leizikang.claude-connection-watcher.filter.systemextension"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0CE666DF7DC9A637BB7CE9BE /* publish-release.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = "publish-release.sh"; path = "scripts/publish-release.sh"; sourceTree = SOURCE_ROOT; };
+		0EB564C3D478B0915721B57C /* PRD.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = PRD.md; path = docs/PRD.md; sourceTree = SOURCE_ROOT; };
+		11AF7625E4B578F461C9A772 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Localization.swift; path = Sources/Localization.swift; sourceTree = SOURCE_ROOT; };
+		16DDDC6F8B190FE7DE9F5450 /* GuardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GuardTests.swift; path = Guard/Tests/GuardTests.swift; sourceTree = SOURCE_ROOT; };
+		174FBB6D931783E323A6D75B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = main.swift; path = NetworkFilter/Sources/main.swift; sourceTree = SOURCE_ROOT; };
+		1FA9FF446A2B3F0FB8F4C132 /* Watcher.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Watcher.icns; path = Resources/Watcher.icns; sourceTree = SOURCE_ROOT; };
+		245C2EF2DE896B9CC11DC865 /* fuck-anthropic guard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "fuck-anthropic guard.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2757B4990068BF4A1E52D35F /* ProcessIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProcessIdentity.swift; path = Guard/Shared/ProcessIdentity.swift; sourceTree = SOURCE_ROOT; };
+		2E56B57FC1DBA7272CAC9E78 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = main.swift; path = Guard/App/main.swift; sourceTree = SOURCE_ROOT; };
+		2EE40D53B253B35677C99294 /* Filter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Filter.entitlements; path = NetworkFilter/Filter.entitlements; sourceTree = SOURCE_ROOT; };
+		32A8B885E97E29217D100BEA /* UserGuide.en.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = UserGuide.en.html; path = docs/UserGuide.en.html; sourceTree = SOURCE_ROOT; };
+		34710052A7BD20E13603ACBD /* CommandRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandRunner.swift; path = Sources/CommandRunner.swift; sourceTree = SOURCE_ROOT; };
+		3735A7F817E7484BAE92A9C9 /* PolicyEvidence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PolicyEvidence.swift; path = Sources/PolicyEvidence.swift; sourceTree = SOURCE_ROOT; };
+		43E207513EAA4E515529EAEE /* README.zh-CN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "README.zh-CN.md"; sourceTree = SOURCE_ROOT; };
+		48DEBC5E8FDDDF5AFBDAE726 /* GuardProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GuardProbe.swift; path = Guard/App/GuardProbe.swift; sourceTree = SOURCE_ROOT; };
+		535177A57DBA731C22CA09AD /* draw-icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "draw-icon.swift"; path = "scripts/draw-icon.swift"; sourceTree = SOURCE_ROOT; };
+		57E1B87FD73D584468216B9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
+		5969CC7A5F7331AF5D0BF433 /* AuditToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuditToken.h; path = NetworkFilter/Sources/AuditToken.h; sourceTree = SOURCE_ROOT; };
+		601A2F7619FDAA353BFE4045 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = NetworkFilter/Info.plist; sourceTree = SOURCE_ROOT; };
+		62C729AF4AB8CFA7B5BAD74A /* mach_service_metadata.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = mach_service_metadata.py; path = scripts/mach_service_metadata.py; sourceTree = SOURCE_ROOT; };
+		64D8C1956E23F30196DC2D7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Preview/Info.plist; sourceTree = SOURCE_ROOT; };
+		72C358936A0DFB1D90308632 /* LocalSurgeAuditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocalSurgeAuditor.swift; path = Sources/LocalSurgeAuditor.swift; sourceTree = SOURCE_ROOT; };
+		731E26C87839D6F52BEA34F0 /* GuardianTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GuardianTimer.swift; path = Guard/Shared/GuardianTimer.swift; sourceTree = SOURCE_ROOT; };
+		7479CB6A1714EE3B72C828DF /* BRANCHES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = BRANCHES.md; path = docs/BRANCHES.md; sourceTree = SOURCE_ROOT; };
+		7A20208A7A5656DF082C6749 /* RouteRequirements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RouteRequirements.swift; path = Sources/RouteRequirements.swift; sourceTree = SOURCE_ROOT; };
+		8731C79D305C8FC05705A446 /* RuntimeIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RuntimeIdentity.swift; path = Guard/Shared/RuntimeIdentity.swift; sourceTree = SOURCE_ROOT; };
+		89645843278FEB10A77C3254 /* xcode-prepare-metadata.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = "xcode-prepare-metadata.sh"; path = "scripts/xcode-prepare-metadata.sh"; sourceTree = SOURCE_ROOT; };
+		8F090A171AE1C35F475B7C2C /* FilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterController.swift; path = Sources/FilterController.swift; sourceTree = SOURCE_ROOT; };
+		90B1D51116CC3AF14C861F8D /* ProcessAncestry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProcessAncestry.swift; path = Sources/ProcessAncestry.swift; sourceTree = SOURCE_ROOT; };
+		91DD48A342B9002D1BD39436 /* FilterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterProtocol.swift; path = Sources/FilterProtocol.swift; sourceTree = SOURCE_ROOT; };
+		91F14D96DFAA1959AB91E3FD /* ProxyTransportConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProxyTransportConfiguration.swift; path = Sources/ProxyTransportConfiguration.swift; sourceTree = SOURCE_ROOT; };
+		9872A96C648349F24A25280A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		9A1C1CA92262C10D0F05D97E /* ProbeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProbeModel.swift; path = Guard/Shared/ProbeModel.swift; sourceTree = SOURCE_ROOT; };
+		9C0AD395B4B6957391EACA63 /* build.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = build.sh; path = scripts/build.sh; sourceTree = SOURCE_ROOT; };
+		9E4EFAE484F2F406E555F685 /* PRD.en.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = PRD.en.md; path = docs/PRD.en.md; sourceTree = SOURCE_ROOT; };
+		AA1C85EF845C1A2B36063B37 /* test.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = test.sh; path = scripts/test.sh; sourceTree = SOURCE_ROOT; };
+		AD65FC211542B5813F0D9081 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppIcon.png; path = Resources/AppIcon.png; sourceTree = SOURCE_ROOT; };
+		BD41FCAFEE396EFE6CF63C3C /* ProcessInventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProcessInventory.swift; path = Sources/ProcessInventory.swift; sourceTree = SOURCE_ROOT; };
+		BD9975AE2FD37781A812E525 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		C16AEB28B181A5969B6A473B /* UserGuide.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = UserGuide.html; path = docs/UserGuide.html; sourceTree = SOURCE_ROOT; };
+		D24EA15FA4E4C09C8075B09B /* FEATURE-STATUS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "FEATURE-STATUS.md"; path = "docs/FEATURE-STATUS.md"; sourceTree = SOURCE_ROOT; };
+		E7FF91CAFB54532265F64EE3 /* fuck-anthropic guard Preview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "fuck-anthropic guard Preview.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E81E1FA4F6AAF55DFC99CEB7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Resources/zh-Hans.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
+		F9372CCDF6E58786F053D7F8 /* Host.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Host.entitlements; path = NetworkFilter/Host.entitlements; sourceTree = SOURCE_ROOT; };
+		FD8B5EF49BDB58C7A21A309F /* AuditToken.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = AuditToken.c; path = NetworkFilter/Sources/AuditToken.c; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		067C5AF0BA0978D7B47A8396 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4683C38DD1721CE74C3FAAE3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B244F9CA8C2B15B18F6E0C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		12853515D019BF4D011A3825 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				16DDDC6F8B190FE7DE9F5450 /* GuardTests.swift */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		1EE01EF83452B999CAD37D3E /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				64D8C1956E23F30196DC2D7A /* Info.plist */,
+			);
+			name = Preview;
+			sourceTree = "<group>";
+		};
+		238299E62837A696C5554E11 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1FA9FF446A2B3F0FB8F4C132 /* Watcher.icns */,
+				AD65FC211542B5813F0D9081 /* AppIcon.png */,
+				56D304A5CC7328DACEDC8DB5 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		2ADD8E911BC4DA98B753D265 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				9872A96C648349F24A25280A /* README.md */,
+				43E207513EAA4E515529EAEE /* README.zh-CN.md */,
+				C16AEB28B181A5969B6A473B /* UserGuide.html */,
+				32A8B885E97E29217D100BEA /* UserGuide.en.html */,
+				0EB564C3D478B0915721B57C /* PRD.md */,
+				9E4EFAE484F2F406E555F685 /* PRD.en.md */,
+				D24EA15FA4E4C09C8075B09B /* FEATURE-STATUS.md */,
+				7479CB6A1714EE3B72C828DF /* BRANCHES.md */,
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+		34CFF0EECDC7E3827845CD30 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				C951CA0EE53E3FF5C7CD020E /* Identity & Processes */,
+				9390704AEDE5D46B6E93485F /* Surge & Policy */,
+				4A93DB56150C7F91A6A9F4EA /* Utilities */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		4A93DB56150C7F91A6A9F4EA /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				11AF7625E4B578F461C9A772 /* Localization.swift */,
+				34710052A7BD20E13603ACBD /* CommandRunner.swift */,
+				731E26C87839D6F52BEA34F0 /* GuardianTimer.swift */,
+				9A1C1CA92262C10D0F05D97E /* ProbeModel.swift */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		9390704AEDE5D46B6E93485F /* Surge & Policy */ = {
+			isa = PBXGroup;
+			children = (
+				8F090A171AE1C35F475B7C2C /* FilterController.swift */,
+				72C358936A0DFB1D90308632 /* LocalSurgeAuditor.swift */,
+				3735A7F817E7484BAE92A9C9 /* PolicyEvidence.swift */,
+				7A20208A7A5656DF082C6749 /* RouteRequirements.swift */,
+				91F14D96DFAA1959AB91E3FD /* ProxyTransportConfiguration.swift */,
+				91DD48A342B9002D1BD39436 /* FilterProtocol.swift */,
+			);
+			name = "Surge & Policy";
+			sourceTree = "<group>";
+		};
+		C951CA0EE53E3FF5C7CD020E /* Identity & Processes */ = {
+			isa = PBXGroup;
+			children = (
+				2757B4990068BF4A1E52D35F /* ProcessIdentity.swift */,
+				8731C79D305C8FC05705A446 /* RuntimeIdentity.swift */,
+				BD41FCAFEE396EFE6CF63C3C /* ProcessInventory.swift */,
+				90B1D51116CC3AF14C861F8D /* ProcessAncestry.swift */,
+			);
+			name = "Identity & Processes";
+			sourceTree = "<group>";
+		};
+		E50290A24C49A459B43487C5 = {
+			isa = PBXGroup;
+			children = (
+				FBDCFAF7B03910000FF0B13D /* App */,
+				34CFF0EECDC7E3827845CD30 /* Core */,
+				F253F9C41055E74A671AE430 /* Network Filter */,
+				1EE01EF83452B999CAD37D3E /* Preview */,
+				12853515D019BF4D011A3825 /* Tests */,
+				238299E62837A696C5554E11 /* Resources */,
+				2ADD8E911BC4DA98B753D265 /* Documentation */,
+				FC1B34BF0A78F9AE15B6702F /* Build & Release */,
+				FBDC4F23F93125BBEEAE800C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F253F9C41055E74A671AE430 /* Network Filter */ = {
+			isa = PBXGroup;
+			children = (
+				174FBB6D931783E323A6D75B /* main.swift */,
+				FD8B5EF49BDB58C7A21A309F /* AuditToken.c */,
+				5969CC7A5F7331AF5D0BF433 /* AuditToken.h */,
+				601A2F7619FDAA353BFE4045 /* Info.plist */,
+				F9372CCDF6E58786F053D7F8 /* Host.entitlements */,
+				2EE40D53B253B35677C99294 /* Filter.entitlements */,
+			);
+			name = "Network Filter";
+			sourceTree = "<group>";
+		};
+		FBDC4F23F93125BBEEAE800C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E7FF91CAFB54532265F64EE3 /* fuck-anthropic guard Preview.app */,
+				09C2A2982D80675CCEAB18FD /* com.leizikang.claude-connection-watcher.filter.systemextension */,
+				245C2EF2DE896B9CC11DC865 /* fuck-anthropic guard.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FBDCFAF7B03910000FF0B13D /* App */ = {
+			isa = PBXGroup;
+			children = (
+				2E56B57FC1DBA7272CAC9E78 /* main.swift */,
+				48DEBC5E8FDDDF5AFBDAE726 /* GuardProbe.swift */,
+				57E1B87FD73D584468216B9B /* Info.plist */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		FC1B34BF0A78F9AE15B6702F /* Build & Release */ = {
+			isa = PBXGroup;
+			children = (
+				9C0AD395B4B6957391EACA63 /* build.sh */,
+				AA1C85EF845C1A2B36063B37 /* test.sh */,
+				0CE666DF7DC9A637BB7CE9BE /* publish-release.sh */,
+				04E207677EA98814C495ACF4 /* check_scope.py */,
+				89645843278FEB10A77C3254 /* xcode-prepare-metadata.sh */,
+				62C729AF4AB8CFA7B5BAD74A /* mach_service_metadata.py */,
+				535177A57DBA731C22CA09AD /* draw-icon.swift */,
+			);
+			name = "Build & Release";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		460F3CA3D9F3D56E6830BA63 /* Preview */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F37A572A30B46B6263B9B656 /* Build configuration list for PBXNativeTarget "Preview" */;
+			buildPhases = (
+				B8C4571A2CD606BD925EF2ED /* Sources */,
+				4683C38DD1721CE74C3FAAE3 /* Frameworks */,
+				EDB72443B651978302BA1F11 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Preview;
+			productName = "fuck-anthropic guard Preview";
+			productReference = E7FF91CAFB54532265F64EE3 /* fuck-anthropic guard Preview.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D418FC35302CB7E0E639187A /* Filter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3228CBBD1470DA4D96BB6031 /* Build configuration list for PBXNativeTarget "Filter" */;
+			buildPhases = (
+				D4F47848D08864B49BE56A85 /* Prepare versioned Mach metadata */,
+				44EF9C912F66E2760C4ACB0E /* Sources */,
+				067C5AF0BA0978D7B47A8396 /* Frameworks */,
+				037B39F692E7BFDF0F109291 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Filter;
+			productName = "com.leizikang.claude-connection-watcher.filter";
+			productReference = 09C2A2982D80675CCEAB18FD /* com.leizikang.claude-connection-watcher.filter.systemextension */;
+			productType = "com.apple.product-type.system-extension";
+		};
+		EB1D256CD02EB80CBDA1D98F /* Watcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3B9D39EF28D2A24A20856FC /* Build configuration list for PBXNativeTarget "Watcher" */;
+			buildPhases = (
+				D2B0EC2BD28626DA704FF9EA /* Prepare versioned Mach metadata */,
+				CAA56CD26120BDE7637B0177 /* Sources */,
+				8B244F9CA8C2B15B18F6E0C1 /* Frameworks */,
+				4DDCD85876C3B131CE70E31C /* Resources */,
+				852CB34CB44D396A13747821 /* Embed Filter */,
+				6EDB694E9593A684B6C9DED4 /* Validate embedded versioned metadata */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				86029424A8614A5A67F9988C /* PBXTargetDependency */,
+			);
+			name = Watcher;
+			productName = "fuck-anthropic guard";
+			productReference = 245C2EF2DE896B9CC11DC865 /* fuck-anthropic guard.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2700;
+			};
+			buildConfigurationList = 9A306D578D83D1E0821F2E35 /* Build configuration list for PBXProject "ClaudeConnectionWatcher" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = E50290A24C49A459B43487C5;
+			productRefGroup = FBDC4F23F93125BBEEAE800C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				460F3CA3D9F3D56E6830BA63 /* Preview */,
+				EB1D256CD02EB80CBDA1D98F /* Watcher */,
+				D418FC35302CB7E0E639187A /* Filter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		037B39F692E7BFDF0F109291 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86366282910C1F3D546DBA56 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DDCD85876C3B131CE70E31C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6587D8BCA2641750C8729129 /* Watcher.icns in Resources */,
+				4F469B8C3E2A303101C25329 /* UserGuide.html in Resources */,
+				101F83E89899977A3D6CB9D6 /* InfoPlist.strings in Resources */,
+				FE99DD26244A17328E234FB0 /* UserGuide.en.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDB72443B651978302BA1F11 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13BFCF4A77A0B2A2CB4D7689 /* Watcher.icns in Resources */,
+				D6CE6CE05E445B0AB086060F /* UserGuide.html in Resources */,
+				771770482261BF7B3F8B43D1 /* InfoPlist.strings in Resources */,
+				57209DAA3D868B3B33AE9847 /* UserGuide.en.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6EDB694E9593A684B6C9DED4 /* Validate embedded versioned metadata */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
+				"$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Library/SystemExtensions/com.leizikang.claude-connection-watcher.filter.systemextension/Contents/Info.plist",
+			);
+			name = "Validate embedded versioned metadata";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -x /opt/homebrew/bin/python3 ]; then p=/opt/homebrew/bin/python3; else p=/usr/bin/python3; fi\n\"$p\" \"$SRCROOT/scripts/check_system_extension_metadata.py\" \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Library/SystemExtensions/com.leizikang.claude-connection-watcher.filter.systemextension/Contents/Info.plist\" --host \"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n";
+		};
+		D2B0EC2BD28626DA704FF9EA /* Prepare versioned Mach metadata */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Info.plist",
+				"$(SRCROOT)/NetworkFilter/Info.plist",
+				"$(SRCROOT)/scripts/xcode-prepare-metadata.sh",
+				"$(SRCROOT)/scripts/mach_service_metadata.py",
+				"$(SRCROOT)/scripts/check_system_extension_metadata.py",
+			);
+			name = "Prepare versioned Mach metadata";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/WatcherHost-Info.plist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/sh \"$SRCROOT/scripts/xcode-prepare-metadata.sh\" host \"$DERIVED_FILE_DIR/WatcherHost-Info.plist\"\n";
+		};
+		D4F47848D08864B49BE56A85 /* Prepare versioned Mach metadata */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Info.plist",
+				"$(SRCROOT)/NetworkFilter/Info.plist",
+				"$(SRCROOT)/scripts/xcode-prepare-metadata.sh",
+				"$(SRCROOT)/scripts/mach_service_metadata.py",
+				"$(SRCROOT)/scripts/check_system_extension_metadata.py",
+			);
+			name = "Prepare versioned Mach metadata";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/WatcherProvider-Info.plist",
+				"$(DERIVED_FILE_DIR)/HostMetadata.plist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/sh \"$SRCROOT/scripts/xcode-prepare-metadata.sh\" provider \"$DERIVED_FILE_DIR/WatcherProvider-Info.plist\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		44EF9C912F66E2760C4ACB0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D76C904057E6B283136FD63E /* Localization.swift in Sources */,
+				661E5258B7FC3A0417BEF9F9 /* FilterProtocol.swift in Sources */,
+				8AC27DD156F887553F69F5B8 /* RouteRequirements.swift in Sources */,
+				1F5D77DA2DDBEBBB32234B48 /* PolicyEvidence.swift in Sources */,
+				9D1B915B354C950247231D14 /* ProcessAncestry.swift in Sources */,
+				64634DF7094E4A2EE335E5C3 /* ProcessIdentity.swift in Sources */,
+				31C3E99EEBB144B7CBA78350 /* ProbeModel.swift in Sources */,
+				D46EA32C3750445E050CAD39 /* GuardianTimer.swift in Sources */,
+				67D923B459D7F6099078C1AC /* RuntimeIdentity.swift in Sources */,
+				3C5590504670AC69BED80A8A /* main.swift in Sources */,
+				8C6BB0E6ED936B744CF20978 /* AuditToken.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8C4571A2CD606BD925EF2ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				127B53D3360F872DD9E4AED0 /* Localization.swift in Sources */,
+				4BA337E4B280B498B2111F02 /* FilterProtocol.swift in Sources */,
+				F58B0674901F5745E111F3D4 /* RouteRequirements.swift in Sources */,
+				3C53B592B46CEA67EE28E111 /* PolicyEvidence.swift in Sources */,
+				6E9D889640D71577309F44C0 /* ProcessAncestry.swift in Sources */,
+				6CAF7C8E317733F787C93316 /* ProcessIdentity.swift in Sources */,
+				17D86A8EE8439A9E5E02C7E4 /* ProbeModel.swift in Sources */,
+				70376A218C52C6EC7B7C6B8F /* GuardianTimer.swift in Sources */,
+				5DA48EC240C18E723172F9CA /* main.swift in Sources */,
+				31348B994F0C2D066BA48F96 /* GuardTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAA56CD26120BDE7637B0177 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9105F1E029E6B37E36CDEF3C /* Localization.swift in Sources */,
+				CB11DB9E62859C81682DC71C /* FilterProtocol.swift in Sources */,
+				87692D0BFDB104880158065F /* RouteRequirements.swift in Sources */,
+				C3EFFA647345F0231FD9A6AD /* PolicyEvidence.swift in Sources */,
+				5E733438DE97889D4B0ABFE8 /* ProcessAncestry.swift in Sources */,
+				5F3DBBB360FE042D0B663D18 /* ProcessIdentity.swift in Sources */,
+				E47885DDCBF8D6EBAA9F4526 /* ProbeModel.swift in Sources */,
+				89719D36998C63469266C918 /* GuardianTimer.swift in Sources */,
+				45618B01E2545228A81BB656 /* main.swift in Sources */,
+				B9BE7EC4A9367BA3C7CF55E3 /* GuardTests.swift in Sources */,
+				E077A2AA86462F0608389476 /* RuntimeIdentity.swift in Sources */,
+				A5E998FF08B7D4B34E18A935 /* CommandRunner.swift in Sources */,
+				59F813DF2C7CD89EF84D1E43 /* ProcessInventory.swift in Sources */,
+				0C8CC7BD53FE0DC985FA0206 /* LocalSurgeAuditor.swift in Sources */,
+				B3EA8740B6D5DE6EBCC91FBD /* FilterController.swift in Sources */,
+				D00F7A3F709E681BC43258C2 /* ProxyTransportConfiguration.swift in Sources */,
+				431BF3E91E6AE59828D6F1F9 /* GuardProbe.swift in Sources */,
+				E3B182774192E09F165D226D /* AuditToken.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		86029424A8614A5A67F9988C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D418FC35302CB7E0E639187A /* Filter */;
+			targetProxy = BECBFE4E57DD2654178ABE88 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		56D304A5CC7328DACEDC8DB5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BD9975AE2FD37781A812E525 /* en */,
+				E81E1FA4F6AAF55DFC99CEB7 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		04767854FB4CC9AF495F7643 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_NAME = ClaudeConnectionWatcher;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/WatcherHost-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lbsm",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.leizikang.claude-connection-watcher";
+				PRODUCT_MODULE_NAME = ClaudeConnectionWatcher;
+				PRODUCT_NAME = "fuck-anthropic guard";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/NetworkFilter/Sources/AuditToken.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		23C4CBE53C0C4D5217DC7DC0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_NAME = ClaudeConnectionWatcher;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/WatcherHost-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lbsm",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.leizikang.claude-connection-watcher";
+				PRODUCT_MODULE_NAME = ClaudeConnectionWatcher;
+				PRODUCT_NAME = "fuck-anthropic guard";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/NetworkFilter/Sources/AuditToken.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		38F03FCBDACA10AAD4143C88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		50CDAB6A2460378696FAA036 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_NAME = CCWPreview;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Preview/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.leizikang.claude-connection-watcher.preview";
+				PRODUCT_MODULE_NAME = CCWPreview;
+				PRODUCT_NAME = "fuck-anthropic guard Preview";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) CCW_PREVIEW CCW_CANVAS";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		5E943A6B292450981352A3CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_NAME = ClaudeConnectionFilter;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/WatcherProvider-Info.plist";
+				MACH_O_TYPE = mh_execute;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lbsm",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.leizikang.claude-connection-watcher.filter";
+				PRODUCT_MODULE_NAME = ClaudeConnectionFilter;
+				PRODUCT_NAME = "com.leizikang.claude-connection-watcher.filter";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/NetworkFilter/Sources/AuditToken.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = systemextension;
+			};
+			name = Debug;
+		};
+		624EABDCF7E994AA6C5FAE5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_NAME = CCWPreview;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Preview/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.leizikang.claude-connection-watcher.preview";
+				PRODUCT_MODULE_NAME = CCWPreview;
+				PRODUCT_NAME = "fuck-anthropic guard Preview";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) CCW_PREVIEW CCW_CANVAS";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		941798AECA264FECE6B7C45D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D284BCED848A89CBC02CA8CA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_NAME = ClaudeConnectionFilter;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/WatcherProvider-Info.plist";
+				MACH_O_TYPE = mh_execute;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lbsm",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.leizikang.claude-connection-watcher.filter";
+				PRODUCT_MODULE_NAME = ClaudeConnectionFilter;
+				PRODUCT_NAME = "com.leizikang.claude-connection-watcher.filter";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/NetworkFilter/Sources/AuditToken.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = systemextension;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3228CBBD1470DA4D96BB6031 /* Build configuration list for PBXNativeTarget "Filter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E943A6B292450981352A3CA /* Debug */,
+				D284BCED848A89CBC02CA8CA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9A306D578D83D1E0821F2E35 /* Build configuration list for PBXProject "ClaudeConnectionWatcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				941798AECA264FECE6B7C45D /* Debug */,
+				38F03FCBDACA10AAD4143C88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B3B9D39EF28D2A24A20856FC /* Build configuration list for PBXNativeTarget "Watcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23C4CBE53C0C4D5217DC7DC0 /* Debug */,
+				04767854FB4CC9AF495F7643 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F37A572A30B46B6263B9B656 /* Build configuration list for PBXNativeTarget "Preview" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50CDAB6A2460378696FAA036 /* Debug */,
+				624EABDCF7E994AA6C5FAE5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+}

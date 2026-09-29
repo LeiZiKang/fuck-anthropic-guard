@@ -2,6 +2,57 @@ import Foundation
 func runGuardTests() {
  var count=0
  func check(_ value:Bool,_ name:String) { guard value else { fatalError("TEST FAILED: "+name) };count+=1 }
+ var journal = GuardConnectionJournal()
+ for i in 1...100 { journal.append(pid: 12, client: "Claude", destination: "127.0.0.1:6154", transport: "TCP", allowed: i % 2 == 0, reason: i % 2 == 0 ? "verified-route" : "permission-unavailable", at: 1000) }
+ check(journal.events.count == 80 && journal.events.first?.id == 21, "bounded journal evicts oldest")
+ check(journal.allowed == 50 && journal.denied == 50, "decision totals survive ring eviction")
+ check(journal.events.last?.decision == "allow", "latest decision retained")
+ journal.append(pid: 12, client: String(repeating: "x", count: 200) + "\n", destination: "a\nb", transport: "invalid", allowed: false, reason: "wrong-endpoint", at: 1001)
+ check(journal.events.last!.client.count == 160 && journal.events.last!.destination == "ab", "metadata bounded and controls stripped")
+ check(journal.events.last!.valid && journal.events.last!.transport == "Other", "journal wire format validates")
+ let before = journal.events.count; journal.append(pid: 1, client: "x", destination: "x", transport: "TCP", allowed: true, reason: "invalid", at: 1002)
+ check(journal.events.count == before && journal.allowed == 50, "invalid reason cannot invent an allowed event")
+ let encodedJournal = try! JSONEncoder().encode(journal.events)
+ check((try! JSONDecoder().decode([GuardConnectionEvent].self, from: encodedJournal)) == journal.events, "event IPC round trip")
+ check(encodedJournal.count < 120000, "bounded journal fits status IPC budget")
+ check(GuardConnectionJournal.blockCause(shouldBlock: false, validUntil: 10, now: 11, last: "network-change") == "lease-expired", "expired lease cause is distinct from previous revoke")
+ check(GuardConnectionJournal.blockCause(shouldBlock: true, validUntil: nil, now: 11, last: "manual-block") == "manual-block", "manual block cause preserved")
+ check(GuardConnectionJournal.blockCause(shouldBlock: true, validUntil: nil, now: 11, last: "untrusted payload") == "host-blocked", "diagnostic cause cannot carry arbitrary payload")
+ var sample = GuardConnectionJournal()
+ sample.append(pid: 7, client: "com.apple.python3", destination: "127.0.0.1:6154", transport: "TCP", allowed: true, reason: "verified-route", at: 100)
+ sample.append(pid: 8, client: "com.anthropic.claude-code", destination: "127.0.0.1:8770", transport: "TCP", allowed: false, reason: "permission-withdrawn", cause: "manual-block", at: 101)
+ check(GuardEventQuery.apply(sample.events, filter: 1, query: "", key: "time", ascending: false).map(\.pid) == [7], "allow filter excludes denied")
+ check(GuardEventQuery.apply(sample.events, filter: 0, query: "PYTHON", key: "time", ascending: false).map(\.pid) == [7], "case-insensitive identity search")
+ check(GuardEventQuery.apply(sample.events, filter: 0, query: "8770", key: "time", ascending: false).map(\.pid) == [8], "endpoint search")
+ check(GuardEventQuery.apply(sample.events, filter: 0, query: "", key: "time", ascending: true).map(\.pid) == [7,8], "time sort ascending")
+ check(GuardEventQuery.apply(sample.events, filter: 0, query: "", key: "time", ascending: false).map(\.pid) == [8,7], "time sort descending")
+ check(GuardEventQuery.apply(sample.events, filter: 2, query: "python", key: "time", ascending: false).isEmpty, "search and decision filter compose")
+ let disabledUI = GuardUISnapshot(state: .disabled, configured: false)
+ let readyUI = GuardUISnapshot(state: .verified, configured: true)
+ let unknownUI = GuardUISnapshot(state: .checking, configured: nil)
+ check(disabledUI.canEdit && disabledUI.canEnable, "disabled known configuration offers setup")
+ check(!readyUI.canEdit && !readyUI.canEnable, "ready configuration is read-only without redundant enable")
+ check(!unknownUI.canEdit && !unknownUI.canEnable, "unknown configuration cannot be edited or activated blindly")
+ check(!GuardUISnapshot(state: .disabled, configured: false, pending: true).canEdit, "pending operation disables edits")
+ let caused = try! JSONDecoder().decode([GuardConnectionEvent].self, from: JSONEncoder().encode(sample.events))
+ check(caused.last?.cause == "manual-block", "event cause roundtrips")
+ var diagnosticPolicy = FilterDecisionState()
+ diagnosticPolicy.accept(FilterPolicyUpdate(block: true, blockReason: "untrusted string"), at: 100)
+ check(diagnosticPolicy.blocking(at: 100), "diagnostic strings do not authorize a connection")
+ for badPort in ["abc", "", "0", "65536", "-1", "+6154", "61.54"] {
+  if case .failure(.port) = EndpointFormInput.validate(port: badPort, exits: "203.0.113.10", policy: "LOCKED") { check(true, "invalid port classified") } else { check(false, "invalid port rejected") }
+ }
+ for reserved in ["6152", "6153", "6162", "6163"] {
+  if case .failure(.reservedPort) = EndpointFormInput.validate(port: reserved, exits: "203.0.113.10", policy: "LOCKED") { check(true, "reserved ingress explained") } else { check(false, "reserved ingress rejected") }
+ }
+ for badIP in ["", "example.com", "999.2.3.4", "203.0.113.10, bad"] {
+  if case .failure(.exits) = EndpointFormInput.validate(port: "6154", exits: badIP, policy: "LOCKED") { check(true, "invalid egress classified") } else { check(false, "invalid egress rejected") }
+ }
+ for badPolicy in ["", "DIRECT", "proxy", "REJECT", "A,B", "A\nB"] {
+  if case .failure(.policy) = EndpointFormInput.validate(port: "6154", exits: "203.0.113.10", policy: badPolicy) { check(true, "invalid policy classified") } else { check(false, "invalid policy rejected") }
+ }
+ let validInput = try! EndpointFormInput.validate(port: " 6154 ", exits: "203.0.113.10, 2001:db8::1", policy: " LOCKED ").get()
+ check(validInput.proxy?.port == 6154 && validInput.surgePolicy == "LOCKED" && validInput.expectedExitAddresses.count == 2 && validInput.localAuditConfigured, "valid form preserves multiple exits and trims input")
  let endpoint=ProxyEndpoint.parse(address:"127.0.0.1",port:"6154")!
  check(!endpoint.matches(address:"1.1.1.1",port:"443",tcp:true),"direct remote denied")
  check(!endpoint.matches(address:"127.0.0.1",port:"6152",tcp:true),"shared port denied")
@@ -80,6 +131,12 @@ func runGuardTests() {
  check(!alerts.update(monitoring:true,safe:false),"repeated unsafe polling does not flood")
  check(!alerts.update(monitoring:true,safe:true),"safe recovery rearms")
  check(alerts.update(monitoring:true,safe:false),"next unsafe episode alerts")
+ check(GuardUIState.resolved(configured:false,active:true,blocking:false,safe:true) == .disabled,"disabled config cannot display verified")
+ check(GuardUIState.resolved(configured:true,active:false,blocking:false,safe:true) == .checking,"unconfirmed enforcement cannot display verified")
+ check(GuardUIState.resolved(configured:true,active:true,blocking:true,safe:true) == .blocked,"blocking state wins over stale safe flag")
+ check(GuardUIState.resolved(configured:true,active:true,blocking:false,safe:false) == .checking,"unverified route cannot display ready")
+ check(GuardUIState.resolved(configured:true,active:true,blocking:false,safe:true) == .verified,"confirmed fresh route displays ready")
+ check(GuardUIState.resolved(configured:nil,active:false,blocking:false,safe:false) == .checking,"startup unknown remains unconfirmed")
  let originalLanguage=L10n.language
  check(AppLanguage.resolve(saved:nil,preferred:["zh-Hant"]) == .chinese,"Chinese system preference")
  check(AppLanguage.resolve(saved:nil,preferred:["fr"]) == .english,"unsupported language falls back to English")
