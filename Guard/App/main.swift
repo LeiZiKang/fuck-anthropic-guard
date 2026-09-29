@@ -328,7 +328,7 @@ final class LiveModel: WatcherModel {
     func enable() {
         guard config.localAuditConfigured else { stateMessage=GuardString.configureFirst.message;onChange?();return }
         UserDefaults.standard.set(true,forKey:"SurgeGuardProbeConsentV1")
-        generation += 1;report=nil;monitoring=true;notifier.requestPermission();if controller.configured == true { controller.retryStatus() } else { controller.activate(protectedBundleIDs:[]) }
+        generation += 1;report=nil;monitoring=true;notifier.requestPermission();controller.activate(protectedBundleIDs:[])
     }
     func lock() { generation += 1;monitoring=false;report=nil;UserDefaults.standard.set(false,forKey:"SurgeGuardProbeConsentV1");controller.send(report:nil, blockReason:"manual-block");renderState() }
     func disable(_ completion:@escaping(Bool)->Void) { lock();controller.disable(completion:completion) }
