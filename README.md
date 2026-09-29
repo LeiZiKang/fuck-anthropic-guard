@@ -83,7 +83,5 @@ Read [Contributing](CONTRIBUTING.md), [design and scope](docs/PRD.en.md), and [r
 
 Process metadata stays local. Consented exit checks use Surge to reach `api.ipify.org` without Claude credentials. No telemetry or automatic direct fallback. [MIT license](LICENSE).
 
-### Local 0.4.1 candidate
-Warm paper/clay UI, original icon and latest 80 connection decisions. Filter by Allowed/Denied and inspect process, destination, protocol and reason. Guard provides no VPN. Not publicly released.
-
-Local0.4.1 status: installed and Apple notarized on the development Mac; default Anthropic-inspired dark UI and bounded connection journal live-validated. Not a public release.
+### Local development: 0.4.2
+Anthropic-inspired dark UI, original icon and latest80 connection decisions with search, sorting, details and copying. Confirmed blocking, state-aware controls and actual IPC recheck improve usability. Locally notarized and installed; filter/loopback acceptance verified. This is not a public release. See [validation status](docs/FEATURE-STATUS.md) and [branch workflow](docs/BRANCHES.md).

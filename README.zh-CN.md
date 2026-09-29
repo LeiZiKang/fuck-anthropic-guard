@@ -83,7 +83,5 @@ CCW_BUILD_MODE=host bash scripts/build.sh
 
 进程信息留在本机。经同意的出口检查通过 Surge 访问 `api.ipify.org`，不携带 Claude 凭据；无遥测，不自动回退直连。[MIT 许可证](LICENSE)。
 
-### 本地 0.4.1 候选
-暖白陶土色界面、原创图标和最近80条连接判定；允许/拒绝筛选，进程、目标、协议与原因可查看。Guard不提供VPN。尚未公开发布。
-
-Local0.4.1 status: installed and Apple notarized on the development Mac; default Anthropic-inspired dark UI and bounded connection journal live-validated. Not a public release.
+### 本地开发版：0.4.2
+Anthropic深色界面、原创图标与最近80条连接记录，支持搜索、排序、详情和复制；新增明确的阻断确认、按状态调整的控件和实际IPC重新检查。已在开发Mac公证安装并完成本机端口验收，尚未公开发布。详见[验证状态](docs/FEATURE-STATUS.zh-CN.md)与[分支流程](docs/BRANCHES.md)。

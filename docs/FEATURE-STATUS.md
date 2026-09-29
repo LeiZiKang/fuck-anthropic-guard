@@ -1,6 +1,6 @@
 # Feature and validation status
 
-## Local 0.4.2 / build 12.2 candidate
+## Local 0.4.2 / build 12.2
 
 Implemented: scoped Claude connection protection, process inventory, read-only IPv6,
 Surge route checks, bounded in-memory journal and safety notifications. The dark
@@ -13,8 +13,7 @@ and 251 host offline checks passed (shared coverage, not additive). Native previ
 checks passed for block/cancel, endpoint search/clear, sorting and event details.
 Default1040x820 and small900x740 renders inspected; smaller content scrolls.
 
-Candidate is not installed yet. Installed local0.4.1 remains active until the new
-signed/notarized package is deployed. No public0.4.2 release or remote push.
+The exact Xcode-built candidate was Apple notarized, stapled, verified by Gatekeeper and installed locally. Filter12.2 is activated enabled; UI ready, read-only endpoint and disabled redundant enable verified. Recheck updates the real filter status. Local-only signed CLI child acceptance again allowed6154 and denied8776 with matching journal entries. Surge profile unchanged. No public0.4.2 release or remote push.
 Live fault recovery, OS restart/wake and unknown-attribution coverage remain
 separate acceptance gaps. Diagnostics do not change authorization predicates.
 
