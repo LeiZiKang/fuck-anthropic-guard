@@ -5,6 +5,7 @@ import importlib.util
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('publisher', Path(__file__).with_name('publish_release.py'))
 publisher = importlib.util.module_from_spec(spec)
@@ -72,6 +73,42 @@ class PublicationGateTests(unittest.TestCase):
     def test_scope_and_tap_mismatch_block(self):
         for changes in [dict(publication_kind='source-only'), dict(tap_changed=True), dict(decision='fail')]:
             with self.assertRaises(SystemExit): publisher.validate_review(dict(self.review, **changes), self.manifest, False)
+
+    def test_stable_requires_matching_channel_review(self):
+        manifest = dict(self.manifest, stable=True)
+        review = dict(self.review, stable=True, publication_kind='binary-stable')
+        publisher.validate_review(review, manifest, False)
+        with self.assertRaises(SystemExit): publisher.validate_review(self.review, manifest, False)
+        with self.assertRaises(SystemExit): publisher.validate_review(dict(review, publication_kind='binary-prerelease'), manifest, False)
+
+    def test_promotion_provenance_is_reviewed(self):
+        manifest = dict(self.manifest, stable=True, reused_from_tag='v0.4.4-beta.1', artifact_source_commit='original')
+        review = dict(self.review, stable=True, publication_kind='binary-stable', reused_from_tag='v0.4.4-beta.1', artifact_source_commit='original')
+        publisher.validate_review(review, manifest, False)
+        for key in ('reused_from_tag', 'artifact_source_commit'):
+            with self.assertRaises(SystemExit): publisher.validate_review(dict(review, **{key:'changed'}), manifest, False)
+
+    def reuse(self, manifest=None, changes='docs/RELEASE-NOTES.md', source='commit'):
+        with patch.object(publisher, 'git', side_effect=[source, changes]):
+            return publisher.reuse_candidate(manifest or self.manifest, self.root, 'v0.4.4-beta.1', '0.4.4', '13.0', 'head')
+
+    def test_unchanged_notarized_binary_can_be_promoted(self):
+        self.assertEqual(self.reuse(), (self.zip, 'commit'))
+
+    def test_runtime_changes_block_reuse(self):
+        for changes in ('Sources/FilterController.swift', 'Info.plist', 'scripts/build.sh', 'Guard/Shared/ProcessIdentity.swift'):
+            with self.assertRaises(SystemExit): self.reuse(changes=changes)
+
+    def test_original_tag_moved_blocks_reuse(self):
+        with self.assertRaises(SystemExit): self.reuse(source='moved')
+
+    def test_unnotarized_or_different_version_blocks_reuse(self):
+        for delta in ({'notarized':False}, {'app_version':'0.4.5'}, {'build_version':'14.0'}, {'origin':'wrong'}):
+            with self.assertRaises(SystemExit): self.reuse(dict(self.manifest, **delta))
+
+    def test_source_zip_tampering_blocks_reuse(self):
+        self.zip.write_bytes(b'tampered')
+        with self.assertRaises(SystemExit): self.reuse()
 
     def test_tag_matches_app_version(self):
         self.assertEqual(publisher.release_tag('0.4.4', None), 'v0.4.4-beta.1')

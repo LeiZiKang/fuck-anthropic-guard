@@ -2,7 +2,7 @@
 
 **English** | [简体中文](UserGuide.md)
 
-Applies to 0.4.4 beta / build 13.0. Requires macOS 14+. This is an experimental Surge companion, not the older SSH-relay app.
+Applies to 0.4.4 stable / build 13.0. Requires macOS 14+. This is an experimental Surge companion, not the older SSH-relay app.
 
 ## 1. Scope
 

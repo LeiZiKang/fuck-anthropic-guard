@@ -22,3 +22,9 @@ Use **01 Preview (Safe)** and Xcode MCP BuildProject/GetBuildLog for incremental
 7. Verify remote main, tag and downloadable asset. Delete only merged remote task branches; retain unrelated/local historical work. A Homebrew tap update is a separate change.
 
 The gate is a workflow check, not an exhaustive security proof. Never publish private profiles, keys, logs, tokens, personal paths or backups.
+
+## Promote an existing notarized build to stable
+
+An explicit maintainer decision can defer known validation items without marking them passed. Preserve those limits in stable notes. Freeze publication-only changes on a feature branch, then use `scripts/publish-release.sh --prepare --stable --tag v<version> --reuse-from v<version>-beta.<n>`. The gate rejects changed runtime/build inputs and copies the already notarized ZIP byte-for-byte. The manifest records the original artifact source commit separately from the current publication source.
+
+Obtain new matching independent source-only and binary-stable reviews. Publish source with `--stable --source-only --audit-report`, complete PR/CI/main, then publish with `--stable --audit-report`. The stable tag targets the original artifact source commit; the reviewed publication docs/scripts live on main. Retain the historical beta tag/release. Verify the new public URL/hash, update the tap and check current installed binaries before considering any reinstall.
