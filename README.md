@@ -7,7 +7,7 @@
   <p><code>macOS 14+</code> · <code>Apple Silicon + Intel</code> · <code>MIT</code></p>
 </div>
 
-> **0.4.4 beta · protection is opt-in.** Unknown process attribution and OS failure/lifecycle cases remain coverage limits. This is not a VPN or an account-safety guarantee.
+> **0.4.4 stable · protection is opt-in.** Unknown process attribution and OS failure/lifecycle cases remain coverage limits. This is not a VPN or an account-safety guarantee.
 
 <p align="center"><img src="docs/images/preview-en.png" width="720" alt="Offline Guard preview showing connection decisions"><br><sub>Offline sample data, not evidence of live filtering.</sub></p>
 
@@ -23,9 +23,9 @@
 
 ## Download and setup
 
-Download the [Developer ID signed, notarized Universal 2 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.4-beta.1). Read the [setup and upgrade guide](docs/UserGuide.en.md) before enabling protection.
+Download the [Developer ID signed, notarized Universal 2 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.4). Read the [setup and upgrade guide](docs/UserGuide.en.md) before enabling protection.
 
-The existing Homebrew tap is **not updated by this release** and may install the older beta. Use the versioned ZIP for 0.4.4.
+The [Homebrew tap](https://github.com/LeiZiKang/homebrew-tap) now offers the same notarized **0.4.4 / build 13.0** archive. Install with `brew install --cask leizikang/tap/fuck-anthropic-guard`, or run `brew update` and `brew upgrade --cask leizikang/tap/fuck-anthropic-guard` for an existing installation. Follow the upgrade guide before replacing an active filter.
 
 Protection requires a separately configured Surge listener, a first `IN-PORT` rule pinned to one supported Hysteria2 node, valid signing and macOS approval. Installing the app does not establish coverage. Keep Claude clients closed during setup or upgrade, keep Surge running, and verify readiness before reopening them.
 

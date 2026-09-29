@@ -7,7 +7,7 @@
   <p><code>macOS 14+</code> · <code>Apple Silicon + Intel</code> · <code>MIT</code></p>
 </div>
 
-> **0.4.4测试版 · 保护需主动启用。** 未知进程归属和系统故障／生命周期仍存在覆盖边界。Guard不是VPN，也不保证账号安全。
+> **0.4.4正式版 · 保护需主动启用。** 未知进程归属和系统故障／生命周期仍存在覆盖边界。Guard不是VPN，也不保证账号安全。
 
 <p align="center"><img src="docs/images/preview-zh.png" width="720" alt="离线Guard预览中的连接判定"><br><sub>离线示例数据，不代表真实过滤已生效。</sub></p>
 
@@ -23,9 +23,9 @@
 
 ## 下载与设置
 
-下载[Developer ID签名并通过Apple公证的Universal 2 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.4-beta.1)。启用前先读[设置与升级说明](docs/UserGuide.md)。
+下载[Developer ID签名并通过Apple公证的Universal 2 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.4)。启用前先读[设置与升级说明](docs/UserGuide.md)。
 
-本次发布**不更新已有Homebrew tap**，它可能仍安装旧测试版。需要0.4.4请使用明确版本的ZIP。
+[Homebrew tap](https://github.com/LeiZiKang/homebrew-tap) 已同步相同的公证包 **0.4.4 / build 13.0**。新安装使用 `brew install --cask leizikang/tap/fuck-anthropic-guard`；已有安装先 `brew update`，再 `brew upgrade --cask leizikang/tap/fuck-anthropic-guard`。替换正在使用的过滤器前，请先阅读升级说明。
 
 保护需要另行配置Surge专用监听入口、固定到单个受支持Hysteria2节点的首条`IN-PORT`规则、有效签名和macOS授权。安装本身不证明覆盖生效。设置或升级时先关闭Claude客户端，保持Surge运行，确认就绪后再打开客户端。
 

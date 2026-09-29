@@ -1,23 +1,22 @@
-# 0.4.4 beta / build 13.0
+# 0.4.4 / build 13.0
 
-**English** | [简体中文](RELEASE-NOTES.zh-CN.md)
+Stable release of the existing Developer ID-signed, Apple-notarized Universal 2 build 13.0. This is the same ZIP content as v0.4.4-beta.1; only the release channel, tag and download filename change. There is no new runtime code or binary rebuild.
 
-This release adds an inspectable connection journal and a redesigned dark/light interface while retaining the scoped Surge companion model.
+## Highlights
 
-- Latest 80 recognized-client decisions in memory, with process/PID, endpoint, protocol and recorded cause; search, sorting, details and copy.
-- Clear confirmation before manual blocking, actual IPC recheck, state-aware settings and inline configuration validation that preserves invalid input.
-- Menu panel with padding, status-specific symbols, last-status time and the real recheck action. Four Xcode Canvas previews share the production AppKit panel.
-- Organized Xcode navigator and a safe default Preview scheme. Canvas-only macros are excluded from the standalone command-line build.
-- Corrected native Claude launcher signature verification and macOS Desktop launching.
+- Inspectable connection journal with process, destination, verdict and reason.
+- Refined dark/light interface, input validation and shared menu-bar status panel.
+- Recognized Claude clients use a verified dedicated Surge TCP endpoint; Surge remains separately managed.
+- Homebrew distribution uses the exact same verified archive as the GitHub download.
 
-## Package and upgrade
+## Verification and remaining limits
 
-The ZIP contains a Developer ID signed, Apple-notarized Universal 2 app for macOS 14+. Host and filter use build 13.0; this differs from the earlier local-only12.2 packages. Intel is compile-verified, not hardware-tested. The Homebrew tap is unchanged; use this versioned ZIP for 0.4.4.
+The existing build passed 271 Preview / 273 host offline checks (overlapping coverage), Universal 2 compilation, Developer ID signature checks, Apple notarization and Gatekeeper assessment. Build 13.0 was installed through Homebrew: the filter is active, the UI reports protection ready, and local signed CLI/child tests allowed port 6154 and denied incorrect loopback ports. Intel is compile-verified only.
 
-Save work and quit Claude clients first. Keep Surge running. Quit Guard with its filter retained, replace the app, reopen it and explicitly resume/enable checks; complete any macOS extension approval. Keep clients closed until protection is verified. If the system asks for a restart, treat protection as unconfirmed until checked after restart. Do not run old and new app copies together. See the [guide](UserGuide.en.md).
+The maintainer chose to publish this stable release while deferring physical network-loss/recovery, reboot/wake, provider-crash, early-boot, unknown-attribution and full native menu interaction checks. These remain unverified; stable is a distribution channel, not a claim that those tests passed. Guard is not a VPN or an account-safety guarantee.
 
-## Validation and limits
+## Installation
 
-271 Preview and 273 host offline checks passed (shared coverage, not additive), plus release-gate tests and dual-architecture compilation. Local development builds passed dedicated-port allow/deny tests. Xcode Canvas checked four menu states in English/Chinese; that does not prove physical menu placement/click behavior.
+Download the versioned ZIP or install `leizikang/tap/fuck-anthropic-guard` through Homebrew after the tap update. macOS 14 or later is required. Existing build 13.0 users already have identical executables and need no app/filter restart for this channel change. For other upgrades, follow the setup guide and confirm protection after replacement.
 
-The exact build 13.0 distribution is not a new live reboot/wake/provider-crash acceptance result. Unknown process attribution remains a coverage gap. Guard is not a VPN and does not guarantee zero IP exposure or freedom from account restrictions. See [validation status](FEATURE-STATUS.md) and [security model](../SECURITY.md).
+SHA-256: `2e2e00db1c591100a22bb3a716cd070cc493b110bd89b6900207abb869c9049d`

@@ -2,7 +2,7 @@
 
 [English](UserGuide.en.md) | **简体中文**
 
-适用0.4.4测试版 / build13.0，要求macOS14+。这是实验性Surge配套工具，不是旧SSH转发版本。
+适用0.4.4正式版 / build13.0，要求macOS14+。这是实验性Surge配套工具，不是旧SSH转发版本。
 
 ## 1. 保护范围
 

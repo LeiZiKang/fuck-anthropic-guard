@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare, notarize and publish an exact independently reviewed prerelease."""
+"""Prepare, notarize and publish an exact independently reviewed release."""
 import argparse
 import hashlib
 import json
@@ -8,6 +8,7 @@ from pathlib import Path
 import plistlib
 import re
 import subprocess
+import shutil
 
 R = Path(__file__).resolve().parents[1]
 ORIGIN = 'https://github.com/LeiZiKang/fuck-anthropic-guard.git'
@@ -68,12 +69,35 @@ def validate_review(review, manifest, source_only):
     for key in MATCH_KEYS:
         if review.get(key) != manifest.get(key):
             stop('Independent audit does not match ' + key)
-    expected = 'source-only' if source_only else 'binary-prerelease'
+    expected = 'source-only' if source_only else ('binary-stable' if manifest.get('stable') else 'binary-prerelease')
+    for key in ('stable', 'reused_from_tag', 'artifact_source_commit'):
+        if review.get(key) != manifest.get(key):
+            stop('Independent audit does not match ' + key)
     if (review.get('publication_kind') != expected or review.get('decision') != 'pass'
         or not review.get('independent_reviewer') or review.get('tap_changed') is not False):
         stop('A passing independent review for this exact publication scope is required.')
     if not source_only and not manifest.get('notarized'):
         stop('Binary publication requires notarization.')
+
+def reuse_candidate(previous, previous_dir, tag, version, build, head):
+    if previous.get('origin') != ORIGIN or previous.get('tag') != tag:
+        stop('Unexpected source release manifest.')
+    if not previous.get('notarized') or previous.get('app_version') != version or previous.get('build_version') != build:
+        stop('Promotion requires the same notarized app version and build.')
+    archive = artifact_path(previous, previous_dir)
+    if sha(archive) != previous.get('zip_sha256'):
+        stop('Source release archive changed.')
+    source = previous.get('artifact_source_commit') or previous['source_commit']
+    if git('rev-parse', tag + '^{commit}') != source:
+        stop('Source tag does not match artifact source.')
+    # Only publication metadata/docs may differ. Never reuse a binary after runtime edits.
+    changed = git('diff', '--name-only', source, head).splitlines()
+    allowed = {'README.md', 'README.zh-CN.md', 'todo.md',
+               'scripts/publish_release.py', 'scripts/test_publish_release.py'}
+    if any(path not in allowed and not path.startswith('docs/') for path in changed):
+        stop('Runtime/build inputs changed; cannot promote the existing binary.')
+    return archive, source
+
 
 def pack(app, archive):
     if archive.exists():
@@ -91,11 +115,17 @@ def main():
     action.add_argument('--audit-report')
     parser.add_argument('--source-only', action='store_true')
     parser.add_argument('--tag')
+    parser.add_argument('--stable', action='store_true', help='Explicitly publish a stable version, not a beta')
+    parser.add_argument('--reuse-from', help='During stable preparation, reuse an existing notarized prerelease ZIP')
     args = parser.parse_args()
     branch = publication_target()
     info = plistlib.loads((R / 'Info.plist').read_bytes())
     version, build = info['CFBundleShortVersionString'], info['CFBundleVersion']
-    tag = release_tag(version, args.tag)
+    tag = release_tag(version, args.tag or (f'v{version}' if args.stable else None))
+    if args.stable and tag != f'v{version}':
+        stop('Stable publication requires the plain version tag.')
+    if args.reuse_from and (not args.prepare or not args.stable):
+        stop('--reuse-from is only valid with --prepare --stable.')
     directory = R / 'release' / tag
     manifest_path = directory / 'candidate.json'
     notes = R / 'docs/RELEASE-NOTES.md'
@@ -103,21 +133,38 @@ def main():
     if args.prepare:
         if manifest_path.exists():
             stop('Candidate already exists; preserve it and use a new tag/output directory.')
+        previous = None
+        if args.reuse_from:
+            previous_tag = release_tag(version, args.reuse_from)
+            if previous_tag == tag:
+                stop('Source and destination tags must differ.')
+            previous_dir = R / 'release' / previous_tag
+            previous = json.loads((previous_dir / 'candidate.json').read_text())
+            old_archive, artifact_source = reuse_candidate(previous, previous_dir, previous_tag, version, build, git('rev-parse', 'HEAD'))
         directory.mkdir(parents=True, exist_ok=True)
-        env = {**os.environ, 'CCW_BUILD_MODE': 'host', 'CCW_ARCHITECTURES': 'arm64 x86_64',
-               'CCW_OUTPUT_ROOT': str(app.parent)}
-        run('bash', 'scripts/build.sh', env=env)
-        run(str(app / 'Contents/MacOS/ClaudeConnectionWatcher'), '--self-test')
         archive = directory / f'fuck-anthropic-guard-{tag[1:]}.zip'
-        pack(app, archive)
+        if previous:
+            shutil.copyfile(old_archive, archive)
+        else:
+            env = {**os.environ, 'CCW_BUILD_MODE': 'host', 'CCW_ARCHITECTURES': 'arm64 x86_64',
+                   'CCW_OUTPUT_ROOT': str(app.parent)}
+            run('bash', 'scripts/build.sh', env=env)
+            run(str(app / 'Contents/MacOS/ClaudeConnectionWatcher'), '--self-test')
+            pack(app, archive)
         manifest = dict(source_commit=git('rev-parse', 'HEAD'), source_tree=git('rev-parse', 'HEAD^{tree}'),
                         branch=branch, origin=ORIGIN, tag=tag, app_version=version, build_version=build,
                         zip=archive.name, zip_sha256=sha(archive), notarized=False, tap_changed=False,
                         release_notes_sha256=sha(notes), architectures=['arm64', 'x86_64'])
+        manifest['stable'] = args.stable
+        if previous:
+            manifest.update(notarized=True, reused_from_tag=previous_tag, artifact_source_commit=artifact_source,
+                            notary_submission_id=previous.get('notary_submission_id'))
         save(manifest_path, manifest)
         print(json.dumps(manifest))
         return
     manifest = json.loads(manifest_path.read_text())
+    if bool(manifest.get('stable')) != args.stable:
+        stop('Release channel differs from frozen manifest.')
     archive = validate_frozen(manifest, directory, notes, git('rev-parse', 'HEAD'),
                               git('rev-parse', 'HEAD^{tree}'), branch, tag)
     if args.notarize:
@@ -164,8 +211,9 @@ def main():
     run('git', 'push', '--set-upstream', 'origin', 'HEAD:refs/heads/' + branch)
     if not args.source_only:
         run('gh', 'release', 'create', tag, str(archive), '--repo', REPO,
-            '--target', manifest['source_commit'], '--prerelease', '--latest=false',
-            '--title', f'fuck-anthropic guard {version} beta', '--notes-file', str(notes))
+            '--target', manifest.get('artifact_source_commit', manifest['source_commit']),
+            *(['--latest=true'] if args.stable else ['--prerelease', '--latest=false']),
+            '--title', f'fuck-anthropic guard {version}' + ('' if args.stable else ' beta'), '--notes-file', str(notes))
     print('Published independently reviewed inputs; main merge and tap are separate actions.')
 
 if __name__ == '__main__':
