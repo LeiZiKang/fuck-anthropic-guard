@@ -418,14 +418,119 @@ final class LiveModel: WatcherModel {
 
 final class TopAlignedStack: NSStackView { override var isFlipped: Bool { true } }
 
+final class GuardMenuPanel: NSView {
+    static let panelSize = NSSize(width: 360, height: 270)
+    private let stateLabel = NSTextField(wrappingLabelWithString: "")
+    private let statusIcon = NSImageView()
+    private let processLabel = NSTextField(wrappingLabelWithString: "")
+    private let checkedLabel = NSTextField(wrappingLabelWithString: "")
+    private let scopeLabel = NSTextField(wrappingLabelWithString: "")
+    private let openAction: () -> Void
+    private let checkAction: () -> Void
+    let openButton = NSButton()
+    let checkButton = NSButton()
+    private let demoLabel = NSTextField(labelWithString: "")
+    init(open: @escaping () -> Void, recheck: @escaping () -> Void) {
+        openAction = open; checkAction = recheck
+        super.init(frame: NSRect(origin: .zero, size: Self.panelSize))
+        wantsLayer = true
+        let title = NSTextField(labelWithString: "Guard"); title.font = GuardTheme.editorial(23); title.textColor = GuardTheme.ink
+        demoLabel.font = .systemFont(ofSize: 10, weight: .medium); demoLabel.textColor = GuardTheme.clay
+        let heading = NSStackView(views: [title, NSView(), demoLabel]); heading.orientation = .horizontal
+        stateLabel.font = .systemFont(ofSize: 16, weight: .semibold)
+        statusIcon.symbolConfiguration = .init(pointSize: 19, weight: .medium)
+        statusIcon.widthAnchor.constraint(equalToConstant: 23).isActive = true
+        let stateRow = NSStackView(views: [statusIcon, stateLabel]); stateRow.orientation = .horizontal; stateRow.spacing = 8
+        processLabel.font = .systemFont(ofSize: 12); processLabel.textColor = GuardTheme.ink
+        checkedLabel.font = .monospacedDigitSystemFont(ofSize: 11, weight: .regular); checkedLabel.textColor = GuardTheme.muted
+        scopeLabel.font = .systemFont(ofSize: 11); scopeLabel.textColor = GuardTheme.muted
+        let content = NSStackView(views: [heading, stateRow, processLabel, checkedLabel, scopeLabel])
+        content.orientation = .vertical; content.alignment = .leading; content.spacing = 12
+        content.translatesAutoresizingMaskIntoConstraints = false; addSubview(content)
+        for child in content.arrangedSubviews {
+            child.widthAnchor.constraint(equalTo: content.widthAnchor).isActive = true
+            child.setContentCompressionResistancePriority(.required, for: .vertical)
+        }
+        openButton.target = self; openButton.action = #selector(openMain)
+        checkButton.target = self; checkButton.action = #selector(checkNow)
+        for button in [openButton, checkButton] { button.bezelStyle = .rounded; button.controlSize = .regular }
+        let actions = NSStackView(views: [openButton, checkButton]); actions.orientation = .horizontal
+        actions.spacing = 10; actions.distribution = .fillEqually
+        actions.translatesAutoresizingMaskIntoConstraints = false; addSubview(actions)
+        NSLayoutConstraint.activate([
+            content.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            content.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            content.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            actions.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            actions.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            actions.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+            content.bottomAnchor.constraint(lessThanOrEqualTo: actions.topAnchor, constant: -14)
+        ])
+    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    override var wantsUpdateLayer: Bool { true }
+    override func updateLayer() { layer?.backgroundColor = GuardTheme.canvas.cgColor }
+    override func viewDidChangeEffectiveAppearance() { super.viewDidChangeEffectiveAppearance(); needsDisplay = true }
+    static func symbol(for state: GuardUIState) -> String {
+        switch state { case .verified: return "checkmark.shield"; case .blocked: return "hand.raised"; case .checking: return "exclamationmark.shield"; case .disabled: return "shield.slash" }
+    }
+    static func title(for state: GuardUIState) -> String {
+        switch state {
+        case .verified: return L10n.text("保护已就绪", "Protection ready")
+        case .blocked: return L10n.text("连接已阻断", "Connections blocked")
+        case .checking: return L10n.text("正在确认保护", "Checking protection")
+        case .disabled: return L10n.text("保护未开启", "Protection off")
+        }
+    }
+    func update(_ snapshot: GuardUISnapshot, processCount: Int, port: UInt16?, preview: Bool) {
+        let title = Self.title(for: snapshot.state)
+        let color = snapshot.state == .verified ? GuardTheme.sage : snapshot.state == .disabled ? GuardTheme.muted : GuardTheme.clay
+        stateLabel.stringValue = title; stateLabel.textColor = color
+        statusIcon.image = NSImage(systemSymbolName: Self.symbol(for: snapshot.state), accessibilityDescription: title)
+        statusIcon.contentTintColor = color
+        demoLabel.stringValue = preview ? L10n.text("离线示例", "OFFLINE SAMPLE") : ""
+        processLabel.stringValue = L10n.text("已识别进程：", "Recognized processes: ") + String(processCount) + "\n" +
+            L10n.text("本机专用入口：", "Local endpoint: ") + (port.map { "127.0.0.1:\($0)" } ?? L10n.text("未配置", "Not configured"))
+        if let date = snapshot.lastStatusAt {
+            let f = DateFormatter(); f.dateFormat = "HH:mm:ss"
+            checkedLabel.stringValue = L10n.text("过滤器状态 · ", "Filter status · ") + f.string(from: date) +
+                (snapshot.journalFresh ? "" : L10n.text(" · 已过期", " · stale"))
+        } else { checkedLabel.stringValue = L10n.text("尚未收到过滤器状态", "No filter status received") }
+        scopeLabel.stringValue = L10n.text("仅覆盖已识别客户端 · Guard 不提供 VPN", "Recognized clients only · Guard is not a VPN")
+        openButton.title = L10n.text("打开主窗口", "Open window")
+        checkButton.title = L10n.text("重新检查", "Recheck"); checkButton.isEnabled = !snapshot.pending
+        openButton.setAccessibilityLabel(openButton.title); checkButton.setAccessibilityLabel(checkButton.title)
+    }
+    @objc private func openMain() { openAction() }
+    @objc private func checkNow() { checkAction() }
+}
+
+#if CCW_PREVIEW
+import SwiftUI
+struct GuardMenuCanvas: NSViewRepresentable {
+    let state: GuardUIState
+    func makeNSView(context: Context) -> GuardMenuPanel {
+        let panel = GuardMenuPanel(open: {}, recheck: {})
+        panel.update(GuardUISnapshot(state: state, journalFresh: state == .verified || state == .blocked,
+            configured: state != .disabled, lastStatusAt: state == .disabled ? nil : Date(timeIntervalSince1970: 1790683200)),
+            processCount: 6, port: 6154, preview: true)
+        return panel
+    }
+    func updateNSView(_ nsView: GuardMenuPanel, context: Context) {}
+}
+#Preview("Menu bar · Ready") { GuardMenuCanvas(state: .verified).frame(width: 360, height: 270).preferredColorScheme(.dark) }
+#Preview("Menu bar · Blocked") { GuardMenuCanvas(state: .blocked).frame(width: 360, height: 270).preferredColorScheme(.dark) }
+#Preview("Menu bar · Checking") { GuardMenuCanvas(state: .checking).frame(width: 360, height: 270).preferredColorScheme(.dark) }
+#Preview("Menu bar · Disabled") { GuardMenuCanvas(state: .disabled).frame(width: 360, height: 270).preferredColorScheme(.dark) }
+#endif
+
 final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTableViewDataSource, NSTableViewDelegate, NSSearchFieldDelegate {
     var window: NSWindow!
     let model: WatcherModel
     var renderOnly = false
     private var statusItem: NSStatusItem?
     private let popover = NSPopover()
-    private let compactState = NSTextField(wrappingLabelWithString: "")
-    private let compactProcesses = NSTextField(wrappingLabelWithString: "")
+    private var menuPanel: GuardMenuPanel?
     private var state = NSTextField(wrappingLabelWithString: "")
     private var detail = NSTextField(wrappingLabelWithString: "")
     private var reason = NSTextField(wrappingLabelWithString: "")
@@ -714,12 +819,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTa
         statusItem?.button?.target = self; statusItem?.button?.action = #selector(togglePopover)
     }
     private func buildPopover() {
-        compactState.font = .systemFont(ofSize: 16, weight: .semibold); compactProcesses.font = .systemFont(ofSize: 12); compactProcesses.textColor = GuardTheme.muted
-        let v = stack([text(model.isPreview ? L10n.text("Guard · 预览", "Guard · Preview") : "Guard", size: 20, weight: .bold), compactState, compactProcesses,
-            stack([button(L10n.text("打开主窗口", "Open window"), #selector(show)), button(GuardString.refresh.text, #selector(refresh))], axis: .horizontal)], spacing: 14)
-        v.edgeInsets = NSEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        for view in v.arrangedSubviews { view.widthAnchor.constraint(equalToConstant: 300).isActive = true }
-        let vc = NSViewController(); vc.view = v; popover.contentViewController = vc; popover.behavior = .transient; popover.contentSize = NSSize(width: 340, height: 205)
+        let panel = GuardMenuPanel(open: { [weak self] in self?.show() }, recheck: { [weak self] in self?.recheck() })
+        menuPanel = panel
+        let controller = NSViewController(); controller.view = panel
+        controller.preferredContentSize = GuardMenuPanel.panelSize
+        popover.contentViewController = controller; popover.behavior = .transient
+        popover.contentSize = GuardMenuPanel.panelSize
     }
     private func render() {
         let snapshot = model.presentation
@@ -744,8 +849,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTa
         }
         state.stringValue = title; detail.stringValue = subtitle; stateIcon.image = NSImage(systemSymbolName: symbol, accessibilityDescription: title)
         stateIcon.contentTintColor = color; hero.accent = color
-        compactState.stringValue = title; compactState.textColor = color
-        compactProcesses.stringValue = L10n.text("已识别进程：", "Recognized processes: ") + String(model.rows.count) + "\n" + L10n.text("专用入口 · ", "Dedicated endpoint · ") + String(model.config.proxy?.port ?? 6154)
+        menuPanel?.update(snapshot, processCount: model.rows.count, port: model.config.proxy?.port, preview: model.isPreview)
+        let menuTitle = "Guard · " + GuardMenuPanel.title(for: snapshot.state)
+        let menuIcon = NSImage(systemSymbolName: GuardMenuPanel.symbol(for: snapshot.state), accessibilityDescription: menuTitle)
+        menuIcon?.isTemplate = true; statusItem?.button?.image = menuIcon
+        statusItem?.button?.toolTip = menuTitle; statusItem?.button?.setAccessibilityLabel(menuTitle)
         let resumeTitle = snapshot.configured == true ? L10n.text("恢复连接检查…", "Resume checks…") : GuardString.enable.text
         if snapshot.state == .verified { primary.title = L10n.text("阻断Claude连接…", "Block Claude connections…"); primary.action = #selector(lock) }
         else if snapshot.state == .checking { primary.title = L10n.text("重新检查", "Recheck"); primary.action = #selector(recheck) }
@@ -820,7 +928,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTa
     private func message(_ text:String) { let a=NSAlert();a.messageText=text;a.addButton(withTitle:L10n.text("好","OK"));a.runModal() }
     @objc func togglePopover() {
         guard let button=statusItem?.button else { return }
-        if popover.isShown { popover.close() } else { render();popover.show(relativeTo:button.bounds,of:button,preferredEdge:.minY);NSApp.activate(ignoringOtherApps:true) }
+        if popover.isShown { popover.close() } else { NSApp.activate(ignoringOtherApps:true);render();popover.show(relativeTo:button.bounds,of:button,preferredEdge:.minY) }
     }
     @objc func show() { popover.close();window.makeKeyAndOrderFront(nil);NSApp.activate(ignoringOtherApps:true) }
     @objc func refresh() { model.refresh() }

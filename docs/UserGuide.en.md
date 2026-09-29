@@ -165,3 +165,6 @@ Summary actions are native buttons, denied text has stronger contrast, appearanc
 
 ## 0.4.3 input validation
 Invalid ports, egress IPs or policy names show a specific error inside the existing dialog and preserve entered values. Correct them to save, or cancel without changing configuration. Shared/legacy ports and reserved policy names are rejected. Existing Surge configuration verification remains unchanged.
+
+## 0.4.4 menu bar
+The menu popover and Xcode Canvas share the same AppKit content view with20pt padding, protection state, recognized processes, endpoint and last filter status time. Recheck invokes the main recheck path; Open window shows the full panel. The menu symbol distinguishes ready, blocked, checking and disabled states. Filtering rules are unchanged.

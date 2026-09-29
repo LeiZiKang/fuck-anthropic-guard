@@ -44,3 +44,6 @@ moving physical source files or changing target membership. Existing bundle and
 Mach-service identifiers remain stable.
 
 Remote freshness: GitHub fetch failed during this maintenance (direct timeout, proxy HTTP/2 error and HTTP/1.1 empty reply). The base is the last known origin/main at da9287b; do not claim the remote was refreshed. No remote refs were modified.
+
+## Xcode Canvas
+On01 Preview (Safe), open App/main.swift and Canvas. Four named#Preview entries render the actual GuardMenuPanel used by the live NSPopover. Use Xcode MCP RenderPreview and locale overrides for English/Chinese. This is Xcode Canvas, distinct from running the standalone Preview app. Never switch to the production scheme to simulate menu states.

@@ -66,3 +66,6 @@ Summary actions are native buttons, denied text has stronger contrast, appearanc
 
 ## 0.4.3 form fix
 Validate configuration before dismissing the dialog; preserve fields and focus the invalid input. Filter and route authorization logic are unchanged.
+
+## Menu content acceptance
+Four#Preview definitions in App/main.swift exercise ready/blocked/checking/disabled through Xcode RenderPreview. GuardMenuPanel is shared with the real popover; Canvas uses offline fixtures. Content rendering is not live acceptance of system menu placement or the popover arrow.

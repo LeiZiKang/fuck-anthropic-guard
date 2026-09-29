@@ -87,3 +87,5 @@ CCW_BUILD_MODE=host bash scripts/build.sh
 Anthropic深色界面、原创图标与最近80条连接记录，支持搜索、排序、详情和复制；新增明确的阻断确认、按状态调整的控件和实际IPC重新检查。已在开发Mac公证安装并完成本机端口验收，尚未公开发布。详见[验证状态](docs/FEATURE-STATUS.zh-CN.md)与[分支流程](docs/BRANCHES.md)。
 
 本地0.4.3已公证安装，修复配置错误反馈：非法输入保留在弹窗内，现用过滤扩展原样保留。
+
+菜单栏新增四种状态的Xcode Canvas #Preview，与正式AppKit弹窗共用视图（0.4.4候选）。
