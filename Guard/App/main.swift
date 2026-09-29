@@ -44,6 +44,73 @@ struct GuardUISnapshot {
 
 }
 
+enum EndpointInputProblem: Error, Equatable {
+    case port, reservedPort, exits, policy
+    var fieldIndex: Int { switch self { case .port, .reservedPort: return 0; case .exits: return 1; case .policy: return 2 } }
+    var message: String {
+        switch self {
+        case .port: return L10n.text("端口请输入 1–65535 的整数，例如 6154。", "Enter a whole-number port from 1 to 65535, such as 6154.")
+        case .reservedPort: return L10n.text("6152、6153、6162、6163 是共享或旧版端口，请使用专用端口。", "6152, 6153, 6162 and 6163 are shared or legacy ports. Use a dedicated port.")
+        case .exits: return L10n.text("请输入有效的 IPv4 或 IPv6 出口地址；多个地址用逗号分隔，最多 16 个。", "Enter valid IPv4 or IPv6 egress addresses, separated by commas if needed (up to 16).")
+        case .policy: return L10n.text("请输入单节点策略名称；不能为 DIRECT、REJECT、PROXY，也不能包含逗号或换行。", "Enter a single-node policy name without commas or line breaks. DIRECT, REJECT and PROXY are not valid names.")
+        }
+    }
+}
+enum EndpointFormInput {
+    static func validate(port: String, exits: String, policy: String) -> Result<RouteRequirements, EndpointInputProblem> {
+        let port = port.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !port.isEmpty, port.utf8.allSatisfy({ (48...57).contains($0) }), let number = UInt16(port), number > 0 else { return .failure(.port) }
+        guard ![6152,6153,6162,6163].contains(number) else { return .failure(.reservedPort) }
+        guard var value = RouteRequirements.parse(proxyAddress: "127.0.0.1", proxyPort: String(number), exits: exits) else { return .failure(.exits) }
+        let policy = policy.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !policy.isEmpty, !policy.contains(where: { ",\n\r".contains($0) }), !["DIRECT","REJECT","PROXY"].contains(policy.uppercased()) else { return .failure(.policy) }
+        value.surgePolicy = policy; value.expectedProfileDigest = String(repeating: "0", count: 64)
+        return .success(value)
+    }
+}
+final class EndpointSettingsEditor: NSObject {
+    private let alert = NSAlert()
+    private var fields: [NSTextField] = []
+    private let errorLabel = NSTextField(wrappingLabelWithString: " ")
+    private var validated: RouteRequirements?
+    init(config: RouteRequirements) {
+        super.init()
+        alert.messageText = GuardString.settingsTitle.text; alert.informativeText = GuardString.settingsHelp.text
+        let view = NSStackView(); view.orientation = .vertical; view.alignment = .leading; view.spacing = 8
+        let values = [(GuardString.port.text, String(config.proxy?.port ?? 6154)),
+            (GuardString.exitIP.text, config.expectedExitAddresses.joined(separator: ", ")),
+            (GuardString.policy.text, config.surgePolicy.isEmpty ? "CLAUDE-LOCKED" : config.surgePolicy)]
+        for (label, value) in values {
+            view.addArrangedSubview(NSTextField(labelWithString: label))
+            let field = NSTextField(string: value); field.widthAnchor.constraint(equalToConstant: 440).isActive = true
+            field.setAccessibilityLabel(label); view.addArrangedSubview(field); fields.append(field)
+        }
+        errorLabel.textColor = GuardTheme.clay; errorLabel.font = .systemFont(ofSize: 12)
+        errorLabel.widthAnchor.constraint(equalToConstant: 440).isActive = true
+        errorLabel.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        view.addArrangedSubview(errorLabel)
+        view.frame = NSRect(x: 0, y: 0, width: 440, height: 250); alert.accessoryView = view
+        let cancel = alert.addButton(withTitle: GuardString.cancel.text); cancel.keyEquivalent = "\u{1b}"
+        let save = alert.addButton(withTitle: GuardString.save.text)
+        save.keyEquivalent = "\r"; save.target = self; save.action = #selector(validateAndSubmit)
+    }
+    @objc private func validateAndSubmit() {
+        switch EndpointFormInput.validate(port: fields[0].stringValue, exits: fields[1].stringValue, policy: fields[2].stringValue) {
+        case .failure(let issue):
+            errorLabel.stringValue = issue.message
+            errorLabel.setAccessibilityLabel(issue.message)
+            alert.window.makeFirstResponder(fields[issue.fieldIndex]); fields[issue.fieldIndex].selectText(nil)
+        case .success(let value):
+            validated = value; NSApp.stopModal(withCode: .alertSecondButtonReturn)
+        }
+    }
+    func run() -> RouteRequirements? {
+        let result = alert.runModal()
+        alert.window.orderOut(nil)
+        return result == .alertSecondButtonReturn ? validated : nil
+    }
+}
+
 enum GuardEventQuery {
     static func apply(_ events: [GuardConnectionEvent], filter: Int, query: String, key: String, ascending: Bool) -> [GuardConnectionEvent] {
         let q = query.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -769,16 +836,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSTa
         guard model.presentation.canEdit else {
             message(L10n.text("当前入口（只读）\n", "Current endpoint (read-only)\n") + (model.config.proxy?.label ?? "—") + "\n" + model.config.surgePolicy + "\n" + L10n.text("保护已开启或状态尚未确认，不能编辑配置。需要修改时，请先明确停用保护。", "Configuration cannot be edited while protection is enabled or unconfirmed. Explicitly disable protection first if a change is needed.")); return
         }
-        let a=NSAlert();a.messageText=GuardString.settingsTitle.text;a.informativeText=GuardString.settingsHelp.text
-        let view=NSStackView();view.orientation = .vertical;view.alignment = .leading;view.spacing=8
-        let values=[(GuardString.port.text,String(model.config.proxy?.port ?? 6154)),(GuardString.exitIP.text,model.config.expectedExitAddresses.first ?? ""),(GuardString.policy.text,model.config.surgePolicy.isEmpty ? "CLAUDE-LOCKED" : model.config.surgePolicy)]
-        var fields:[NSTextField]=[]
-        for (label,value) in values { view.addArrangedSubview(NSTextField(labelWithString:label));let f=NSTextField(string:value);f.widthAnchor.constraint(equalToConstant:440).isActive=true;view.addArrangedSubview(f);fields.append(f) }
-        view.frame=NSRect(x:0,y:0,width:440,height:180)
-        a.accessoryView=view;a.addButton(withTitle:GuardString.cancel.text);a.addButton(withTitle:GuardString.save.text)
-        guard a.runModal() == .alertSecondButtonReturn, var value=RouteRequirements.parse(proxyAddress:"127.0.0.1",proxyPort:fields[0].stringValue,exits:fields[1].stringValue) else { return }
-        value.surgePolicy=fields[2].stringValue;value.expectedProfileDigest=String(repeating:"0",count:64)
-        guard value.localAuditConfigured else { message(GuardString.configIncomplete.text);return }
+        guard let value = EndpointSettingsEditor(config: model.config).run() else { return }
         model.configure(value) { [weak self] error in self?.message(error ?? GuardString.saved.text) }
     }
     func applicationShouldHandleReopen(_ sender:NSApplication,hasVisibleWindows flag:Bool)->Bool { show();return false }

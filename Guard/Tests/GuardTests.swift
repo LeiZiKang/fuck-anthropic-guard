@@ -39,6 +39,20 @@ func runGuardTests() {
  var diagnosticPolicy = FilterDecisionState()
  diagnosticPolicy.accept(FilterPolicyUpdate(block: true, blockReason: "untrusted string"), at: 100)
  check(diagnosticPolicy.blocking(at: 100), "diagnostic strings do not authorize a connection")
+ for badPort in ["abc", "", "0", "65536", "-1", "+6154", "61.54"] {
+  if case .failure(.port) = EndpointFormInput.validate(port: badPort, exits: "203.0.113.10", policy: "LOCKED") { check(true, "invalid port classified") } else { check(false, "invalid port rejected") }
+ }
+ for reserved in ["6152", "6153", "6162", "6163"] {
+  if case .failure(.reservedPort) = EndpointFormInput.validate(port: reserved, exits: "203.0.113.10", policy: "LOCKED") { check(true, "reserved ingress explained") } else { check(false, "reserved ingress rejected") }
+ }
+ for badIP in ["", "example.com", "999.2.3.4", "203.0.113.10, bad"] {
+  if case .failure(.exits) = EndpointFormInput.validate(port: "6154", exits: badIP, policy: "LOCKED") { check(true, "invalid egress classified") } else { check(false, "invalid egress rejected") }
+ }
+ for badPolicy in ["", "DIRECT", "proxy", "REJECT", "A,B", "A\nB"] {
+  if case .failure(.policy) = EndpointFormInput.validate(port: "6154", exits: "203.0.113.10", policy: badPolicy) { check(true, "invalid policy classified") } else { check(false, "invalid policy rejected") }
+ }
+ let validInput = try! EndpointFormInput.validate(port: " 6154 ", exits: "203.0.113.10, 2001:db8::1", policy: " LOCKED ").get()
+ check(validInput.proxy?.port == 6154 && validInput.surgePolicy == "LOCKED" && validInput.expectedExitAddresses.count == 2 && validInput.localAuditConfigured, "valid form preserves multiple exits and trims input")
  let endpoint=ProxyEndpoint.parse(address:"127.0.0.1",port:"6154")!
  check(!endpoint.matches(address:"1.1.1.1",port:"443",tcp:true),"direct remote denied")
  check(!endpoint.matches(address:"127.0.0.1",port:"6152",tcp:true),"shared port denied")

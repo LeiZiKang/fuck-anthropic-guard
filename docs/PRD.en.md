@@ -63,3 +63,6 @@ Block Claude connections now confirms its impact; cancel preserves permission. R
 Search connections by identity, PID or endpoint; clearing search restores the category. Click column headers to sort, then select an event for details or copying. Details include full time, signing identity, destination and recorded trigger. Missing historical causes are disclosed rather than inferred. Unknown ownership has an explanation and is not a leak count.
 
 Summary actions are native buttons, denied text has stronger contrast, appearance persists in the live app, and smaller windows scroll.
+
+## 0.4.3 form fix
+Validate configuration before dismissing the dialog; preserve fields and focus the invalid input. Filter and route authorization logic are unchanged.

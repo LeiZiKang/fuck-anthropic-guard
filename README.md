@@ -85,3 +85,5 @@ Process metadata stays local. Consented exit checks use Surge to reach `api.ipif
 
 ### Local development: 0.4.2
 Anthropic-inspired dark UI, original icon and latest80 connection decisions with search, sorting, details and copying. Confirmed blocking, state-aware controls and actual IPC recheck improve usability. Locally notarized and installed; filter/loopback acceptance verified. This is not a public release. See [validation status](docs/FEATURE-STATUS.md) and [branch workflow](docs/BRANCHES.md).
+
+Local 0.4.3 candidate fixes configuration validation feedback; invalid input remains in the dialog. The installed filter bundle is retained unchanged.

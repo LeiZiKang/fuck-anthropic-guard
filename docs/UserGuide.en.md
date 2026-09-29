@@ -162,3 +162,6 @@ Block Claude connections now confirms its impact; cancel preserves permission. R
 Search connections by identity, PID or endpoint; clearing search restores the category. Click column headers to sort, then select an event for details or copying. Details include full time, signing identity, destination and recorded trigger. Missing historical causes are disclosed rather than inferred. Unknown ownership has an explanation and is not a leak count.
 
 Summary actions are native buttons, denied text has stronger contrast, appearance persists in the live app, and smaller windows scroll.
+
+## 0.4.3 input validation
+Invalid ports, egress IPs or policy names show a specific error inside the existing dialog and preserve entered values. Correct them to save, or cancel without changing configuration. Shared/legacy ports and reserved policy names are rejected. Existing Surge configuration verification remains unchanged.
