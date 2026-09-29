@@ -1,49 +1,24 @@
-# Branch workflow
+# Branch and release workflow
 
-Current development branch: `codex/guard-0.4.2-polish`.
-Base: `origin/main` (the merged 0.4.0 beta baseline). This branch has no upstream
-until it is deliberately published. It must not push directly to main.
+- `main` is the reviewed integration branch. New work starts from current `origin/main` and reaches it through a PR.
+- Use a focused `codex/feature-<topic>` branch for publication. Do not push directly to main or force-update a branch used by another worktree.
+- `archive/*` names preserve local historical work; they are not release branches and should not be pushed as current products.
+- Preserve unique commits and uncommitted changes before cleaning up a linked worktree. A missing temporary directory is not permission to delete its branch history.
 
-## Roles
+## Development
 
-- `origin/main`: published integration history; use this as the base for new work.
-- `codex/guard-0.4.2-polish`: local 0.4.1 UI/journal implementation plus 0.4.2 UX fixes and project organization.
-- `archive/merged-homebrew-beta-20260929`: preserved former `codex/feature-homebrew-beta`; already in origin/main.
-- `archive/merged-public-guard-20260929`: preserved former `codex/feature-surge-guard-public`; already in origin/main.
-- Older `codex/*` validation branches and local `main`: historical work. Several
-  are checked out in other worktrees; do not reset, delete, or reuse them blindly.
+Xcode navigator: App / Core / Network Filter / Preview / Tests / Resources / Documentation / Build & Release / Products. Physical source locations and target membership remain explicit.
 
-Local `main` belongs to an older checkout and has diverged from `origin/main`.
-It is NOT the current integration baseline. Preserve its unique commits until
-that checkout has been reviewed with its owner. Temporary validation worktree
-registrations may reference missing directories; this does not authorize deleting
-branches or their commits.
+Use **01 Preview (Safe)** and Xcode MCP BuildProject/GetBuildLog for incremental builds. Four menu `#Preview` definitions in App/main.swift use `CCW_CANVAS`, set only for the Xcode Preview target. The standalone `scripts/test.sh` build excludes Canvas macros. Production schemes build without activating filtering.
 
-## Routine development
+## Release
 
-1. Fetch origin using the existing working network setup.
-2. Start a focused `codex/<topic>` branch from `origin/main`.
-3. Keep local changes in coherent commits; separate behavior changes from Xcode
-   navigator/build metadata changes.
-4. Prefer Xcode MCP `BuildProject` on `01 Preview (Safe)` for incremental builds.
-   Use `GetBuildLog` with errors/warnings rather than dumping full logs.
-5. Build `02 Watcher - Build Only` only to validate production compilation. Never
-   run a production filter as a development test. The shell build remains a
-   reproducible packaging/CI fallback.
-6. Before any public push/release, follow AGENTS.md's independent review gate.
-   Local signing/notarization/installation is separate from public publication.
-7. After merge, archive or remove only reviewed, unused branches. Never force
-   update a branch used by another worktree, and never confuse archived code with
-   the running app.
+1. Update version/build metadata, README, guides, validation status and release notes. A replacement filter needs a compatible new host/provider build identifier.
+2. Commit and freeze source on a `codex/feature-` branch.
+3. Use `scripts/publish-release.sh --prepare --tag v<version>-beta.<n>` with signing profiles supplied externally. It builds Universal 2, runs host checks and writes a versioned candidate manifest. It does not publish.
+4. Use `--notarize` for the approved Apple upload. The submission ID is saved for resumption; the stapled ZIP receives a new digest.
+5. A separate reviewer must inspect frozen source, reachable history, exact ZIP and release text. Produce matching source-only and binary-prerelease audit reports.
+6. The publication gate checks exact commit/tree, branch, origin, archive digest, release tag and release-text digest. Push the reviewed feature, create a PR, verify CI, merge without bypassing protection, then publish the reviewed prerelease.
+7. Verify remote main, tag and downloadable asset. Delete only merged remote task branches; retain unrelated/local historical work. A Homebrew tap update is a separate change.
 
-## Xcode navigator
-
-App / Core / Network Filter / Preview / Tests / Resources / Documentation /
-Build & Release / Products. Groups organize existing file references without
-moving physical source files or changing target membership. Existing bundle and
-Mach-service identifiers remain stable.
-
-Remote freshness: GitHub fetch failed during this maintenance (direct timeout, proxy HTTP/2 error and HTTP/1.1 empty reply). The base is the last known origin/main at da9287b; do not claim the remote was refreshed. No remote refs were modified.
-
-## Xcode Canvas
-On01 Preview (Safe), open App/main.swift and Canvas. Four named#Preview entries render the actual GuardMenuPanel used by the live NSPopover. Use Xcode MCP RenderPreview and locale overrides for English/Chinese. This is Xcode Canvas, distinct from running the standalone Preview app. Never switch to the production scheme to simulate menu states.
+The gate is a workflow check, not an exhaustive security proof. Never publish private profiles, keys, logs, tokens, personal paths or backups.

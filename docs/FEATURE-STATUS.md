@@ -1,31 +1,21 @@
-# Feature and validation status
+# Validation status — 0.4.4 beta / build 13.0
 
-## Local 0.4.2 / build 12.2
+**English** | [简体中文](FEATURE-STATUS.zh-CN.md)
 
-Implemented: scoped Claude connection protection, process inventory, read-only IPv6,
-Surge route checks, bounded in-memory journal and safety notifications. The dark
-bilingual UI now adds confirmed blocking, actual IPC recheck, state-aware read-only
-configuration, recorded trigger details, search/sort/details/copy, accessible
-summary buttons, stronger text contrast and persistent appearance.
+| Area | Evidence | Boundary |
+|---|---|---|
+| Source and builds | 271 Preview / 273 host offline checks; Xcode schemes and standalone builds; Universal 2 compilation | Counts overlap; Intel hardware not tested |
+| Local filtering | Earlier development build 12.2 allowed the dedicated 6154 TCP endpoint and denied wrong loopback ports and sampled child UDP paths | Local fixtures, not every external protocol or OS failure |
+| UI | Search/clear/sort/details/copy, block cancellation, language and appearance; invalid form input/corrected save | Not a full accessibility audit |
+| Menu content | Actual Xcode Canvas#Preview for four states, English/Chinese; shared production AppKit view | System menu targeting, arrow placement and full click flow not automated |
+| Distribution | Versioned signed/notarized ZIP, frozen source/artifact/release-text review required | Public build 13.0 has not been installed as a new live acceptance test |
 
-Validation: Xcode MCP Preview and Watcher Build Only builds passed; 249 Preview
-and 251 host offline checks passed (shared coverage, not additive). Native preview
-checks passed for block/cancel, endpoint search/clear, sorting and event details.
-Default1040x820 and small900x740 renders inspected; smaller content scrolls.
+## Still pending
 
-The exact Xcode-built candidate was Apple notarized, stapled, verified by Gatekeeper and installed locally. Filter12.2 is activated enabled; UI ready, read-only endpoint and disabled redundant enable verified. Recheck updates the real filter status. Local-only signed CLI child acceptance again allowed6154 and denied8776 with matching journal entries. Surge profile unchanged. No public0.4.2 release or remote push.
-Live fault recovery, OS restart/wake and unknown-attribution coverage remain
-separate acceptance gaps. Diagnostics do not change authorization predicates.
+Physical network loss/recovery, full machine reboot/wake, provider crashes, early boot and complete unknown-attribution coverage. A running app or a notarization receipt does not prove these cases.
 
-## Project workflow
+## Data and controls
 
-Xcode navigator groups and existing source paths/target memberships are organized.
-Default scheme remains 01 Preview (Safe); the host scheme is build-only. Prefer
-Xcode MCP for incremental build/diagnostics; shell scripts remain packaging/CI
-fallbacks. See [branch workflow](BRANCHES.md).
+The journal retains only the latest 80 protected-client metadata events in provider memory. It resets when the extension restarts. It contains no packet payloads, chat, URL paths or account credentials. Unknown owners are counted without recording unrelated application histories. Egress checks use the consented Surge path; no direct fallback is provided.
 
-## 0.4.3 host-only installation
-Configuration validation now keeps invalid fields open with specific inline errors. Invalid port/IP/policy and corrected-save paths passed in native Preview; 271 Preview / 273 host offline checks and both Xcode MCP builds passed. Apple notarization, stapling and Gatekeeper passed; installed host0.4.3 with the original filter0.4.2/build12.2 tree preserved byte-for-byte. Live protection ready; Surge unchanged.
-
-## 0.4.4 menu-bar installation
-Same AppKit panel shared by the menu popover and four Xcode Canvas#Preview states. English/Chinese RenderPreview snapshots passed; padding, state symbols, last-status time and recheck wiring updated. After explicit approval, Apple notarization/stapling/Gatekeeper passed and0.4.4 was installed. Original signed filter tree and Surge profile unchanged; live main UI protection ready. Actual system menu placement/click coverage remains distinct from Canvas snapshots.
+Production activation is explicit. Default Xcode Run is 01 Preview (Safe); host/filter schemes build without activating system filtering. See [security](../SECURITY.md), [guide](UserGuide.en.md) and [release notes](RELEASE-NOTES.md).

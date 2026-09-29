@@ -505,7 +505,7 @@ final class GuardMenuPanel: NSView {
     @objc private func checkNow() { checkAction() }
 }
 
-#if CCW_PREVIEW
+#if CCW_PREVIEW && CCW_CANVAS
 import SwiftUI
 struct GuardMenuCanvas: NSViewRepresentable {
     let state: GuardUIState

@@ -29,7 +29,7 @@ def inline(text):
         elif target.endswith(".md"):
             linked = (SOURCE.parent / target).resolve()
             if linked.is_relative_to(ROOT):
-                target = "https://github.com/LeiZiKang/fuck-anthropic-guard/blob/codex/feature-surge-guard-public/" + linked.relative_to(ROOT).as_posix()
+                target = "https://github.com/LeiZiKang/fuck-anthropic-guard/blob/main/" + linked.relative_to(ROOT).as_posix()
         if target.startswith(('https://', 'http://')) or (':' not in target and not target.startswith('//')):
             return '<a href="' + target + '">' + label + '</a>'
         return match.group(0)

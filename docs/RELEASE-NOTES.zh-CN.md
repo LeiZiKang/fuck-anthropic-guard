@@ -1,19 +1,23 @@
-# 发布说明 — 0.4.0 beta / build 12.0
+# 0.4.4 测试版 / build 13.0
 
 [English](RELEASE-NOTES.md) | **简体中文**
 
-## 功能
+本版加入可查看的连接日志及重新设计的深浅色界面，继续采用限定范围的Surge配套防护。
 
-- 可识别的 Claude 进程管理及只读 IPv6 设置。
-- 配合单独配置的 Surge 入口提供实验性系统过滤，以及去重的 macOS 安全提醒。
-- 即时切换简体中文／英文，双语手册与 README 语言导航。
-- 原生 Xcode 目标、Dock／菜单栏界面和独立离线 Preview。
-- 新名称 **fuck-anthropic guard** 与新图标；内部 bundle／签名标识保持不变。
+- 内存保留最近80条已识别客户端判定，包含进程/PID、入口、协议及已记录原因；可搜索、排序、查看详情和复制。
+- 手动阻断前明确确认；实际IPC重新检查、按状态调整的设置，以及保留错误输入的配置校验。
+- 菜单栏修正留白、状态图标和检查动作，显示最近状态时间；四个Xcode Canvas预览共用正式AppKit面板。
+- 整理Xcode导航，默认安全Preview；命令行构建不加载仅供Canvas使用的宏。
+- 修正原生Claude启动脚本的签名校验参数及Desktop启动方式。
 
-## 使用前须知
+## 安装包与升级
 
-保护需要主动启用，并配置说明书要求的 Surge 专用入口、有效签名和 macOS 授权。App 不提供代理／SSH 服务，不读取 VPS 私钥、不清理凭据，也不自动修改 Surge。
+ZIP为Developer ID签名、通过Apple公证的Universal 2应用，要求macOS14+。主程序和过滤扩展使用build13.0，与之前仅本地使用的12.2包区分。Intel仅通过编译验证，未在Intel真机验收。Homebrew tap未更新，请用本版ZIP获取0.4.4。
 
-本测试版提供 Developer ID 签名且已公证的 Universal 2 App 和新 Homebrew cask；安装不会启用过滤器，也不会自动升级旧版 0.2.2 cask。真实代理中断、重启、过滤器崩溃和客户端覆盖验收仍待完成。详见[验证状态](FEATURE-STATUS.zh-CN.md)和[安全模型](../SECURITY.zh-CN.md)，不保证零 IP 泄漏或账号安全。
+先保存工作并退出Claude客户端，保持Surge运行。退出Guard时保留过滤器，替换App后重新打开并明确恢复/启用检查，完成可能出现的macOS扩展授权。确认保护就绪前不要重新打开客户端。系统若要求重启，重启后复核前均视为未确认。不要同时运行新旧App。详见[使用说明](UserGuide.md)。
 
-安装命令：`brew install --cask leizikang/tap/fuck-anthropic-guard`，或下载本次 Release ZIP。迁移、升级、卸载前先停用保护、确认停用并退出；新旧版共享 bundle 标识，不要同时运行。
+## 验证与边界
+
+Preview271项、主程序273项离线检查通过（共享覆盖不可相加），另有发布门禁测试与双架构编译。本地开发版本通过专用端口允许/拒绝测试；Xcode Canvas验证了四态中英文内容，不能替代真实系统菜单栏定位和点击验收。
+
+本次build13.0发行包不代表重新完成了重启、唤醒、过滤器崩溃的实机验收。未知进程归属仍是覆盖缺口。Guard不是VPN，不保证零IP暴露或账号不受限制。详见[验证状态](FEATURE-STATUS.zh-CN.md)和[安全模型](../SECURITY.zh-CN.md)。
