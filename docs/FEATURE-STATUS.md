@@ -24,5 +24,5 @@ Default scheme remains 01 Preview (Safe); the host scheme is build-only. Prefer
 Xcode MCP for incremental build/diagnostics; shell scripts remain packaging/CI
 fallbacks. See [branch workflow](BRANCHES.md).
 
-## 0.4.3 host-only candidate
-Configuration validation now keeps invalid fields open with specific inline errors. Invalid port/IP/policy and corrected-save paths passed in native Preview; 271 Preview / 273 host offline checks and both Xcode MCP builds passed. Candidate not installed yet; the current signed filter bundle will be preserved byte-for-byte.
+## 0.4.3 host-only installation
+Configuration validation now keeps invalid fields open with specific inline errors. Invalid port/IP/policy and corrected-save paths passed in native Preview; 271 Preview / 273 host offline checks and both Xcode MCP builds passed. Apple notarization, stapling and Gatekeeper passed; installed host0.4.3 with the original filter0.4.2/build12.2 tree preserved byte-for-byte. Live protection ready; Surge unchanged.
