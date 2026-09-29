@@ -11,7 +11,7 @@
 > **已公证测试版 · 保护须主动启用。** 真实故障场景仍待验收；签名与公证不保证零 IP 泄漏或账号安全。
 
 <p align="center">
-  <a href="docs/images/preview-zh.png"><img src="docs/images/preview-zh.png" width="640" alt="中文主界面：可识别进程、IPv6 状态与 Surge 保护操作"></a>
+  <a href="docs/images/preview-zh.png"><img src="docs/images/preview-zh.png" width="640" alt="中文概览：连接状态、专用路径、计数与分组详情"></a>
   <br><sub>实际运行的离线 Preview · 示例数据 · 不是真实过滤证据</sub>
 </p>
 
@@ -82,3 +82,8 @@ CCW_BUILD_MODE=host bash scripts/build.sh
 ---
 
 进程信息留在本机。经同意的出口检查通过 Surge 访问 `api.ipify.org`，不携带 Claude 凭据；无遥测，不自动回退直连。[MIT 许可证](LICENSE)。
+
+### 本地 0.4.1 候选
+暖白陶土色界面、原创图标和最近80条连接判定；允许/拒绝筛选，进程、目标、协议与原因可查看。Guard不提供VPN。尚未公开发布。
+
+Local0.4.1 status: installed and Apple notarized on the development Mac; default Anthropic-inspired dark UI and bounded connection journal live-validated. Not a public release.

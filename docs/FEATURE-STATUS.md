@@ -1,23 +1,26 @@
-# Validation status — 0.4.0 / build 12.0
+# Feature and validation status
 
-**English** | [简体中文](FEATURE-STATUS.zh-CN.md)
+## Local 0.4.2 / build 12.2 candidate
 
-## Implemented
+Implemented: scoped Claude connection protection, process inventory, read-only IPv6,
+Surge route checks, bounded in-memory journal and safety notifications. The dark
+bilingual UI now adds confirmed blocking, actual IPC recheck, state-aware read-only
+configuration, recorded trigger details, search/sort/details/copy, accessible
+summary buttons, stronger text contrast and persistent appearance.
 
-Recognized-process discovery and confirmed termination, read-only IPv6, opt-in Surge path checks and system filtering, safety notifications, bilingual UI/guides, native Xcode targets, Dock/menu-bar entry and isolated Preview.
+Validation: Xcode MCP Preview and Watcher Build Only builds passed; 249 Preview
+and 251 host offline checks passed (shared coverage, not additive). Native preview
+checks passed for block/cancel, endpoint search/clear, sorting and event details.
+Default1040x820 and small900x740 renders inspected; smaller content scrolls.
 
-## Verified locally
+Candidate is not installed yet. Installed local0.4.1 remains active until the new
+signed/notarized package is deployed. No public0.4.2 release or remote push.
+Live fault recovery, OS restart/wake and unknown-attribution coverage remain
+separate acceptance gaps. Diagnostics do not change authorization predicates.
 
-- 222 host offline assertions and 220 Preview assertions passed. They share coverage and must not be added together.
-- Intel/Apple Silicon host and filter builds, strict ad-hoc signature checks, and a native Xcode build passed.
-- The running offline Preview was checked in both languages: language switching retained the sample blocking state, cancellation retained sample processes, configuration fields were visible, and the new icon appeared in confirmation dialogs.
-- README screenshots use sample data from that Preview. They are not live-filter evidence.
-- Independent source-publication review covered frozen source/history, images and the exact local archive. It does not certify production safety.
+## Project workflow
 
-## Still unverified
-
-Production approval/activation, real client traffic and every wrapper/descendant, notification delivery, reboot first packets, provider-crash recovery, physical network loss and all IPv6 transitions.
-
-## Distribution status
-
-A Developer ID signed and Apple-notarized experimental beta is packaged for distribution. Secure timestamps, stapled ticket, Gatekeeper assessment and signed-host offline checks passed. Homebrew installation is not live filtering acceptance. No production filter was installed or activated during this workflow. Existing user proxies and clients were not changed. Read the [security model](../SECURITY.md) and [guide](UserGuide.en.md) before planning isolated live acceptance.
+Xcode navigator groups and existing source paths/target memberships are organized.
+Default scheme remains 01 Preview (Safe); the host scheme is build-only. Prefer
+Xcode MCP for incremental build/diagnostics; shell scripts remain packaging/CI
+fallbacks. See [branch workflow](BRANCHES.md).

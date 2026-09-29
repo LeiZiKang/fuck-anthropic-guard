@@ -44,6 +44,8 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
     private var proxyEndpoint: ProxyEndpoint?
     private var expectedProfileDigest = ""
     private var scopeDigest = ""
+    private var journal = GuardConnectionJournal()
+    private var lastBlockCause = "startup"
     private var routeAllowed = 0
     private var routeDenied = 0
     private var unknownOwnerFlows = 0
@@ -274,6 +276,19 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
         return result
     }
 
+    // Called only for flows already classified as protected; no unrelated app history.
+    private func record(_ socket: NEFilterSocketFlow, source: FlowSource? = nil, allowed: Bool, reason: String) {
+        let token = socket.sourceProcessAuditToken ?? socket.sourceAppAuditToken
+        let pid = token.map { data in data.withUnsafeBytes { ccw_audit_pid($0.baseAddress, $0.count) } } ?? 0
+        let remote = socket.remoteEndpoint as? NWHostEndpoint
+        let host = remote?.hostname ?? "unknown"
+        let destination = (host.contains(":") ? "[\(host)]" : host) + ":" + (remote?.port ?? "?")
+        let cached = token.flatMap { sourceCache[$0] }
+        journal.append(pid: pid, client: source?.bundleID ?? cached?.bundleID ?? "Protected client",
+            destination: destination, transport: socket.socketProtocol == IPPROTO_TCP ? "TCP" : socket.socketProtocol == IPPROTO_UDP ? "UDP" : "Other",
+            allowed: allowed, reason: reason, cause: ["permission-unavailable", "permission-withdrawn"].contains(reason) ? GuardConnectionJournal.blockCause(shouldBlock: policy.shouldBlock, validUntil: policy.validUntil, now: LeaseClock.now, last: lastBlockCause) : nil)
+    }
+
     override func handleNewFlow(_ flow: NEFilterFlow) -> NEFilterNewFlowVerdict {
         guard let socket = flow as? NEFilterSocketFlow, socket.direction == .outbound else { return .allow() }
         return withState { () -> NEFilterNewFlowVerdict in
@@ -307,14 +322,15 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
                 let remote = socket.remoteEndpoint as? NWHostEndpoint
                 guard proxyEndpoint?.matches(address: remote?.hostname, port: remote?.port,
                                              tcp: socket.socketProtocol == IPPROTO_TCP) == true else {
-                    routeDenied += 1; denied += 1; return .drop()
+                    routeDenied += 1; denied += 1; record(socket, source: source, allowed: false, reason: "wrong-endpoint"); return .drop()
                 }
                 routeAllowed += 1
             }
-            if policy.blocking(at: LeaseClock.now) || surgeOwner.map({ KernelIdentity.capture($0.pid) != $0 }) != false { denied += 1; return .drop() }
+            if policy.blocking(at: LeaseClock.now) || surgeOwner.map({ KernelIdentity.capture($0.pid) != $0 }) != false { denied += 1; record(socket, source: source, allowed: false, reason: "permission-unavailable"); return .drop() }
             // Retain bounded flow references so a later risk update can drop an
             // existing protected connection, rather than only blocking new ones.
-            guard flows.insert(socket, id: socket.identifier) else { denied += 1; return .drop() }
+            guard flows.insert(socket, id: socket.identifier) else { denied += 1; record(socket, source: source, allowed: false, reason: "flow-capacity"); return .drop() }
+            record(socket, source: source, allowed: true, reason: "verified-route")
             let verdict = NEFilterNewFlowVerdict.filterDataVerdict(withFilterInbound: true, peekInboundBytes: 1, filterOutbound: true, peekOutboundBytes: 1)
             verdict.shouldReport = true
             return verdict
@@ -335,7 +351,7 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
         withState {
             enforceClientTransportExpiry()
             guard flows.entries[flow.identifier] != nil else { return .drop() }
-            if policy.blocking(at: LeaseClock.now) { logDataDrop(flow, reason: "client-data-policy"); denied += 1; flows.closed(flow.identifier); return .drop() }
+            if policy.blocking(at: LeaseClock.now) { logDataDrop(flow, reason: "client-data-policy"); if let socket = flow as? NEFilterSocketFlow { record(socket, allowed: false, reason: "permission-withdrawn") }; denied += 1; flows.closed(flow.identifier); return .drop() }
             return NEFilterDataVerdict(passBytes: 4096, peekBytes: 1)
         }
     }
@@ -345,7 +361,7 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
             enforceClientTransportExpiry()
 
             if policy.blocking(at: LeaseClock.now) {
-                logDataDrop(flow, reason: "client-complete-policy")
+                logDataDrop(flow, reason: "client-complete-policy"); if flows.entries[flow.identifier] != nil, let socket = flow as? NEFilterSocketFlow { record(socket, allowed: false, reason: "permission-withdrawn") }
                 flows.closed(flow.identifier); denied += 1; return .drop()
             }
             // Outbound EOF is not flowClosed. Retain the reference so a later
@@ -366,10 +382,11 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
         enforceClientTransportExpiry()
         guard policy.blocking(at: LeaseClock.now) else { return }
         let targets = flows.withdraw()
-        for flow in targets { update(flow, using: .drop(), for: .any); denied += 1 }
+        for flow in targets { record(flow, allowed: false, reason: "permission-withdrawn"); update(flow, using: .drop(), for: .any); denied += 1 }
     }
 
     private func revoke(_ reason: String) {
+        lastBlockCause = GuardConnectionJournal.causes.contains(reason) ? reason : "host-blocked"
         surgeOwner = nil
         let knownReasons = ["network-change", "configuration-change", "sleep", "wake", "scope-capacity", "coverage-unknown",
                             "identity-unknown", "relay-control-expired", "control-connected", "control-lost", "user-stopped-relay", "relay-identity-lost"]
@@ -412,6 +429,7 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
         policyQueue.async {
             guard self.enforcing, self.leaseEpoch.session == session, self.sequenceGate.accept(update.sequence) else { reply(false); return }
             if update.block {
+                self.lastBlockCause = update.blockReason.flatMap { GuardConnectionJournal.causes.contains($0) ? $0 : nil } ?? "host-blocked"
                 self.policy.accept(update, at: LeaseClock.now)
                 self.enforceClientTransportExpiry()
             }
@@ -422,6 +440,7 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
                       PolicyEvidenceVerifier.valid(update.policyEvidence, challenge: self.leaseEpoch.challenge,
                                                    scope: self.scopeDigest, profileDigest: self.expectedProfileDigest, now: Date(), uptime: LeaseClock.now),
                       let evidenceExpiry = update.policyEvidence?.expiresClock else {
+                    self.lastBlockCause = "policy-rejected"
                     self.policy.accept(FilterPolicyUpdate(block: true), at: LeaseClock.now)
                     self.dropTrackedFlowsIfNeeded(); reply(false); return
                 }
@@ -448,7 +467,8 @@ final class CCWFilterDataProvider: NEFilterDataProvider, NSXPCListenerDelegate {
                 routeAllowed: self.routeAllowed, routeDenied: self.routeDenied, unknownOwnerFlows: self.unknownOwnerFlows,
                 networkGeneration: self.leaseEpoch.generation, invalidationReason: self.leaseEpoch.reason,
                 policyChallenge: self.leaseEpoch.challenge, scopeDigest: self.scopeDigest,
-                bootID: self.leaseEpoch.bootID, controlSessionID: self.leaseEpoch.session?.uuidString)
+                bootID: self.leaseEpoch.bootID, controlSessionID: self.leaseEpoch.session?.uuidString, connectionEvents: self.journal.events,
+                connectionAllowed: self.journal.allowed, connectionDenied: self.journal.denied)
             reply((try? JSONEncoder().encode(status)) ?? Data())
         }
     }

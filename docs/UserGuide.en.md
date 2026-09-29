@@ -136,3 +136,29 @@ Use isolated, account-free fixtures for fault tests. Do not disable Surge, switc
 Build offline Preview with `bash scripts/build.sh` or Xcode's `01 Preview (Safe)`. `CCW_BUILD_MODE=host` builds the host and filter without installing. Production signing requires your own valid developer configuration; never commit signing private keys.
 
 The repository includes no VPS credentials or private runtime profile. Do not submit proxy passwords, SSH keys, cookies, Keychain exports, or personal logs. Review [PRD](PRD.en.md), [validation status](FEATURE-STATUS.md), and [security model](../SECURITY.md).
+
+## Interface refresh (local UI revision)
+
+- The overview shows connection state, the dedicated endpoint and pinned policy. A ready state applies only to currently verified recognized connections.
+- Allowed, denied and unknown-owner decisions have separate counters; these are not unique connection counts or a security score.
+- Clients lists processes; Local network shows read-only IPv6 settings; Settings & diagnostics contains configuration, enable/disable actions and diagnostic details.
+- The menu-bar icon opens a compact status panel. English, Chinese and system light/dark appearance are supported. Language changes preserve protection state.
+- This presentation revision does not change the filter, routing rules, lease lifetime or action confirmations.
+
+## Connection journal and appearance (0.4.1)
+
+Warm paper, clay accents, editorial headings and an original G shield. Anthropic-inspired dark appearance by default: charcoal, warm gray, ivory and clay. Theme switches to light.
+
+Connections shows time, PID, destination, protocol, verdict and reason for recognized clients. All/Allowed/Denied filters and summary counters navigate the journal. Allowed means the endpoint and lease checks passed, not website success; later revocation remains possible. Denials include rejected new flows and revoked existing flows, not necessarily unique connections. Endpoint-match counts are no longer shown as total allowed decisions.
+
+Only the latest 80 events are retained in filter memory and reset on extension restart. No chat, payload, URL paths or credentials. Unknown owners are counted without unrelated app histories. Stale status is labeled; retained events are not current permission. Pre-upgrade history cannot be recovered.
+
+How it works: Claude -> Guard system filter -> dedicated Surge endpoint -> proxy node -> website. Guard does not provide a VPN, subscription or SSH tunnel. Surge provides transport. 127.0.0.1:6154 is the proxy endpoint, not the final website. This version upgrades filter metadata reporting while retaining route predicates and lease enforcement.
+
+## 0.4.2 usability
+
+Block Claude connections now confirms its impact; cancel preserves permission. Resume checks verifies before allowing connections. Settings reflects the actual state and offers a read-only endpoint view while enabled or unconfirmed. Recheck retries the filter control connection; the client refresh only updates process inventory.
+
+Search connections by identity, PID or endpoint; clearing search restores the category. Click column headers to sort, then select an event for details or copying. Details include full time, signing identity, destination and recorded trigger. Missing historical causes are disclosed rather than inferred. Unknown ownership has an explanation and is not a leak count.
+
+Summary actions are native buttons, denied text has stronger contrast, appearance persists in the live app, and smaller windows scroll.

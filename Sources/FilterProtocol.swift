@@ -48,6 +48,52 @@ struct FilterPolicyUpdate: Codable {
     var controlSessionID: String? = nil
     let block: Bool
     var validUntil: TimeInterval? = nil
+    var blockReason: String? = nil
+}
+
+/// Connection metadata only; memory bounded, never packet content or URL paths.
+struct GuardConnectionEvent: Codable, Equatable {
+    let id: UInt64
+    let timestamp: TimeInterval
+    let pid: Int32
+    let client: String
+    let destination: String
+    let transport: String
+    let decision: String
+    let reason: String
+    var cause: String? = nil
+    static func clean(_ text: String, limit: Int) -> String {
+        String(text.unicodeScalars.filter { !CharacterSet.controlCharacters.contains($0) }.prefix(limit))
+    }
+    var valid: Bool {
+        id > 0 && timestamp.isFinite && timestamp > 0 && pid >= 0 && client.count <= 160 && destination.count <= 160
+        && ["TCP", "UDP", "Other"].contains(transport) && ["allow", "deny"].contains(decision)
+        && GuardConnectionJournal.reasons.contains(reason)
+        && (cause == nil || GuardConnectionJournal.causes.contains(cause!))
+    }
+}
+struct GuardConnectionJournal {
+    static let limit = 80
+    static let causes: Set<String> = ["startup", "lease-expired", "host-blocked", "manual-block", "probe-unavailable", "exit-mismatch", "exit-unknown", "policy-unverified", "requirements-incomplete", "network-change", "configuration-change", "sleep", "wake", "scope-capacity", "coverage-unknown", "identity-unknown", "control-connected", "control-lost", "surge-process-lost", "policy-rejected", "cli-signature-unverified", "mode-or-interception-unverified", "temporary-rules-present-or-unknown", "dedicated-listener-unverified", "effective-contract-unverified", "runtime-drift-or-read-failure", "audit-deadline-exceeded"]
+    static func blockCause(shouldBlock: Bool, validUntil: TimeInterval?, now: TimeInterval, last: String) -> String {
+        if !shouldBlock, let expiry = validUntil, now >= expiry { return "lease-expired" }
+        return causes.contains(last) ? last : "host-blocked"
+    }
+    static let reasons: Set<String> = ["verified-route", "wrong-endpoint", "permission-unavailable", "flow-capacity", "permission-withdrawn"]
+    private(set) var events: [GuardConnectionEvent] = []
+    private(set) var allowed = 0
+    private(set) var denied = 0
+    private var sequence: UInt64 = 0
+    mutating func append(pid: Int32, client: String, destination: String, transport: String, allowed: Bool, reason: String, cause: String? = nil, at: TimeInterval = Date().timeIntervalSince1970) {
+        guard Self.reasons.contains(reason), at.isFinite, at > 0 else { return }
+        sequence += 1
+        let event = GuardConnectionEvent(id: sequence, timestamp: at, pid: max(0, pid),
+            client: GuardConnectionEvent.clean(client, limit: 160), destination: GuardConnectionEvent.clean(destination, limit: 160),
+            transport: ["TCP", "UDP"].contains(transport) ? transport : "Other", decision: allowed ? "allow" : "deny", reason: reason, cause: cause.flatMap { Self.causes.contains($0) ? $0 : nil })
+        events.append(event)
+        if events.count > Self.limit { events.removeFirst(events.count - Self.limit) }
+        if allowed { self.allowed += 1 } else { denied += 1 }
+    }
 }
 
 struct FilterStatus: Codable {
@@ -65,6 +111,9 @@ struct FilterStatus: Codable {
     var scopeDigest: String? = nil
     var bootID: String? = nil
     var controlSessionID: String? = nil
+    var connectionEvents: [GuardConnectionEvent]? = nil
+    var connectionAllowed: Int? = nil
+    var connectionDenied: Int? = nil
 }
 
 /// Shared pure decision logic. An absent/stale policy never allows a protected flow.

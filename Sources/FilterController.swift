@@ -24,6 +24,11 @@ final class FilterController: NSObject, OSSystemExtensionRequestDelegate {
     private var retryScheduled = false
     private var policyRequestID = 0
     private(set) var requirements = RouteRequirements()
+    private(set) var connectionEvents: [GuardConnectionEvent] = []
+    private(set) var connectionAllowed: Int?
+    private(set) var connectionDenied: Int?
+    private(set) var journalAvailable = false
+    private(set) var lastStatusAt: Date?
     private(set) var routeAllowed = 0
     private(set) var routeDenied = 0
     private(set) var unknownOwnerFlows = 0
@@ -248,7 +253,7 @@ final class FilterController: NSObject, OSSystemExtensionRequestDelegate {
         }
     }
 
-    func send(report: RegionReport?) {
+    func send(report: RegionReport?, blockReason: String? = nil) {
         defer { onUpdate?() }
         routeGate = requirements.evaluateProbe(report: report, now: Date(), uptime: LeaseClock.now)
         auditor.refresh(requirements: requirements, challenge: policyChallenge, scope: policyScopeDigest)
@@ -261,11 +266,21 @@ final class FilterController: NSObject, OSSystemExtensionRequestDelegate {
         policyRequestID += 1
         let requestID = policyRequestID
         let block = routeGate != .matched
+        let diagnostic: String
+        if let blockReason, GuardConnectionJournal.causes.contains(blockReason) { diagnostic = blockReason }
+        else { switch routeGate {
+        case .matched: diagnostic = "host-blocked"
+        case .unconfigured: diagnostic = "requirements-incomplete"
+        case .probeUnavailable: diagnostic = "probe-unavailable"
+        case .exitUnknown: diagnostic = "exit-unknown"
+        case .exitMismatch: diagnostic = "exit-mismatch"
+        case .policyUnverified: diagnostic = GuardConnectionJournal.causes.contains(policyAuditReason) ? policyAuditReason : "policy-unverified"
+        } }
         // Repeated delivery cannot extend the original report's expiry.
         let expiry = block ? nil : report.map {
             min($0.checkedUptime + FilterDecisionState.lease, policyEvidence?.expiresClock ?? 0)
         }
-        guard let data = try? JSONEncoder().encode(FilterPolicyUpdate(sequence: UInt64(requestID), providerGeneration: providerGeneration, policyEvidence: policyEvidence, bootID: providerBootID, controlSessionID: controlSessionID, block: block, validUntil: expiry)) else { return }
+        guard let data = try? JSONEncoder().encode(FilterPolicyUpdate(sequence: UInt64(requestID), providerGeneration: providerGeneration, policyEvidence: policyEvidence, bootID: providerBootID, controlSessionID: controlSessionID, block: block, validUntil: expiry, blockReason: block ? diagnostic : nil)) else { return }
         let proxy = connection.remoteObjectProxyWithErrorHandler { [weak self] _ in
             DispatchQueue.main.async {
                 guard let self, self.callbacks.generation == generation, self.policyRequestID == requestID else { return }
@@ -300,11 +315,14 @@ final class FilterController: NSObject, OSSystemExtensionRequestDelegate {
                 // once, and rejects late success after an error or timeout.
                 guard let self, self.callbacks.finish(token) else { return }
                 guard LeaseClock.now - requestedAt < 5,
-                      data.count < 4096, let status = try? JSONDecoder().decode(FilterStatus.self, from: data),
+                      data.count < 131072, let status = try? JSONDecoder().decode(FilterStatus.self, from: data),
                       status.protocolVersion == 2, status.networkGeneration != nil, status.bootID != nil, status.controlSessionID != nil, status.policyChallenge != nil, status.scopeDigest != nil,
                       status.proxyEndpoint == self.requirements.proxy,
                       status.routeAllowed != nil, status.routeDenied != nil, status.unknownOwnerFlows != nil,
-                      status.blockedFlows >= 0 else { self.connectionFailed(); return }
+                      status.blockedFlows >= 0,
+                      (status.connectionEvents?.count ?? 0) <= GuardConnectionJournal.limit,
+                      status.connectionEvents?.allSatisfy({ $0.valid }) != false,
+                      (status.connectionAllowed ?? 0) >= 0, (status.connectionDenied ?? 0) >= 0 else { self.connectionFailed(); return }
                 self.policyChallenge = status.policyChallenge ?? ""
                 self.policyScopeDigest = status.scopeDigest ?? ""
                 if self.providerGeneration != status.networkGeneration || self.providerBootID != status.bootID || self.controlSessionID != status.controlSessionID {
@@ -319,6 +337,10 @@ final class FilterController: NSObject, OSSystemExtensionRequestDelegate {
                 self.blocking = status.blocking; self.blockedFlows = status.blockedFlows
                 self.routeAllowed = status.routeAllowed ?? 0; self.routeDenied = status.routeDenied ?? 0
                 self.unknownOwnerFlows = status.unknownOwnerFlows ?? 0
+                self.connectionEvents = status.connectionEvents ?? []
+                self.connectionAllowed = status.connectionAllowed; self.connectionDenied = status.connectionDenied
+                self.journalAvailable = status.connectionEvents != nil && status.connectionAllowed != nil && status.connectionDenied != nil
+                self.lastStatusAt = Date()
                 self.message = nil; self.onUpdate?()
             }
         }
