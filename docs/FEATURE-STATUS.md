@@ -27,5 +27,5 @@ fallbacks. See [branch workflow](BRANCHES.md).
 ## 0.4.3 host-only installation
 Configuration validation now keeps invalid fields open with specific inline errors. Invalid port/IP/policy and corrected-save paths passed in native Preview; 271 Preview / 273 host offline checks and both Xcode MCP builds passed. Apple notarization, stapling and Gatekeeper passed; installed host0.4.3 with the original filter0.4.2/build12.2 tree preserved byte-for-byte. Live protection ready; Surge unchanged.
 
-## 0.4.4 menu-bar candidate
-Same AppKit panel shared by the menu popover and four Xcode Canvas#Preview states. English/Chinese RenderPreview snapshots passed; padding, state symbols, last-status time and recheck wiring updated. Candidate not installed yet; retain the current signed filter. Actual system menu placement/click coverage remains distinct from Canvas snapshots.
+## 0.4.4 menu-bar installation
+Same AppKit panel shared by the menu popover and four Xcode Canvas#Preview states. English/Chinese RenderPreview snapshots passed; padding, state symbols, last-status time and recheck wiring updated. After explicit approval, Apple notarization/stapling/Gatekeeper passed and0.4.4 was installed. Original signed filter tree and Surge profile unchanged; live main UI protection ready. Actual system menu placement/click coverage remains distinct from Canvas snapshots.

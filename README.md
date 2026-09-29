@@ -88,4 +88,4 @@ Anthropic-inspired dark UI, original icon and latest80 connection decisions with
 
 Locally notarized and installed 0.4.3 fixes configuration validation feedback; invalid input remains in the dialog. The installed filter bundle is retained unchanged.
 
-Menu-bar development now has four Xcode Canvas#Preview states sharing the production AppKit panel (0.4.4 candidate).
+Menu-bar development now has four Xcode Canvas#Preview states sharing the production AppKit panel (locally notarized and installed0.4.4).
