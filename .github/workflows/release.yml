@@ -1,0 +1,183 @@
+name: Release Guard
+on:
+  push:
+    branches: [main]
+    paths: [Info.plist]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: guard-release
+  cancel-in-progress: false
+  queue: max
+jobs:
+  plan:
+    if: github.repository == 'LeiZiKang/fuck-anthropic-guard' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      mode: ${{ steps.plan.outputs.mode }}
+      version: ${{ steps.plan.outputs.version }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/ci/release.py plan --output "$GITHUB_OUTPUT"
+  build:
+    needs: plan
+    if: needs.plan.outputs.mode == 'new'
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Offline tests
+        run: |
+          python3 scripts/test_publish_release.py
+          python3 scripts/ci/test_release.py
+          bash scripts/test.sh
+      - name: Build Universal 2 without release credentials
+        env:
+          CCW_BUILD_MODE: host
+          CCW_ARCHITECTURES: arm64 x86_64
+        run: |
+          export CCW_OUTPUT_ROOT="$GITHUB_WORKSPACE/dist/ci-build"
+          bash scripts/build.sh
+          "$CCW_OUTPUT_ROOT/fuck-anthropic guard.app/Contents/MacOS/ClaudeConnectionWatcher" --self-test
+          python3 scripts/ci/release.py manifest --app "$CCW_OUTPUT_ROOT/fuck-anthropic guard.app" --output "$CCW_OUTPUT_ROOT/manifest.json"
+          ditto -c -k --keepParent --sequesterRsrc "$CCW_OUTPUT_ROOT/fuck-anthropic guard.app" "$CCW_OUTPUT_ROOT/unsigned.zip"
+          python3 scripts/ci/release.py seal-unsigned --archive "$CCW_OUTPUT_ROOT/unsigned.zip" --manifest "$CCW_OUTPUT_ROOT/manifest.json"
+          python3 scripts/ci/release.py verify --unsigned --app "$CCW_OUTPUT_ROOT/fuck-anthropic guard.app" --manifest "$CCW_OUTPUT_ROOT/manifest.json"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: unsigned-${{ github.run_id }}
+          path: |
+            dist/ci-build/unsigned.zip
+            dist/ci-build/manifest.json
+          retention-days: 7
+          overwrite: true
+  sign:
+    needs: [plan, build]
+    if: needs.plan.outputs.mode == 'new'
+    runs-on: macos-15
+    environment: release
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: unsigned-${{ github.run_id }}
+          path: dist/ci-build
+      - name: Restore prior notarization state on a failed-job rerun
+        if: github.run_attempt != 1
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/ci/release.py restore-state --directory dist/ci-state
+      - name: Sign and notarize (no app execution)
+        env:
+          MACOS_CERTIFICATE_P12_BASE64: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          MACOS_HOST_PROFILE_BASE64: ${{ secrets.MACOS_HOST_PROFILE_BASE64 }}
+          MACOS_FILTER_PROFILE_BASE64: ${{ secrets.MACOS_FILTER_PROFILE_BASE64 }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        run: bash scripts/ci/sign-notarize.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: notary-state-${{ github.run_id }}
+          path: |
+            dist/ci-state/manifest.json
+            dist/ci-state/notary-state.json
+            dist/ci-state/notary-input.zip
+            dist/ci-state/notary-result.json
+          if-no-files-found: ignore
+          retention-days: 7
+          overwrite: true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: signed-${{ github.run_id }}
+          path: dist/ci-release/*
+          retention-days: 7
+          overwrite: true
+  verify:
+    needs: [plan, sign]
+    if: always() && needs.plan.result == 'success' && (needs.plan.outputs.mode == 'existing' || needs.sign.result == 'success')
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: needs.plan.outputs.mode == 'new'
+        with:
+          name: signed-${{ github.run_id }}
+          path: dist/ci-release
+      - name: Download immutable published artifact for retry
+        if: needs.plan.outputs.mode == 'existing'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/ci/release.py download-existing
+      - name: Independently verify the signed/notarized artifact without signing secrets
+        env:
+          RELEASE_VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          mkdir -p dist/ci-verify
+          python3 scripts/ci/release.py extract --archive "dist/ci-release/fuck-anthropic-guard-$RELEASE_VERSION.zip" --directory dist/ci-verify
+          python3 scripts/ci/release.py verify --app 'dist/ci-verify/fuck-anthropic guard.app' --manifest dist/ci-release/manifest.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: verified-${{ github.run_id }}
+          path: |
+            dist/ci-release/*.zip
+            dist/ci-release/manifest.json
+          retention-days: 7
+          overwrite: true
+  publish:
+    needs: [plan, verify]
+    if: needs.plan.outputs.mode == 'new'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: verified-${{ github.run_id }}
+          path: dist/ci-release
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/ci/release.py publish
+  homebrew:
+    needs: [plan, verify, publish]
+    if: always() && needs.verify.result == 'success' && (needs.plan.outputs.mode == 'existing' || needs.publish.result == 'success')
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: verified-${{ github.run_id }}
+          path: dist/ci-release
+      - name: Verify public download and update Homebrew
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HOMEBREW_TAP_SSH_KEY: ${{ secrets.HOMEBREW_TAP_SSH_KEY }}
+        run: python3 scripts/ci/release.py tap --manifest dist/ci-release/manifest.json

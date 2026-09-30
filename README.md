@@ -23,7 +23,7 @@
 
 ## Download and setup
 
-Download the [Developer ID signed, notarized Universal 2 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.4). Read the [setup and upgrade guide](docs/UserGuide.en.md) before enabling protection.
+Download the [Developer ID signed, notarized Universal 2 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/latest). Read the [setup and upgrade guide](docs/UserGuide.en.md) before enabling protection.
 
 The [Homebrew tap](https://github.com/LeiZiKang/homebrew-tap) now offers the same notarized **0.4.4 / build 13.0** archive. Install with `brew install --cask leizikang/tap/fuck-anthropic-guard`, or run `brew update` and `brew upgrade --cask leizikang/tap/fuck-anthropic-guard` for an existing installation. Follow the upgrade guide before replacing an active filter.
 
@@ -45,3 +45,5 @@ The default Preview uses sample data and never activates the production filter. 
 Production schemes are build-only. `CCW_BUILD_MODE=host bash scripts/build.sh` compiles without installing; `CCW_ARCHITECTURES='arm64 x86_64'` builds both architectures. Prefer Xcode MCP for incremental builds and diagnostics. See [contributing](CONTRIBUTING.md) and [branch/release workflow](docs/BRANCHES.md).
 
 Process and connection metadata remain local. Consented exit probes reach `api.ipify.org` through Surge without Claude credentials. No telemetry or automatic direct fallback. [MIT license](LICENSE).
+
+[Automatic release pipeline](docs/AUTOMATED-RELEASES.md): a new version on main publishes a notarized download and updates Homebrew.
