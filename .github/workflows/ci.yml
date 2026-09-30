@@ -8,7 +8,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Offline publication gate tests
-        run: python3 scripts/test_publish_release.py
+        run: |
+          python3 scripts/test_publish_release.py
+          python3 scripts/ci/test_release.py
+          bash -n scripts/ci/sign-notarize.sh
       - name: Offline preview tests
         run: bash scripts/test.sh
       - name: Compile host and filter without installation

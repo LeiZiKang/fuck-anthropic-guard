@@ -23,7 +23,7 @@
 
 ## 下载与设置
 
-下载[Developer ID签名并通过Apple公证的Universal 2 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/tag/v0.4.4)。启用前先读[设置与升级说明](docs/UserGuide.md)。
+下载[Developer ID签名并通过Apple公证的Universal 2 ZIP](https://github.com/LeiZiKang/fuck-anthropic-guard/releases/latest)。启用前先读[设置与升级说明](docs/UserGuide.md)。
 
 [Homebrew tap](https://github.com/LeiZiKang/homebrew-tap) 已同步相同的公证包 **0.4.4 / build 13.0**。新安装使用 `brew install --cask leizikang/tap/fuck-anthropic-guard`；已有安装先 `brew update`，再 `brew upgrade --cask leizikang/tap/fuck-anthropic-guard`。替换正在使用的过滤器前，请先阅读升级说明。
 
@@ -45,3 +45,5 @@ open "dist/guard/fuck-anthropic guard Preview.app"
 生产scheme仅用于构建。`CCW_BUILD_MODE=host bash scripts/build.sh`不会安装；设置`CCW_ARCHITECTURES='arm64 x86_64'`可编译双架构。增量构建和诊断优先使用Xcode MCP。详见[贡献指南](CONTRIBUTING.zh-CN.md)和[分支／发布流程](docs/BRANCHES.md)。
 
 进程与连接元数据保留在本机。经同意的出口探针通过Surge访问`api.ipify.org`，不携带Claude凭据。无遥测，不自动回退直连。[MIT许可证](LICENSE)。
+
+[自动发布管道](docs/AUTOMATED-RELEASES.md)：main 中提交新版本后自动构建、公证、发布下载包并更新 Homebrew。

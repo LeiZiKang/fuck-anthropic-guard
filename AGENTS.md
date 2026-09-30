@@ -18,3 +18,7 @@ It must not become a proxy, SSH tunnel, credential cleaner, or network configura
   not proof of an exhaustive security review.
 - No account-safety, zero-IP-leak or fail-closed-under-all-OS-failures claims.
 - Keep changes on the feature branch until the owner accepts the review.
+
+## Authorized automatic releases
+
+The maintainer has explicitly authorized the checked-in `Release Guard` workflow to publish new stable versions pushed to main. The workflow itself and changes to its credential boundaries still require independent source review before public push. Its separate verification job is automated artifact verification, not a fabricated human/agent audit report. The existing manual publisher retains its independent-review JSON gate. Signing secrets are available only to the signing job; no product code is executed with them. Homebrew updates must bind to the exact artifact checked by the verification job. Existing public tags/assets are immutable.

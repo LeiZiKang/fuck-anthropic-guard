@@ -28,3 +28,7 @@ The gate is a workflow check, not an exhaustive security proof. Never publish pr
 An explicit maintainer decision can defer known validation items without marking them passed. Preserve those limits in stable notes. Freeze publication-only changes on a feature branch, then use `scripts/publish-release.sh --prepare --stable --tag v<version> --reuse-from v<version>-beta.<n>`. The gate rejects changed runtime/build inputs and copies the already notarized ZIP byte-for-byte. The manifest records the original artifact source commit separately from the current publication source.
 
 Obtain new matching independent source-only and binary-stable reviews. Publish source with `--stable --source-only --audit-report`, complete PR/CI/main, then publish with `--stable --audit-report`. The stable tag targets the original artifact source commit; the reviewed publication docs/scripts live on main. Retain the historical beta tag/release. Verify the new public URL/hash, update the tap and check current installed binaries before considering any reinstall.
+
+## Automatic main releases
+
+The maintainer-authorized GitHub-hosted pipeline is documented in [AUTOMATED-RELEASES.md](AUTOMATED-RELEASES.md). A new main version builds, signs, notarizes, verifies and publishes, then updates Homebrew. Same-version retries reuse verified public bytes. Its automatic verification is distinct from the manual publisher audit gate.
